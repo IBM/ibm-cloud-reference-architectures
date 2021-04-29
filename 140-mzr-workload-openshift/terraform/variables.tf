@@ -118,10 +118,12 @@ variable "workload_ssh_vpn_label" {
 variable "workload_ssh_vpn_public_key" {
   type = string
   description = "The public key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
 }
 variable "workload_ssh_vpn_private_key" {
   type = string
   description = "The private key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
 }
 variable "workload_ssh_vpn_public_key_file" {
   type = string
@@ -151,10 +153,12 @@ variable "workload_ssh_bastion_label" {
 variable "workload_ssh_bastion_public_key" {
   type = string
   description = "The public key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
 }
 variable "workload_ssh_bastion_private_key" {
   type = string
   description = "The private key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
 }
 variable "workload_ssh_bastion_public_key_file" {
   type = string
@@ -184,10 +188,12 @@ variable "workload_ssh_scc_label" {
 variable "workload_ssh_scc_public_key" {
   type = string
   description = "The public key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
 }
 variable "workload_ssh_scc_private_key" {
   type = string
   description = "The private key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
 }
 variable "workload_ssh_scc_public_key_file" {
   type = string

@@ -177,6 +177,18 @@ spec:
     - name: workload_resource_group_provision
     - name: cs_resource_group_name
     - name: cs_name_prefix
+    - name: workload_ssh_vpn_public_key
+      value: ''
+    - name: workload_ssh_vpn_private_key
+      value: ''
+    - name: workload_ssh_bastion_public_key
+      value: ''
+    - name: workload_ssh_bastion_private_key
+      value: ''
+    - name: workload_ssh_scc_public_key
+      value: ''
+    - name: workload_ssh_scc_private_key
+      value: ''
     - name: workload_ssh_vpn_public_key_file
     - name: workload_ssh_vpn_private_key_file
     - name: workload_ssh_bastion_public_key_file
