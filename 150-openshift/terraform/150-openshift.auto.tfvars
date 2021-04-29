@@ -31,6 +31,3 @@
 ## worker_count: The number of worker nodes that should be provisioned for classic infrastructure
 #worker_count="3"
 
-## gitops_dir: the value of gitops_dir
-#gitops_dir=""
-

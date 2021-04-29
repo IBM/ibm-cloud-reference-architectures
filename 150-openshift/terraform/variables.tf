@@ -169,11 +169,6 @@ variable "cluster_exists" {
   description = "Flag indicating if the cluster already exists (true or false)"
   default = false
 }
-variable "gitops_dir" {
-  type = string
-  description = "the value of gitops_dir"
-  default = ""
-}
 variable "cluster_flavor" {
   type = string
   description = "The machine type that will be provisioned for classic infrastructure"
@@ -198,4 +193,9 @@ variable "cluster_authorize_kms" {
   type = bool
   description = "Flag indicating that the authorization between the kms and the service should be created."
   default = true
+}
+variable "cluster_login" {
+  type = bool
+  description = "Flag indicating that after the cluster is provisioned, the module should log into the cluster"
+  default = false
 }

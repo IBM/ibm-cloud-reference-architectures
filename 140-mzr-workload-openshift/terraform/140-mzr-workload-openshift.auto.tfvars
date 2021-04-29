@@ -73,9 +73,6 @@
 ## kms_key_id: The id of the root key in the KMS instance that will be used to encrypt the cluster.
 #kms_key_id=""
 
-## gitops_dir: the value of gitops_dir
-#gitops_dir=""
-
 ## workload_scc_registration_key: The registration key generated for the SCC collector. The collector must be set up with a *private* endpoint. The value can be created/retrieved here - https://cloud.ibm.com/security-compliance/settings?tab=collectors
 #workload_scc_registration_key=""
 

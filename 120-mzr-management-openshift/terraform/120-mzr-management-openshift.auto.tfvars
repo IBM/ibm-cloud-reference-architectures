@@ -70,9 +70,6 @@
 ## worker_count: The number of worker nodes that should be provisioned for classic infrastructure
 #worker_count="3"
 
-## gitops_dir: the value of gitops_dir
-#gitops_dir=""
-
 ## mgmt_scc_registration_key: The registration key generated for the SCC collector. The collector must be set up with a *private* endpoint. The value can be created/retrieved here - https://cloud.ibm.com/security-compliance/settings?tab=collectors
 #mgmt_scc_registration_key=""
 

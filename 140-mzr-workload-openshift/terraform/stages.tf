@@ -208,7 +208,7 @@ module "scc-subnets" {
 
 }
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.3.4"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.4.0"
 
   resource_group_name = module.resource_group.name
   vpc_name = module.ibm-vpc.name
@@ -229,6 +229,7 @@ module "cluster" {
   kms_enabled = var.cluster_kms_enabled
   kms_private_endpoint = var.cluster_kms_private_endpoint
   authorize_kms = var.cluster_authorize_kms
+  login = var.cluster_login
 
 }
 module "cos" {
