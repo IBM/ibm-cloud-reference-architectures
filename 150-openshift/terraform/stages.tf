@@ -43,7 +43,7 @@ module "ibm-vpc" {
 
 }
 module "workload-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
