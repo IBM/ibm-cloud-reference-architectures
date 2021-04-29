@@ -32,6 +32,9 @@ spec:
           value: true
         - name: kms_key_id
           required: true
+          scope: global
+        - name: kms_enabled
+          value: true
       dependencies:
         - name: subnets
           ref: workload-subnets
@@ -209,3 +212,5 @@ spec:
     - name: mgmt_ssh_bastion_private_key_file
     - name: mgmt_ssh_scc_public_key_file
     - name: mgmt_ssh_scc_private_key_file
+    - name: kms_key_id
+      required: true

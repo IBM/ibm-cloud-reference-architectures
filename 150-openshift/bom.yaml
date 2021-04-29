@@ -43,6 +43,9 @@ spec:
           value: true
         - name: kms_key_id
           required: true
+          scope: global
+        - name: kms_enabled
+          value: true
       dependencies:
         - name: subnets
           ref: workload-subnets
@@ -54,6 +57,22 @@ spec:
           ref: ibm-vpc
         - name: kms
           ref: key-protect
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      variables:
+        - name: provision
+          value: false
+    - name: ibm-object-storage
+      alias: cos
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
   variables:
     - name: resource_group_name
     - name: region
@@ -61,4 +80,6 @@ spec:
     - name: worker_count
     - name: hpcs_name
     - name: name_prefix
+      required: true
+    - name: kms_key_id
       required: true

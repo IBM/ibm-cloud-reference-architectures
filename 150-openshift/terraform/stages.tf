@@ -14,6 +14,14 @@ module "resource_group" {
   provision = var.resource_group_provision
 
 }
+module "cs_resource_group" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.2.1"
+
+  resource_group_name = var.cs_resource_group_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.cs_resource_group_provision
+
+}
 module "hpcs" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-hpcs?ref=v1.2.1"
 
@@ -30,6 +38,18 @@ module "hpcs" {
   label = var.hpcs_label
 
 }
+module "cos" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.2.0"
+
+  resource_group_name = module.cs_resource_group.name
+  name_prefix = var.cs_name_prefix
+  resource_location = var.cos_resource_location
+  tags = tolist(setsubtract(split(",", var.cos_tags), [""]))
+  plan = var.cos_plan
+  provision = var.cos_provision
+  label = var.cos_label
+
+}
 module "ibm-vpc" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.8.1"
 
@@ -43,7 +63,7 @@ module "ibm-vpc" {
 
 }
 module "workload-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -67,7 +87,7 @@ module "cluster" {
   vpc_subnets = module.workload-subnets.subnets
   cos_id = module.cos.id
   kms_id = module.hpcs.guid
-  kms_key_id = var.cluster_kms_key_id
+  kms_key_id = var.kms_key_id
   name_prefix = var.name_prefix
   region = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
@@ -80,17 +100,5 @@ module "cluster" {
   kms_enabled = var.cluster_kms_enabled
   kms_private_endpoint = var.cluster_kms_private_endpoint
   authorize_kms = var.cluster_authorize_kms
-
-}
-module "cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.2.0"
-
-  resource_group_name = module.hpcs_resource_group.name
-  name_prefix = var.name_prefix
-  resource_location = var.cos_resource_location
-  tags = tolist(setsubtract(split(",", var.cos_tags), [""]))
-  plan = var.cos_plan
-  provision = var.cos_provision
-  label = var.cos_label
 
 }

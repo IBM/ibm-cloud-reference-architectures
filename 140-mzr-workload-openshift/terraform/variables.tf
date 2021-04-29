@@ -339,10 +339,9 @@ variable "scc-subnets_provision" {
   description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
   default = true
 }
-variable "cluster_kms_key_id" {
+variable "kms_key_id" {
   type = string
   description = "The id of the root key in the KMS instance that will be used to encrypt the cluster."
-  default = ""
 }
 variable "cluster_name" {
   type = string
@@ -377,12 +376,12 @@ variable "cluster_flavor" {
 variable "cluster_disable_public_endpoint" {
   type = bool
   description = "Flag indicating that the public endpoint should be disabled"
-  default = false
+  default = true
 }
 variable "cluster_kms_enabled" {
   type = bool
   description = "Flag indicating that kms encryption should be enabled for this cluster"
-  default = false
+  default = true
 }
 variable "cluster_kms_private_endpoint" {
   type = bool

@@ -128,7 +128,7 @@ module "workload_ssh_scc" {
 
 }
 module "workload-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -144,7 +144,7 @@ module "workload-subnets" {
 
 }
 module "vpe-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -160,7 +160,7 @@ module "vpe-subnets" {
 
 }
 module "vpn-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -176,7 +176,7 @@ module "vpn-subnets" {
 
 }
 module "bastion-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -192,7 +192,7 @@ module "bastion-subnets" {
 
 }
 module "scc-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -216,7 +216,7 @@ module "cluster" {
   vpc_subnets = module.workload-subnets.subnets
   cos_id = module.cos.id
   kms_id = module.hpcs.guid
-  kms_key_id = var.cluster_kms_key_id
+  kms_key_id = var.kms_key_id
   name_prefix = var.workload_name_prefix
   region = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
@@ -224,6 +224,7 @@ module "cluster" {
   worker_count = var.worker_count
   ocp_version = var.ocp_version
   exists = var.cluster_exists
+  gitops_dir = var.gitops_dir
   flavor = var.cluster_flavor
   disable_public_endpoint = var.cluster_disable_public_endpoint
   kms_enabled = var.cluster_kms_enabled

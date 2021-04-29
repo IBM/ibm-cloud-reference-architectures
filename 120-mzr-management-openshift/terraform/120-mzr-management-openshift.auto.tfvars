@@ -64,6 +64,9 @@
 ## mgmt_ssh_scc_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
 #mgmt_ssh_scc_private_key_file=""
 
+## kms_key_id: The id of the root key in the KMS instance that will be used to encrypt the cluster.
+#kms_key_id=""
+
 ## worker_count: The number of worker nodes that should be provisioned for classic infrastructure
 #worker_count="3"
 

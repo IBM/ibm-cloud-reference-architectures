@@ -70,6 +70,9 @@
 ## workload_ssh_scc_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
 #workload_ssh_scc_private_key_file=""
 
+## kms_key_id: The id of the root key in the KMS instance that will be used to encrypt the cluster.
+#kms_key_id=""
+
 ## gitops_dir: the value of gitops_dir
 #gitops_dir=""
 

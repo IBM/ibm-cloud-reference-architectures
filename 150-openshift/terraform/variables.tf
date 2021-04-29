@@ -20,6 +20,15 @@ variable "resource_group_provision" {
   description = "Flag indicating that the resource group should be created"
   default = false
 }
+variable "cs_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "cs_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
 variable "hpcs_region" {
   type = string
   description = "Geographic location of the resource (e.g. us-south, us-east)"
@@ -62,6 +71,35 @@ variable "hpcs_label" {
   type = string
   description = "The label that will be used to generate the name from the name_prefix."
   default = "hpcs"
+}
+variable "cs_name_prefix" {
+  type = string
+  description = "The prefix name for the service. If not provided it will default to the resource group name"
+}
+variable "cos_resource_location" {
+  type = string
+  description = "Geographic location of the resource (e.g. us-south, us-east)"
+  default = "global"
+}
+variable "cos_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = ""
+}
+variable "cos_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (lite or standard)"
+  default = "standard"
+}
+variable "cos_provision" {
+  type = bool
+  description = "Flag indicating that key-protect instance should be provisioned"
+  default = false
+}
+variable "cos_label" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  default = "cos"
 }
 variable "region" {
   type = string
@@ -107,10 +145,9 @@ variable "workload-subnets_provision" {
   description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
   default = false
 }
-variable "cluster_kms_key_id" {
+variable "kms_key_id" {
   type = string
   description = "The id of the root key in the KMS instance that will be used to encrypt the cluster."
-  default = ""
 }
 variable "cluster_name" {
   type = string
@@ -150,7 +187,7 @@ variable "cluster_disable_public_endpoint" {
 variable "cluster_kms_enabled" {
   type = bool
   description = "Flag indicating that kms encryption should be enabled for this cluster"
-  default = false
+  default = true
 }
 variable "cluster_kms_private_endpoint" {
   type = bool
@@ -161,29 +198,4 @@ variable "cluster_authorize_kms" {
   type = bool
   description = "Flag indicating that the authorization between the kms and the service should be created."
   default = true
-}
-variable "cos_resource_location" {
-  type = string
-  description = "Geographic location of the resource (e.g. us-south, us-east)"
-  default = "global"
-}
-variable "cos_tags" {
-  type = string
-  description = "Tags that should be applied to the service"
-  default = ""
-}
-variable "cos_plan" {
-  type = string
-  description = "The type of plan the service instance should run under (lite or standard)"
-  default = "standard"
-}
-variable "cos_provision" {
-  type = bool
-  description = "Flag indicating that key-protect instance should be provisioned"
-  default = true
-}
-variable "cos_label" {
-  type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
-  default = "cos"
 }

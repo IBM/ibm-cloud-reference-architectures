@@ -120,7 +120,7 @@ module "mgmt_ssh_scc" {
 
 }
 module "workload-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -136,7 +136,7 @@ module "workload-subnets" {
 
 }
 module "vpe-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -152,7 +152,7 @@ module "vpe-subnets" {
 
 }
 module "vpn-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -168,7 +168,7 @@ module "vpn-subnets" {
 
 }
 module "bastion-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -184,7 +184,7 @@ module "bastion-subnets" {
 
 }
 module "scc-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.2.3"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
