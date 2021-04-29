@@ -377,6 +377,7 @@ variable "cluster_exists" {
 variable "gitops_dir" {
   type = string
   description = "the value of gitops_dir"
+  default = ""
 }
 variable "cluster_flavor" {
   type = string

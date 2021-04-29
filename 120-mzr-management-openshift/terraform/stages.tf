@@ -216,7 +216,6 @@ module "cluster" {
   worker_count = var.worker_count
   ocp_version = var.ocp_version
   exists = var.cluster_exists
-  gitops_dir = var.gitops_dir
   flavor = var.cluster_flavor
   disable_public_endpoint = var.cluster_disable_public_endpoint
   kms_enabled = var.cluster_kms_enabled
