@@ -90,6 +90,10 @@ variable "management-vpc_name" {
   description = "The name of the vpc instance"
   default = ""
 }
+variable "mgmt_name_prefix" {
+  type = string
+  description = "The name of the vpc resource"
+}
 variable "management-vpc_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
@@ -363,7 +367,6 @@ variable "cluster_exists" {
 variable "gitops_dir" {
   type = string
   description = "the value of gitops_dir"
-  default = ""
 }
 variable "cluster_flavor" {
   type = string

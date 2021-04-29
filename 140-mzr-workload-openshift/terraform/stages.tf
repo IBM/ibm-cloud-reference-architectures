@@ -53,7 +53,7 @@ module "management-vpc" {
   resource_group_name = module.mgmt_resource_group.name
   region = var.region
   name = var.management-vpc_name
-  name_prefix = var.workload_name_prefix
+  name_prefix = var.mgmt_name_prefix
   ibmcloud_api_key = var.ibmcloud_api_key
   provision = var.management-vpc_provision
 

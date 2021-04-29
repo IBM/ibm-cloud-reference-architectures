@@ -25,8 +25,14 @@
 ## workload_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
 #workload_name_prefix=""
 
+## hpcs_name: The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}
+#hpcs_name=""
+
 ## region: The IBM Cloud region where the cluster will be/has been installed.
 #region=""
+
+## mgmt_name_prefix: The name of the vpc resource
+#mgmt_name_prefix=""
 
 ## workload_ssh_vpn_public_key: The public key provided for the ssh key. If empty string is provided then a new key will be generated.
 #workload_ssh_vpn_public_key=""
