@@ -1,0 +1,89 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 160-openshift-dev-tools
+spec:
+  modules:
+    - name: ibm-resource-group
+      variables:
+        - name: provision
+          value: false
+    - name: ibm-ocp-vpc
+      dependencies:
+        - name: subnets
+          optional: true
+        - name: cos
+          optional: true
+        - name: vpc
+          optional: true
+        - name: resource-group
+          ref: resource_group
+        - name: kms
+          ref: key-protect
+      variables:
+        - name: exists
+          value: true
+        - name: name
+          required: true
+        - name: vpc_subnet_count
+          value: 0
+        - name: vpc_subnets
+          value: '[]'
+        - name: cos_id
+          value: ''
+        - name: vpc_name
+          value: ''
+        - name: login
+          value: true
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      variables:
+        - name: provision
+          value: false
+    - name: logdna
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: sysdig
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: namespace
+      variables:
+        - name: name
+          value: tools
+    - name: ibm-logdna-bind
+    - name: sysdig-bind
+    - name: ibm-image-registry
+      variables:
+        - name: registry_namespace
+          required: true
+    - name: cluster-config
+    - name: argocd
+    - name: dashboard
+    - name: pactbroker
+    - name: artifactory
+    - name: sonarqube
+    - name: tekton
+    - name: resources
+    - name: source-control
+  variables:
+    - name: resource_group_name
+    - name: region
+    - name: ibmcloud_api_key
+    - name: name_prefix
+      required: true
+    - name: registry_namespace
+      required: true

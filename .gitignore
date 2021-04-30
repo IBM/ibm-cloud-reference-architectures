@@ -1,2 +1,8 @@
 *.properties
 .idea/
+.terraform/
+.tmp/
+*.tfstate
+gitops/
+*.tfstate.backup
+.kube/
