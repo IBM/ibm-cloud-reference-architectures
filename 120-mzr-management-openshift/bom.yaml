@@ -35,6 +35,8 @@ spec:
           scope: global
         - name: kms_enabled
           value: true
+        - name: authorize_kms
+          value: false
       dependencies:
         - name: subnets
           ref: workload-subnets

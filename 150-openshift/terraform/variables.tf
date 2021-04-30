@@ -192,7 +192,7 @@ variable "cluster_kms_private_endpoint" {
 variable "cluster_authorize_kms" {
   type = bool
   description = "Flag indicating that the authorization between the kms and the service should be created."
-  default = true
+  default = false
 }
 variable "cluster_login" {
   type = bool

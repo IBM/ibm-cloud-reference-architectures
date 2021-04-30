@@ -6,3 +6,4 @@
 gitops/
 *.tfstate.backup
 .kube/
+ssh-*
