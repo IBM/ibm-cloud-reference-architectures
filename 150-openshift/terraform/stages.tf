@@ -79,7 +79,7 @@ module "workload-subnets" {
 
 }
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.4.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.4.1"
 
   resource_group_name = module.resource_group.name
   vpc_name = module.ibm-vpc.name
