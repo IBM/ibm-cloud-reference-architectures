@@ -77,3 +77,13 @@ workload_ssh_scc_private_key_file="ssh-workload-scc"
 workload_scc_registration_key=""
 
 kms_key_id=""
+
+## registry_namespace: The namespace that will be created in the IBM Cloud image registry. If not provided the value will default to the resource group
+registry_namespace=""
+
+## git_type: The type of source control system (github or gitlab) currently
+git_type=""
+
+## git_url: The url to the git host (base git host, org, or repo url)
+
+git_url=""
