@@ -1,4 +1,4 @@
-variable "resource_group_name" {
+variable "mgmt_resource_group_name" {
   type = string
   description = "The name of the resource group"
 }
@@ -50,7 +50,7 @@ variable "cluster_kms_key_id" {
   description = "The id of the root key in the KMS instance that will be used to encrypt the cluster."
   default = ""
 }
-variable "name_prefix" {
+variable "mgmt_name_prefix" {
   type = string
   description = "The prefix name for the service. If not provided it will default to the resource group name"
 }

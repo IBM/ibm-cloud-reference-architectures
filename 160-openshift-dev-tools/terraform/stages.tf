@@ -1,7 +1,7 @@
 module "resource_group" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.2.1"
 
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.mgmt_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
   provision = var.resource_group_provision
 
@@ -24,7 +24,7 @@ module "cluster" {
   cos_id = var.cluster_cos_id
   kms_id = var.cluster_kms_id
   kms_key_id = var.cluster_kms_key_id
-  name_prefix = var.name_prefix
+  name_prefix = var.mgmt_name_prefix
   region = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
   name = var.cluster_name

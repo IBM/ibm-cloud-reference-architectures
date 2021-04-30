@@ -8,6 +8,9 @@ spec:
       variables:
         - name: provision
           value: false
+        - name: resource_group_name
+          alias: mgmt_resource_group_name
+          scope: global
     - name: ibm-ocp-vpc
       dependencies:
         - name: subnets
@@ -84,6 +87,7 @@ spec:
     - name: region
     - name: ibmcloud_api_key
     - name: name_prefix
+      alias: mgmt_name_prefix
       required: true
     - name: registry_namespace
       required: true
