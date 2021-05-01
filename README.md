@@ -52,9 +52,9 @@ We also include packages for non-OpenShift configurations
 
 The first step is provision a Hyper Protect Crypto Services instance into the nominated account and initialise the key ceronmony. You can do this with the following automation. We recommend to follow the product docs to perform the quick initialization.  
 
-[Hyper Protect Cyrpto Service Documentations](https://cloud.ibm.com/docs/hs-crypto?topic=hs-crypto-get-started)
+[Hyper Protect Cyrpto Service Documentation](https://cloud.ibm.com/docs/hs-crypto?topic=hs-crypto-get-started)
 
-For proof of technology environments we recommend using the `auto-init` feature. [Auto Init Documentations](https://cloud.ibm.com/docs/hs-crypto?topic=hs-crypto-initialize-hsm-recovery-crypto-unit)  
+For proof of technology environments we recommend using the `auto-init` feature. [Auto Init Documentation](https://cloud.ibm.com/docs/hs-crypto?topic=hs-crypto-initialize-hsm-recovery-crypto-unit)  
 
 #### <a name="generate-hpcs-rootkey"></a> Generate HPCS root key
 
