@@ -25,8 +25,8 @@ The following is provisioned.
 Clone this repository to pull down the **Bill of Materials** for the automation to provision this topology on IBM Cloud. This repo contains the following defined *BOMS*. They logically build up to deliver IBM Cloud best practices.
 
 - [100 - Common Services](./100-common-services)
-- [120 - Management + OpenShift Cluster](./110-mzr-management-openshift)
-- [140 - Workload + OpenShift Cluster](./140-mzr-workload)
+- [120 - Management + OpenShift Cluster](./120-mzr-management-openshift)
+- [140 - Workload + OpenShift Cluster](./140-mzr-workload-openshift)
 - [160 - Developer Tools into Management Cluster](./160-openshift-dev-tools)
 
 We also include packages for non-OpenShift configurations
