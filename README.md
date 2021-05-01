@@ -14,6 +14,14 @@ This guide is optimized for Proof of Technology environments that will enable Gl
 
 Automation is provided in following Terraform packages that will need to be run in order.
 
+## Reference Architecture
+
+The following is provisioned.
+
+![Reference Architecture](./roks-single-region-mgmt.png)
+
+> Limitations, SCC scan has identified a number of gaps that are being work and will be release soon.
+
 ## Automation Stages
 
 Download the Following Terraform Reference Architecture Bill of Materials from the UI Mapper Tool or clone from GitHub. For reference, the latest version of the Terraform generated from the CLI tool can be found here - https://github.ibm.com/gsi-labs/fscloud-reference-architectures. 
