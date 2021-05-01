@@ -1,10 +1,12 @@
 # IBM Cloud for Financial Services - Reference Architectures
 
-> These automation packages have been crafted from a collection of [Terraform modules](https://github.com/cloud-native-toolkit/garage-terraform-modules/blob/main/MODULES.md) created by GSI Labs team part of the Hybrid Cloud Ecosystem organization. Please contact `Matthew Perrins` **mjperrin@us.ibm.com** or `Sean Sundberg` **seansund@us.ibm.com** for more details
+> These automation packages have been crafted from a collection of [Terraform modules](https://github.com/cloud-native-toolkit/garage-terraform-modules/blob/main/MODULES.md) created by GSI Labs team part of the Hybrid Cloud Ecosystem organization. Please contact `Matthew Perrins` **mjperrin@us.ibm.com** or `Sean Sundberg` **seansund@us.ibm.com** for more details. The GSI Labs team is collaborating with FS Cloud engineering team on the Secure Landing Zone project and these same assets are being collectively workeded on and will appear in that solution sometime in June timeframe. In the meantime to help the technical IBMers in there sales enagements we are sharing this work with the broader IBM cloud community.
 
-This automation package was created by the open-source [`isacable` tool](https://github.com/cloud-native-toolkit/iascable). Each Bill of Material package can be defined in YAML file and it will generate the automation. This can also be delivered with the user interface tool where the mapping from the 280 Financial Controls is defined to the Cloud Services that are included in the Bill of Materials.
+This automation package was created by the open-source [`isacable` tool](https://github.com/cloud-native-toolkit/iascable). Each Bill of Material package can be defined in YAML file and it will generate the automation. This can be delivered with the user interface tool where the mapping data to the 280 Financial Controls is defined.
 
 ![fcra-tool.png](./images/fcra-tool.png)
+
+[Financial Controls and Reference Architecture Tools](https://mapperui.openfn.co/)
 
 The IBM Cloud for Financial Services defines a set of reference architectures and best practices for establishing a security cloud environment that will enable the management of regulatory workloads.
 
