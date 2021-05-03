@@ -158,6 +158,21 @@ variable "cluster-config_gitops_dir" {
   description = "Directory where the gitops repo content should be written"
   default = ""
 }
+variable "cluster-config_banner_text" {
+  type = string
+  description = "Text that should be shown in the banner on the cluster"
+  default = "Management"
+}
+variable "cluster-config_banner_background_color" {
+  type = string
+  description = "The background color for the banner"
+  default = "purple"
+}
+variable "cluster-config_banner_text_color" {
+  type = string
+  description = "The foreground color for the banner"
+  default = "white"
+}
 variable "dashboard_tool_config_maps" {
   type = string
   description = "The list of config maps containing connectivity information for tools"

@@ -40,7 +40,7 @@ module "cluster" {
 
 }
 module "argocd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.11.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.11.1"
 
   cluster_type = module.cluster.platform.type_code
   ingress_subdomain = module.cluster.platform.ingress
@@ -53,11 +53,11 @@ module "argocd" {
 
 }
 module "olm" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.2.4"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.2.5"
 
   cluster_config_file = module.cluster.config_file_path
-  cluster_type = module.cluster.platform.type_code
-  cluster_version = module.cluster.platform.version
+  cluster_type = module.cluster.platform
+  cluster_version = module.cluster.platform
 
 }
 module "namespace" {
@@ -84,7 +84,7 @@ module "artifactory" {
 
 }
 module "cluster-config" {
-  source = "github.com/cloud-native-toolkit/template-tools-cluster-config?ref=v0.0.1"
+  source = "github.com/cloud-native-toolkit/template-tools-cluster-config?ref=v0.1.0"
 
   cluster_type_code = module.cluster.platform.type_code
   ingress_hostname = module.cluster.platform.ingress
@@ -92,6 +92,9 @@ module "cluster-config" {
   tls_secret = module.cluster.platform.tls_secret
   namespace = module.namespace.name
   gitops_dir = var.cluster-config_gitops_dir
+  banner_text = var.cluster-config_banner_text
+  banner_background_color = var.cluster-config_banner_background_color
+  banner_text_color = var.cluster-config_banner_text_color
 
 }
 module "dashboard" {
@@ -230,5 +233,13 @@ module "tekton" {
   operator_namespace = module.olm.target_namespace
   gitops_dir = var.gitops_dir
   mode = var.mode
+
+}
+module "tekton-resources" {
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.2.17"
+
+  cluster_type = module.cluster.platform.type_code
+  cluster_config_file_path = module.cluster.config_file_path
+  resource_namespace = module.namespace.name
 
 }

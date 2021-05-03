@@ -74,13 +74,16 @@ spec:
         - name: registry_namespace
           required: true
     - name: cluster-config
+      variables:
+        - name: banner_text
+          value: Management
     - name: argocd
     - name: dashboard
     - name: pactbroker
     - name: artifactory
     - name: sonarqube
     - name: tekton
-    - name: resources
+    - name: tekton-resources
     - name: source-control
   variables:
     - name: resource_group_name
