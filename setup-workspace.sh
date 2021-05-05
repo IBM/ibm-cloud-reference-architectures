@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p workspace
-find . -type d -depth 1 | grep -vE "[.]/[.].*" | grep -v workspace | \
+find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -v workspace | \
   while read dir;
 do
   name=$(echo "$dir" | sed -E "s~[.]/(.*)~\1~g")
