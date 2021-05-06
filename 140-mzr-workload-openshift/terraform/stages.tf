@@ -287,6 +287,7 @@ module "vsi-vpn" {
   region = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
   tags = tolist(setsubtract(split(",", var.vsi-vpn_tags), [""]))
+  image_name = "ibm-centos-7-9-minimal-amd64-3"
 
 }
 module "ibm-transit-gateway" {
