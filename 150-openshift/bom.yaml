@@ -10,6 +10,7 @@ spec:
         - name: provision
           value: false
     - name: hpcs
+      alias: hpcs
       variables:
         - name: provision
           value: false
@@ -18,6 +19,10 @@ spec:
       dependencies:
         - name: resource_group
           ref: hpcs_resource_group
+    - name: ibm-kms-key
+      variables:
+        - name: name
+          required: true
     - name: ibm-resource-group
       variables:
         - name: provision
@@ -41,9 +46,6 @@ spec:
       variables:
         - name: disable_public_endpoint
           value: true
-        - name: kms_key_id
-          required: true
-          scope: global
         - name: kms_enabled
           value: true
         - name: authorize_kms
@@ -51,14 +53,14 @@ spec:
       dependencies:
         - name: subnets
           ref: workload-subnets
+        - name: kms_key
+          ref: kms_key
         - name: resource-group
           ref: resource_group
         - name: cos
           ref: cos
         - name: vpc
           ref: ibm-vpc
-        - name: kms
-          ref: key-protect
     - name: ibm-resource-group
       alias: cs_resource_group
       variables:

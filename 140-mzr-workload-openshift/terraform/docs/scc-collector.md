@@ -9,6 +9,7 @@ This example will create a ubuntu VSI and install the Security and Compliance Ce
 * IBM API Key
 * An ssh key object already available in the IBM Cloud in the region where the VSI will be provisioned.  
 * A VPC into which a subnet and VSI will be provisioned.
+* A VPN connection into the VPC network
 * Complete [Step 2 in the cloud docs](https://cloud.ibm.com/docs/security-compliance?topic=security-compliance-getting-started#gs-credentials) to store your credentials for the collector.
 * Follow [Step 3 in the cloud docs](https://cloud.ibm.com/docs/security-compliance?topic=security-compliance-getting-started#gs-collector) to create a collector.  You only need to do sub-steps 1 and 2 in this section.  You do not need to download the collector script, but you do need to save the `registration key` and pass it to this terraform.
 
@@ -42,14 +43,11 @@ This example will create a ubuntu VSI and install the Security and Compliance Ce
 ### Security Considerations
 
 The VSI is running ubuntu and has disabled PasswordAuthentication over ssh and the root password is deleted.  
-However, the security group on the VSI permits inbound ssh (port 22) from 0.0.0.0/0.  This was needed during the terraform execution to enable remote execution of scripts on the server.  Since all communication from the collector is outbound, you can remove this rule from the security group if you don't need to log into the machine.  See the output variable `DISABLE_SSH` for the command to do this.
-
-Note that the VSI has a floating ip.  This is required for egress, unless there is a public gateway on the subnet.  
-
+The security group on the VSI permits inbound ssh (port 22) from 10.0.0.0/8. 
 
 ## Terraform Version
-Tested with Terraform v0.13
 
+Tested with Terraform v0.13
 
 ## Running the configuration
 
@@ -65,6 +63,32 @@ terraform init
 terraform apply
 ```
  
+## Post install steps
+
+### Register the collector
+
+This module provisions a VSI instance and provides the scripts necessary to register the SCC collector but does not execute the script. This decision has been made for two reasons:
+
+1. In order to execute the script, the VSI instance would need to be exposed to the network in a way that would violate the FS Cloud controle
+2. The script itself does not behave well in unattended mode and is therefore better to be run manually. 
+
+In order to register the SCC collector, do the following:
+
+1. Get the private IP address of the SCC VSI instance from the VSI instances page in the IBM Cloud console - https://cloud.ibm.com/vpc-ext/compute/vs
+2. Establish a VPN connection to the VPC cluster
+3. Open a ssh session with the SCC VSI instance - `ssh -i ${scc-ssh-private-key} root@#{private-ip}`
+   
+    where:
+    - `scc-ssh-private-key` is the private key defined for the SCC VSI instance
+    - `private-ip` is the ip address retrieved in the previous step
+   
+4. Run the scc collector registration script - `scc-collector.sh ${REGISTRATION_KEY}`. **Note**: answer `No` to the proxy question
+
+    where: 
+    - `REGISTRATION_KEY` is the value shown after the SCC collector is created
+
+### Approve the collector
+
 After the script finishes running, you should do sub-step 10 of [Step 3](https://cloud.ibm.com/docs/security-compliance?topic=security-compliance-getting-started#gs-collector) which is to Approve the collection back in the Cloud console.
 
 From here you can proceed with the rest of the steps, setting up scopes and scans.

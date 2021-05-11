@@ -33,7 +33,7 @@ variable "cluster_vpc_subnet_count" {
 variable "cluster_vpc_subnets" {
   type = string
   description = "List of subnets with labels"
-  default = "[]"
+  default = "\"[]\""
 }
 variable "cluster_cos_id" {
   type = string
@@ -43,12 +43,12 @@ variable "cluster_cos_id" {
 variable "cluster_kms_id" {
   type = string
   description = "The crn of the KMS instance that will be used to encrypt the cluster."
-  default = ""
+  default = null
 }
 variable "cluster_kms_key_id" {
   type = string
   description = "The id of the root key in the KMS instance that will be used to encrypt the cluster."
-  default = ""
+  default = null
 }
 variable "mgmt_name_prefix" {
   type = string
@@ -78,6 +78,11 @@ variable "cluster_exists" {
   description = "Flag indicating if the cluster already exists (true or false)"
   default = true
 }
+variable "cluster_ocp_entitlement" {
+  type = string
+  description = "Value that is applied to the entitlements for OCP cluster provisioning"
+  default = "cloud_pak"
+}
 variable "cluster_flavor" {
   type = string
   description = "The machine type that will be provisioned for classic infrastructure"
@@ -96,11 +101,6 @@ variable "cluster_kms_enabled" {
 variable "cluster_kms_private_endpoint" {
   type = bool
   description = "Flag indicating that the private endpoint should be used to connect the KMS system to the cluster."
-  default = true
-}
-variable "cluster_authorize_kms" {
-  type = bool
-  description = "Flag indicating that the authorization between the kms and the service should be created."
   default = true
 }
 variable "cluster_login" {
@@ -176,12 +176,12 @@ variable "cluster-config_banner_text_color" {
 variable "dashboard_tool_config_maps" {
   type = string
   description = "The list of config maps containing connectivity information for tools"
-  default = ""
+  default = "[]"
 }
 variable "dashboard_image_tag" {
   type = string
   description = "The image version tag to use"
-  default = "v1.3.11"
+  default = "v1.4.4"
 }
 variable "dashboard_chart_version" {
   type = string
@@ -239,7 +239,7 @@ variable "logdna_plan" {
 variable "logdna_tags" {
   type = string
   description = "Tags that should be applied to the service"
-  default = ""
+  default = "[]"
 }
 variable "logdna_provision" {
   type = bool
@@ -297,7 +297,7 @@ variable "sysdig_plan" {
 variable "sysdig_tags" {
   type = string
   description = "Tags that should be applied to the service"
-  default = ""
+  default = "[]"
 }
 variable "sysdig_provision" {
   type = bool

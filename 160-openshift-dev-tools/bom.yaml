@@ -21,8 +21,8 @@ spec:
           optional: true
         - name: resource-group
           ref: resource_group
-        - name: kms
-          ref: key-protect
+        - name: kms_key
+          ref: kms-key
       variables:
         - name: exists
           value: true

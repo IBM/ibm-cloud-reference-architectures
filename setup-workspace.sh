@@ -1,17 +1,27 @@
 #!/bin/bash
 
 mkdir -p workspace
-find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -v workspace | \
+cd workspace
+
+../create-ssh-keys.sh
+cp ../terraform.tfvars .
+
+find .. -type d -maxdepth 1 | grep -vE "[.][.]/[.].*" | grep -v workspace | \
   while read dir;
 do
-  name=$(echo "$dir" | sed -E "s~[.]/(.*)~\1~g")
+  name=$(echo "$dir" | sed -E "s~[.][.]/(.*)~\1~g")
+
+  if [[ ! -d "../${name}/terraform" ]]; then
+    continue
+  fi
 
   echo "Setting up workspace/${name} from ${name}"
 
-  mkdir -p "workspace/${name}"
-  cd "workspace/${name}"
-  ln -s "../../${name}/terraform/"* .
-  ln -s ../../terraform.tfvars ./terraform.tfvars
-  ln -s ../../ssh-* .
+  mkdir -p "${name}"
+  cd "${name}"
+
+  cp -R "../../${name}/terraform/"* .
+  ln -s ../terraform.tfvars ./terraform.tfvars
+  ln -s ../ssh-* .
   cd - > /dev/null
 done

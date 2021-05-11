@@ -37,6 +37,47 @@ spec:
       dependencies:
         - name: resource_group
           ref: hpcs_resource_group
+    - name: ibm-iam-service-authorization
+      alias: flow-log-auth
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: flow-log-collector
+        - name: target_service_name
+          value: cloud-object-storage
+        - name: roles
+          value:
+            - Writer
+      dependencies:
+        - name: target_resource_group
+          ref: resource_group
+        - name: source_resource
+          ref: source_resource
+        - name: source_resource_group
+          ref: source_resource_group
+        - name: target_resource
+          ref: target_resource
+    - name: ibm-iam-service-authorization
+      alias: vsi-encrypt-auth
+      variables:
+        - name: source_service_name
+          value: server-protect
+        - name: target_service_name
+          value: hs-crypto
+        - name: roles
+          value:
+            - Reader
+    - name: ibm-iam-service-authorization
+      alias: cos-encrypt-auth
+      variables:
+        - name: source_service_name
+          value: cloud-object-storage
+        - name: target_service_name
+          value: hs-crypto
+        - name: roles
+          value:
+            - Reader
   variables:
     - name: cs_resource_group_provision
     - name: name_prefix

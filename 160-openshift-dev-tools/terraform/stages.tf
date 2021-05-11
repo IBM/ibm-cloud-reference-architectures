@@ -1,5 +1,5 @@
 module "resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
 
   resource_group_name = var.mgmt_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
@@ -7,7 +7,7 @@ module "resource_group" {
 
 }
 module "cs_resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
 
   resource_group_name = var.cs_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
@@ -15,12 +15,12 @@ module "cs_resource_group" {
 
 }
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.4.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.5.0"
 
   resource_group_name = module.resource_group.name
   vpc_name = var.cluster_vpc_name
   vpc_subnet_count = var.cluster_vpc_subnet_count
-  vpc_subnets = jsondecode(var.cluster_vpc_subnets)
+  vpc_subnets = var.cluster_vpc_subnets == null ? null : jsondecode(var.cluster_vpc_subnets)
   cos_id = var.cluster_cos_id
   kms_id = var.cluster_kms_id
   kms_key_id = var.cluster_kms_key_id
@@ -31,11 +31,11 @@ module "cluster" {
   worker_count = var.worker_count
   ocp_version = var.ocp_version
   exists = var.cluster_exists
+  ocp_entitlement = var.cluster_ocp_entitlement
   flavor = var.cluster_flavor
   disable_public_endpoint = var.cluster_disable_public_endpoint
   kms_enabled = var.cluster_kms_enabled
   kms_private_endpoint = var.cluster_kms_private_endpoint
-  authorize_kms = var.cluster_authorize_kms
   login = var.cluster_login
 
 }
@@ -53,7 +53,7 @@ module "argocd" {
 
 }
 module "olm" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.2.5"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.2.6"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform
@@ -98,14 +98,14 @@ module "cluster-config" {
 
 }
 module "dashboard" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-dashboard?ref=v1.10.11"
+  source = "github.com/cloud-native-toolkit/terraform-tools-dashboard?ref=v1.10.13"
 
   cluster_type = module.cluster.platform.type_code
   cluster_ingress_hostname = module.cluster.platform.ingress
   cluster_config_file = module.cluster.config_file_path
   tls_secret_name = module.cluster.platform.tls_secret
   releases_namespace = module.namespace.name
-  tool_config_maps = tolist(setsubtract(split(",", var.dashboard_tool_config_maps), [""]))
+  tool_config_maps = var.dashboard_tool_config_maps == null ? null : jsondecode(var.dashboard_tool_config_maps)
   image_tag = var.dashboard_image_tag
   chart_version = var.dashboard_chart_version
   enable_sso = var.dashboard_enable_sso
@@ -149,7 +149,7 @@ module "logdna" {
   region = var.region
   name_prefix = var.cs_name_prefix
   plan = var.logdna_plan
-  tags = tolist(setsubtract(split(",", var.logdna_tags), [""]))
+  tags = var.logdna_tags == null ? null : jsondecode(var.logdna_tags)
   provision = var.logdna_provision
   name = var.logdna_name
 
@@ -200,7 +200,7 @@ module "sysdig" {
   name_prefix = var.cs_name_prefix
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.sysdig_plan
-  tags = tolist(setsubtract(split(",", var.sysdig_tags), [""]))
+  tags = var.sysdig_tags == null ? null : jsondecode(var.sysdig_tags)
   provision = var.sysdig_provision
   name = var.sysdig_name
 
@@ -236,7 +236,7 @@ module "tekton" {
 
 }
 module "tekton-resources" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.2.17"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.2.20"
 
   cluster_type = module.cluster.platform.type_code
   cluster_config_file_path = module.cluster.config_file_path
