@@ -147,3 +147,114 @@ You need to create a set of unique keys that will be configured for the various 
     ```
 
 ## Troubleshooting
+
+
+## First Application Setup
+
+**Prerequisites**
+
+1.  ensure VPN is on
+2.  install the garage toolkit
+
+`npm i -g \@ibmgaragecloud/cloud-native-toolkit-cli`
+
+**Note:** for the following example, a sample java app running on
+liberty is used. The samples can be pulled from the Developer Dashboard-> Starter Kits
+
+1.  Open a terminal window and login to OpenShift
+2.  Change to the OpenShift project namespace of your application to
+    deploy, if you don't have one, then create one first
+
+`oc project ts-libertyapp`
+
+3.  Sync the project with the garage tools.
+
+`oc sync ts-libertyapp`
+
+4.  Create the pipeline (Note: It will prompt you for your login
+    credentials for your gitrepo the first time).
+
+The pipeline creation can be run with or without options specified.
+Without options, the tools will prompt you for the information.
+
+**Without command line options**
+
+oc pipeline https://github.com/tcskill/
+
+**Options specified in command line**
+
+```shell
+oc pipeline --tekton https://github.com/tcskill/libertysampleapp
+--pipeline ibm-appmod-liberty -p scan-image=false -p health-endpoint=/
+-p java-bin-path=CustomerOrderServicesApp/target -p lint-dockerfile=Yes
+
+A pipeline will be created and started, also useful a url to the
+new pipeline within the OpenShift console will be displayed.
+
+Creating pipeline on openshift cluster in ts-libertyapp namespace
+
+Next steps:
+
+Tekton cli:
+
+View PipelineRun info - tkn pr describe libertysampleapp-17957c4cef6
+View PipelineRun logs - tkn pr logs -f libertysampleapp-17957c4cef6
+
+OpenShift console:
+
+View PipelineRun -
+https://console-openshift-console.ivg-mgmt-cluster-19917-i000.us-east.containers.appdomain.cloud/k8s/ns/ts-libertyapp/tekton.dev\~v1beta1\~PipelineRun/libertysampleapp
+```
+
+3.  Create a gitops repository that is empty except for a default readme
+    file. This is a new repository, when you create the repository check
+    the box to initialize with a ReadMe file. For this example, it is
+    called simply "gitops" but could be anything.
+
+4.  Setup gitops for this repository:
+
+```shell
+oc gitops https://github.com/tcskill/gitops
+
+Setting the git credentials in the ts-libertyapp namespace
+
+Git credentials have already been stored for user: tcskill
+
+Project git repo: https://github.com/tcskill/gitops.git
+
+Branch: main
+```
+5.  Verify the setup succeeded by listing the configmap you will see a
+    "gitops-repo" just created.
+
+`oc get configmap`
+
+6.  Create a new OpenShift project where your app will eventually be
+    deployed, you may have one for staging, one for production. For this
+    example, I created just one called: ts-libertyappstaging
+
+7.  From the terminal, add the pull secrets to this new project:
+
+`igc pull-secret ts-libertyappstaging`
+
+8.  Setup ArgoCD for deploying to your target environment. Bring up the
+    ArgoCD UI and setup the repository, Argo project, and Argo
+    application configuration. The detailed instructions for this can be
+    found here:
+    <https://cloudnativetoolkit.dev/tools/argocd#register-the-gitops-repo-in-argocd>
+
+    a.  In Settings, Configure a repository in ArgoCD.
+
+        i.  Repository URL for this example is:
+            https://github.com/tcskill/gitops
+
+        ii. Set UI/PW, for Password you can use a git token
+
+    b.  Configure ArgoCD Project
+
+        i.  Set the Repository as your gitops repository and Destination
+            as the local cluster with the OpenShift namespace the
+            staging project created earlier (ts-libertyappstaging for this example)
+
+    c.  Create a new ArgoCD Application. The Path will be the folder in your
+    gitops repository that is created during the pipeline run.
