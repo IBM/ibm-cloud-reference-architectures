@@ -53,17 +53,36 @@ spec:
           ref: auth
     - name: ibm-vpc-gateways
     - name: ibm-vpc-subnets
-      alias: workload-subnets
+      alias: worker-subnets
       variables:
         - name: _count
           value: 3
         - name: label
-          value: workload
+          value: worker
         - name: ipv4_cidr_blocks
           value:
             - 10.10.10.0/24
             - 10.20.10.0/24
             - 10.30.10.0/24
+        - name: acl_rules
+          value:
+            - name: ingress-all
+              action: allow
+              direction: inbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
+            - name: egress-all
+              action: allow
+              direction: outbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-ocp-vpc
       variables:
         - name: disable_public_endpoint
@@ -74,7 +93,7 @@ spec:
           value: false
       dependencies:
         - name: subnets
-          ref: workload-subnets
+          ref: worker-subnets
         - name: kms_key
           ref: kms_key
         - name: resource-group
@@ -95,6 +114,18 @@ spec:
             - 10.10.20.0/24
             - 10.20.20.0/24
             - 10.30.20.0/24
+        - name: acl_rules
+          value:
+            - name: ingress-all
+              action: allow
+              direction: inbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
+            - name: egress-all
+              action: allow
+              direction: outbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
     - name: ibm-vpc-subnets
       alias: vpn-subnets
       variables:
@@ -117,6 +148,13 @@ spec:
               direction: outbound
               source: 0.0.0.0/0
               destination: 0.0.0.0/0
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-subnets
       alias: bastion-subnets
       variables:
@@ -193,6 +231,26 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+    - name: ibm-activity-tracker
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: sysdig
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
     - name: ibm-kms-key
       variables:
         - name: provision
@@ -205,6 +263,8 @@ spec:
       variables:
         - name: label
           value: flow-logs
+        - name: cross_region_location
+          scope: global
     - name: ibm-vpe-gateway
       alias: vpe-cos
       dependencies:
@@ -238,6 +298,13 @@ spec:
               direction: outbound
               source: 0.0.0.0/0
               destination: 0.0.0.0/0
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-ssh
       alias: mgmt_ssh_scc
       variables:
@@ -277,6 +344,16 @@ spec:
           ref: source_resource
         - name: target_resource
           ref: target_resource
+    - name: ibm-iam-service-authorization
+      alias: kube-encrypt-auth
+      variables:
+        - name: source_service_name
+          value: containers-kubernetes
+        - name: target_service_name
+          value: hs-crypto
+        - name: roles
+          value:
+            - Reader
   variables:
     - name: mgmt_resource_group_name
     - name: mgmt_resource_group_provision
@@ -306,3 +383,4 @@ spec:
     - name: mgmt_ssh_bastion_private_key_file
     - name: mgmt_ssh_scc_public_key_file
     - name: mgmt_ssh_scc_private_key_file
+    - name: cross_region_location

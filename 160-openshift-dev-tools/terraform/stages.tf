@@ -128,7 +128,7 @@ module "registry" {
 
 }
 module "ibm-logdna-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.0.4"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.0.5"
 
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name
@@ -143,7 +143,7 @@ module "ibm-logdna-bind" {
 
 }
 module "logdna" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna?ref=v3.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna?ref=v3.3.1"
 
   resource_group_name = module.cs_resource_group.name
   region = var.region
@@ -152,6 +152,7 @@ module "logdna" {
   tags = var.logdna_tags == null ? null : jsondecode(var.logdna_tags)
   provision = var.logdna_provision
   name = var.logdna_name
+  label = var.logdna_label
 
 }
 module "pactbroker" {
@@ -193,7 +194,7 @@ module "git" {
 
 }
 module "sysdig" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig?ref=v3.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig?ref=v3.4.0"
 
   resource_group_name = module.cs_resource_group.name
   region = var.region
@@ -203,15 +204,16 @@ module "sysdig" {
   tags = var.sysdig_tags == null ? null : jsondecode(var.sysdig_tags)
   provision = var.sysdig_provision
   name = var.sysdig_name
+  label = var.sysdig_label
 
 }
 module "sysdig-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.0.4"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.1.0"
 
   resource_group_name = module.resource_group.name
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name
-  cluster_config_file_path = module.cluster.config_file_path
+  cluster_config_file_path = module.cluster.platform.kubeconfig
   tools_namespace = module.namespace.name
   region = var.region
   private_endpoint = var.private_endpoint

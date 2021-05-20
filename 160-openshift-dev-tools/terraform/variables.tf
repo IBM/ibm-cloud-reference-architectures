@@ -251,6 +251,11 @@ variable "logdna_name" {
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = ""
 }
+variable "logdna_label" {
+  type = string
+  description = "The label used to build the resource name if not provided"
+  default = "logging"
+}
 variable "mode" {
   type = string
   description = "The mode of operation for the module (setup)"
@@ -308,6 +313,11 @@ variable "sysdig_name" {
   type = string
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = ""
+}
+variable "sysdig_label" {
+  type = string
+  description = "The label used to build the resource name if not provided."
+  default = "monitoring"
 }
 variable "sysdig-bind_namespace" {
   type = string

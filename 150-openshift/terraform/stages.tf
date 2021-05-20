@@ -23,7 +23,7 @@ module "hpcs" {
 
 }
 module "kms-key" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-kms-key?ref=v1.1.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-kms-key?ref=v1.2.0"
 
   kms_id = module.key-protect.guid
   region = module.key-protect.location
@@ -32,6 +32,8 @@ module "kms-key" {
   provision = var.kms-key_provision
   name = var.kms-key_name
   label = var.kms-key_label
+  rotation_interval = var.kms-key_rotation_interval
+  dual_auth_delete = var.kms-key_dual_auth_delete
 
 }
 module "key-protect" {

@@ -28,14 +28,17 @@
 ## hpcs_name: The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}
 #hpcs_name=""
 
-## region: The IBM Cloud region where the cluster will be/has been installed.
+## region: Geographic location of the resource (e.g. us-south, us-east)
 #region=""
+
+## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
+#cs_name_prefix=""
 
 ## workload_name_prefix: The name_prefix used to build the name if one is not provided. If used the name will be `{name_prefix}-{label}`
 #workload_name_prefix="base"
 
-## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
-#cs_name_prefix=""
+## cross_region_location: The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided.
+#cross_region_location=""
 
 ## mgmt_name_prefix: The name of the vpc resource
 #mgmt_name_prefix=""

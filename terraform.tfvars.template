@@ -1,6 +1,9 @@
 ## region: The IBM Cloud region where the cluster will be/has been installed.
 region="us-east"
 
+## cross_region_location: The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided.
+#cross_region_location="eu"
+
 ## hpcs_resource_group_name: The name of the resource group
 hpcs_resource_group_name="security-ops"
 

@@ -71,17 +71,24 @@ spec:
           ref: auth
     - name: ibm-vpc-gateways
     - name: ibm-vpc-subnets
-      alias: workload-subnets
+      alias: worker-subnets
       variables:
         - name: _count
           value: 3
         - name: label
-          value: workload
+          value: worker
         - name: ipv4_cidr_blocks
           value:
             - 10.40.10.0/24
             - 10.50.10.0/24
             - 10.60.10.0/24
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-subnets
       alias: vpe-subnets
       variables:
@@ -145,6 +152,26 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+    - name: ibm-activity-tracker
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: sysdig
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
     - name: ibm-kms-key
       variables:
         - name: provision
@@ -157,6 +184,8 @@ spec:
       variables:
         - name: label
           value: flow-logs
+        - name: cross_region_location
+          scope: global
     - name: ibm-vpe-gateway
       alias: vpe-cos
       dependencies:
@@ -190,6 +219,13 @@ spec:
               direction: outbound
               source: 0.0.0.0/0
               destination: 0.0.0.0/0
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-ssh
       alias: workload_ssh_scc
       variables:
@@ -261,3 +297,4 @@ spec:
     - name: workload_ssh_bastion_private_key_file
     - name: workload_ssh_scc_public_key_file
     - name: workload_ssh_scc_private_key_file
+    - name: cross_region_location

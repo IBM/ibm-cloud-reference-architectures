@@ -16,6 +16,9 @@ spec:
     - name: key-protect
     - name: ibm-object-storage
     - name: ibm-activity-tracker
+      variables:
+        - name: provision
+          value: true
     - name: sysdig
     - name: logdna
     - name: ibm-resource-group
@@ -68,6 +71,15 @@ spec:
         - name: roles
           value:
             - Reader
+      dependencies:
+        - name: target_resource_group
+          ref: hpcs_resource_group
+        - name: source_resource
+          ref: source_resource
+        - name: source_resource_group
+          ref: source_resource_group
+        - name: target_resource
+          ref: target_resource
     - name: ibm-iam-service-authorization
       alias: cos-encrypt-auth
       variables:
@@ -78,8 +90,18 @@ spec:
         - name: roles
           value:
             - Reader
+      dependencies:
+        - name: target_resource_group
+          ref: hpcs_resource_group
+        - name: source_resource
+          ref: source_resource
+        - name: source_resource_group
+          ref: source_resource_group
+        - name: target_resource
+          ref: target_resource
   variables:
     - name: cs_resource_group_provision
+      value: true
     - name: name_prefix
       alias: cs_name_prefix
     - name: region

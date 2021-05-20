@@ -72,56 +72,90 @@ variable "hpcs_label" {
   description = "The label that will be used to generate the name from the name_prefix."
   default = "hpcs"
 }
+variable "region" {
+  type = string
+  description = "Geographic location of the resource (e.g. us-south, us-east)"
+}
+variable "cs_name_prefix" {
+  type = string
+  description = "The prefix name for the service. If not provided it will default to the resource group name"
+}
+variable "ibm-activity-tracker_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "ibm-activity-tracker_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
+  default = "7-day"
+}
+variable "ibm-activity-tracker_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned"
+  default = false
+}
+variable "ibm-activity-tracker_label" {
+  type = string
+  description = "Label used to build the resource name if one is not provided."
+  default = "activity-tracker"
+}
 variable "ibm-flow-logs_auth_id" {
   type = string
   description = "The id of the service authorization that allows the flow log to write to the cos bucket"
   default = ""
-}
-variable "region" {
-  type = string
-  description = "The IBM Cloud region where the cluster will be/has been installed."
 }
 variable "ibm-flow-logs_provision" {
   type = bool
   description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
   default = true
 }
-variable "vsi-encrypt-auth_source_service_name" {
+variable "kube-encrypt-auth_source_service_name" {
   type = string
   description = "The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog."
-  default = "server-protect"
+  default = "containers-kubernetes"
 }
-variable "vsi-encrypt-auth_source_resource_instance_id" {
+variable "kube-encrypt-auth_source_resource_instance_id" {
   type = string
   description = "The instance id of the source service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
   default = null
 }
-variable "vsi-encrypt-auth_source_resource_type" {
+variable "kube-encrypt-auth_source_resource_type" {
   type = string
   description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "vsi-encrypt-auth_target_service_name" {
+variable "kube-encrypt-auth_source_resource_group_id" {
+  type = string
+  description = "The id of the resource group that will be used to scope which source services will be authorized to access the target service. If not provided the authorization will be scoped to the entire account. This value is superseded by the source_resource_instance_id"
+  default = null
+}
+variable "kube-encrypt-auth_provision" {
+  type = bool
+  description = "Flag indicating that the service authorization should be created"
+  default = true
+}
+variable "kube-encrypt-auth_target_service_name" {
   type = string
   description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
   default = "hs-crypto"
 }
-variable "vsi-encrypt-auth_target_resource_instance_id" {
+variable "kube-encrypt-auth_target_resource_instance_id" {
   type = string
   description = "The instance id of the target service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
   default = null
 }
-variable "vsi-encrypt-auth_target_resource_type" {
+variable "kube-encrypt-auth_target_resource_type" {
   type = string
   description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "vsi-encrypt-auth_roles" {
+variable "kube-encrypt-auth_roles" {
   type = string
   description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
   default = "[\"Reader\"]"
 }
-variable "vsi-encrypt-auth_source_service_account" {
+variable "kube-encrypt-auth_source_service_account" {
   type = string
   description = "GUID of the account where the source service is provisioned. This is required to authorize service access across accounts."
   default = null
@@ -145,9 +179,15 @@ variable "kms-key_label" {
   description = "The label used to build the name if one is not provided. If used the name will be `{name_prefix}-{label}`"
   default = "key"
 }
-variable "cs_name_prefix" {
-  type = string
-  description = "The prefix name for the service. If not provided it will default to the resource group name"
+variable "kms-key_rotation_interval" {
+  type = number
+  description = "The interval in months that a root key needs to be rotated."
+  default = 3
+}
+variable "kms-key_dual_auth_delete" {
+  type = bool
+  description = "Flag indicating that the key requires dual authorization to be deleted."
+  default = false
 }
 variable "cos_resource_location" {
   type = string
@@ -188,6 +228,11 @@ variable "flow_log_bucket_label" {
   type = string
   description = "Label used to build the bucket name of not provided."
   default = "flow-logs"
+}
+variable "cross_region_location" {
+  type = string
+  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
+  default = ""
 }
 variable "flow_log_bucket_storage_class" {
   type = string
@@ -319,39 +364,44 @@ variable "mgmt_ssh_scc_rsa_bits" {
   description = "The number of bits for the rsa key, if it will be generated"
   default = 3072
 }
-variable "workload-subnets__count" {
+variable "worker-subnets__count" {
   type = number
   description = "The number of subnets that should be provisioned"
   default = 3
 }
-variable "workload-subnets_label" {
+variable "worker-subnets_label" {
   type = string
   description = "Label for the subnets created"
-  default = "workload"
+  default = "worker"
 }
-variable "workload-subnets_zone_offset" {
+variable "worker-subnets_zone_offset" {
   type = number
   description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
   default = 0
 }
-variable "workload-subnets_ipv4_cidr_blocks" {
+variable "worker-subnets_ipv4_cidr_blocks" {
   type = string
   description = "List of ipv4 cidr blocks for the subnets that will be created (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
   default = "[\"10.10.10.0/24\",\"10.20.10.0/24\",\"10.30.10.0/24\"]"
 }
-variable "workload-subnets_ipv4_address_count" {
+variable "worker-subnets_ipv4_address_count" {
   type = number
   description = "The size of the ipv4 cidr block that should be allocated to the subnet. If {ipv4_cidr_blocks} are provided then this value is ignored."
   default = 256
 }
-variable "workload-subnets_provision" {
+variable "worker-subnets_provision" {
   type = bool
   description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
   default = true
 }
-variable "workload-subnets_acl_rules" {
+variable "worker-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
+  default = "[]"
+}
+variable "vpe-subnets_gateways" {
+  type = string
+  description = "List of gateway ids and zones"
   default = "[]"
 }
 variable "vpe-subnets__count" {
@@ -423,6 +473,11 @@ variable "vpn-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
   default = "[{\"name\":\"ingress-all\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"},{\"name\":\"egress-all\",\"action\":\"allow\",\"direction\":\"outbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"}]"
+}
+variable "bastion-subnets_gateways" {
+  type = string
+  description = "List of gateway ids and zones"
+  default = "[]"
 }
 variable "bastion-subnets__count" {
   type = number
@@ -508,6 +563,31 @@ variable "scc_init_script" {
   type = string
   description = "The script used to initialize the Virtual Server instance. If not provided the default script will be used."
   default = ""
+}
+variable "sysdig_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (trial or graduated-tier)"
+  default = "graduated-tier"
+}
+variable "sysdig_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "sysdig_provision" {
+  type = bool
+  description = "Flag indicating that logdna instance should be provisioned"
+  default = false
+}
+variable "sysdig_name" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  default = ""
+}
+variable "sysdig_label" {
+  type = string
+  description = "The label used to build the resource name if not provided."
+  default = "monitoring"
 }
 variable "vsi-bastion_tags" {
   type = string

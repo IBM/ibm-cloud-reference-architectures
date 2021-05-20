@@ -19,14 +19,17 @@
 ## hpcs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
 #hpcs_name_prefix=""
 
-## region: The IBM Cloud region where the cluster will be/has been installed.
+## region: Geographic location of the resource (e.g. us-south, us-east)
 #region=""
+
+## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
+#cs_name_prefix=""
 
 ## mgmt_name_prefix: The name_prefix used to build the name if one is not provided. If used the name will be `{name_prefix}-{label}`
 #mgmt_name_prefix="base"
 
-## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
-#cs_name_prefix=""
+## cross_region_location: The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided.
+#cross_region_location=""
 
 ## mgmt_ssh_vpn_public_key: The public key provided for the ssh key. If empty string is provided then a new key will be generated.
 #mgmt_ssh_vpn_public_key=""

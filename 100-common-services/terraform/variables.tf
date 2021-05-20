@@ -86,7 +86,12 @@ variable "ibm-activity-tracker_plan" {
 variable "ibm-activity-tracker_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned"
-  default = false
+  default = true
+}
+variable "ibm-activity-tracker_label" {
+  type = string
+  description = "Label used to build the resource name if one is not provided."
+  default = "activity-tracker"
 }
 variable "flow-log-auth_source_service_name" {
   type = string
@@ -178,11 +183,6 @@ variable "vsi-encrypt-auth_target_resource_type" {
   description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "vsi-encrypt-auth_target_resource_group_id" {
-  type = string
-  description = "The id of the resource group that will be used to scope which services the source services will be authorized to access. If not provided the authorization will be scoped to the entire account. This value is superseded by the target_resource_instance_id"
-  default = null
-}
 variable "vsi-encrypt-auth_roles" {
   type = string
   description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
@@ -231,11 +231,6 @@ variable "cos-encrypt-auth_target_resource_instance_id" {
 variable "cos-encrypt-auth_target_resource_type" {
   type = string
   description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
-  default = null
-}
-variable "cos-encrypt-auth_target_resource_group_id" {
-  type = string
-  description = "The id of the resource group that will be used to scope which services the source services will be authorized to access. If not provided the authorization will be scoped to the entire account. This value is superseded by the target_resource_instance_id"
   default = null
 }
 variable "cos-encrypt-auth_roles" {
@@ -313,6 +308,11 @@ variable "logdna_name" {
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = ""
 }
+variable "logdna_label" {
+  type = string
+  description = "The label used to build the resource name if not provided"
+  default = "logging"
+}
 variable "sysdig_plan" {
   type = string
   description = "The type of plan the service instance should run under (trial or graduated-tier)"
@@ -332,4 +332,9 @@ variable "sysdig_name" {
   type = string
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = ""
+}
+variable "sysdig_label" {
+  type = string
+  description = "The label used to build the resource name if not provided."
+  default = "monitoring"
 }

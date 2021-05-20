@@ -53,17 +53,24 @@ spec:
           ref: auth
     - name: ibm-vpc-gateways
     - name: ibm-vpc-subnets
-      alias: workload-subnets
+      alias: worker-subnets
       variables:
         - name: _count
           value: 3
         - name: label
-          value: workload
+          value: worker
         - name: ipv4_cidr_blocks
           value:
             - 10.10.10.0/24
             - 10.20.10.0/24
             - 10.30.10.0/24
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-subnets
       alias: vpe-subnets
       variables:
@@ -98,6 +105,13 @@ spec:
               direction: outbound
               source: 0.0.0.0/0
               destination: 0.0.0.0/0
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-subnets
       alias: bastion-subnets
       variables:
@@ -174,6 +188,26 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+    - name: ibm-activity-tracker
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: sysdig
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
     - name: ibm-kms-key
       variables:
         - name: provision
@@ -186,6 +220,8 @@ spec:
       variables:
         - name: label
           value: flow-logs
+        - name: cross_region_location
+          scope: global
     - name: ibm-vpe-gateway
       alias: vpe-cos
       dependencies:
@@ -219,6 +255,13 @@ spec:
               direction: outbound
               source: 0.0.0.0/0
               destination: 0.0.0.0/0
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
     - name: ibm-vpc-ssh
       alias: mgmt_ssh_scc
       variables:
@@ -240,22 +283,22 @@ spec:
         - name: kms_key
           ref: kms-key
     - name: ibm-iam-service-authorization
-      alias: vsi-encrypt-auth
+      alias: kube-encrypt-auth
       variables:
         - name: source_service_name
-          value: server-protect
+          value: containers-kubernetes
         - name: target_service_name
           value: hs-crypto
         - name: roles
           value:
             - Reader
       dependencies:
-        - name: source_resource_group
-          ref: resource_group
         - name: target_resource_group
           ref: hpcs_resource_group
         - name: source_resource
           ref: source_resource
+        - name: source_resource_group
+          ref: source_resource_group
         - name: target_resource
           ref: target_resource
   variables:
@@ -286,3 +329,4 @@ spec:
     - name: mgmt_ssh_bastion_private_key_file
     - name: mgmt_ssh_scc_public_key_file
     - name: mgmt_ssh_scc_private_key_file
+    - name: cross_region_location

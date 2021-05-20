@@ -38,7 +38,7 @@ module "ibm-access-group" {
 
 }
 module "ibm-activity-tracker" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-activity-tracker?ref=v2.1.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-activity-tracker?ref=v2.2.0"
 
   resource_group_name = module.resource_group.name
   resource_location = var.region
@@ -46,6 +46,7 @@ module "ibm-activity-tracker" {
   tags = var.ibm-activity-tracker_tags == null ? null : jsondecode(var.ibm-activity-tracker_tags)
   plan = var.ibm-activity-tracker_plan
   provision = var.ibm-activity-tracker_provision
+  label = var.ibm-activity-tracker_label
 
 }
 module "flow-log-auth" {
@@ -75,7 +76,7 @@ module "vsi-encrypt-auth" {
   target_service_name = var.vsi-encrypt-auth_target_service_name
   target_resource_instance_id = var.vsi-encrypt-auth_target_resource_instance_id
   target_resource_type = var.vsi-encrypt-auth_target_resource_type
-  target_resource_group_id = var.vsi-encrypt-auth_target_resource_group_id
+  target_resource_group_id = module.hpcs_resource_group.id
   roles = var.vsi-encrypt-auth_roles == null ? null : jsondecode(var.vsi-encrypt-auth_roles)
   source_service_account = var.vsi-encrypt-auth_source_service_account
 
@@ -91,7 +92,7 @@ module "cos-encrypt-auth" {
   target_service_name = var.cos-encrypt-auth_target_service_name
   target_resource_instance_id = var.cos-encrypt-auth_target_resource_instance_id
   target_resource_type = var.cos-encrypt-auth_target_resource_type
-  target_resource_group_id = var.cos-encrypt-auth_target_resource_group_id
+  target_resource_group_id = module.hpcs_resource_group.id
   roles = var.cos-encrypt-auth_roles == null ? null : jsondecode(var.cos-encrypt-auth_roles)
   source_service_account = var.cos-encrypt-auth_source_service_account
 
@@ -123,7 +124,7 @@ module "key-protect" {
 
 }
 module "logdna" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna?ref=v3.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna?ref=v3.3.1"
 
   resource_group_name = module.resource_group.name
   region = var.region
@@ -132,10 +133,11 @@ module "logdna" {
   tags = var.logdna_tags == null ? null : jsondecode(var.logdna_tags)
   provision = var.logdna_provision
   name = var.logdna_name
+  label = var.logdna_label
 
 }
 module "sysdig" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig?ref=v3.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig?ref=v3.4.0"
 
   resource_group_name = module.resource_group.name
   region = var.region
@@ -145,5 +147,6 @@ module "sysdig" {
   tags = var.sysdig_tags == null ? null : jsondecode(var.sysdig_tags)
   provision = var.sysdig_provision
   name = var.sysdig_name
+  label = var.sysdig_label
 
 }
