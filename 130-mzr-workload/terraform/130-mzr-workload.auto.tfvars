@@ -37,9 +37,6 @@
 ## workload_name_prefix: The name_prefix used to build the name if one is not provided. If used the name will be `{name_prefix}-{label}`
 #workload_name_prefix="base"
 
-## cross_region_location: The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided.
-#cross_region_location=""
-
 ## mgmt_name_prefix: The name of the vpc resource
 #mgmt_name_prefix=""
 

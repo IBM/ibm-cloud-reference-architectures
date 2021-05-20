@@ -35,6 +35,26 @@ Clone this repository to access the automation to provision this reference archi
 | 140  | [140 - Workload + OpenShift Cluster](./140-mzr-workload-openshift)  | Provision a **Workload VPC** with Red Hat OpenShift Cluster and Transit Gateway connecting to **Management VPC**  | 45 mins  |   
 | 160  | [160 - Developer Tools into Management Cluster](./160-openshift-dev-tools)  | Provision a set of common CNCF developer tools into Red Hat OpenShift to provide a DevSecOps SDLC that support industry common best practices for CI/CD  |  20 mins |   
 
+### Configuration guidance
+
+There are a couple of things to keep in mind when preparing to deploy the architectures that will impact the naming conventions:
+
+#### Creating multiple Common Service deployments
+
+If you are planning to create multiple instances of the Common Services architecture in the same account, the following must be accounted for:
+
+1. Only one Activity Tracker instance can be provisioned per region per account. If you are provisioning a second instance of Common Services then set `ibm-activity-tracker_provision="false"` in the **terraform.tfvars** file.
+2. The Service Authorizations that allow the different services like Flow Logs, Block Storage, and Hyper Protect to communicate with each other are scoped at the account level instead of the resource group level due to some limitations and will error out with a conflict. The following values should be set to prevent conflicts:
+   
+    - `vsi-encrypt-auth_provision="false"`
+    - `cos-encrypt-auth_provision="false"`
+
+#### Creating multiple Management or Workload deployments
+
+If you are planning to create multiple instances of the Management or Workload architecture in the same account, the following must be accounted for:
+
+- Each deployment should use different values for `name_prefix` to keep the resources isolated
+
 ## Prerequisites
 
 1. Have access to an IBM Cloud Account, Enterprise account is best for workload isolation but if you only have a Pay Go account this set of terraform can be run in that level of account.

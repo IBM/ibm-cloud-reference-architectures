@@ -9,6 +9,7 @@ spec:
       variables:
         - name: provision
           value: false
+      version: v2.3.0
     - name: hpcs
       alias: hpcs
       variables:
@@ -22,11 +23,13 @@ spec:
       dependencies:
         - name: resource_group
           ref: hpcs_resource_group
+      version: v1.2.1
     - name: ibm-resource-group
       alias: mgmt_resource_group
       variables:
         - name: provision
           value: false
+      version: v2.3.0
     - name: ibm-vpc
       alias: management-vpc
       dependencies:
@@ -40,6 +43,7 @@ spec:
         - name: name_prefix
           alias: mgmt_name_prefix
           scope: global
+      version: v1.11.1
     - name: ibm-resource-group
       variables:
         - name: resource_group_name
@@ -48,7 +52,9 @@ spec:
         - name: provision
           alias: workload_resource_group_provision
           scope: global
+      version: v2.3.0
     - name: ibm-access-group
+      version: v2.2.0
     - name: ibm-vpc
       variables:
         - name: address_prefix_count
@@ -59,6 +65,7 @@ spec:
             - 10.50.0.0/18
             - 10.60.0.0/18
             - 10.2.0.0/18
+      version: v1.11.1
     - name: ibm-flow-logs
       dependencies:
         - name: target
@@ -69,7 +76,9 @@ spec:
           ref: resource_group
         - name: auth
           ref: auth
+      version: v1.0.0
     - name: ibm-vpc-gateways
+      version: v1.4.0
     - name: ibm-vpc-subnets
       alias: worker-subnets
       variables:
@@ -82,6 +91,18 @@ spec:
             - 10.40.10.0/24
             - 10.50.10.0/24
             - 10.60.10.0/24
+        - name: acl_rules
+          value:
+            - name: ingress-all
+              action: allow
+              direction: inbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
+            - name: egress-all
+              action: allow
+              direction: outbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
       dependencies:
         - name: gateways
           ref: ibm-vpc-gateways
@@ -89,6 +110,7 @@ spec:
           ref: resource_group
         - name: vpc
           ref: ibm-vpc
+      version: v1.6.2
     - name: ibm-vpc-subnets
       alias: vpe-subnets
       variables:
@@ -101,6 +123,19 @@ spec:
             - 10.40.20.0/24
             - 10.50.20.0/24
             - 10.60.20.0/24
+        - name: acl_rules
+          value:
+            - name: ingress-all
+              action: allow
+              direction: inbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
+            - name: egress-all
+              action: allow
+              direction: outbound
+              source: 0.0.0.0/0
+              destination: 0.0.0.0/0
+      version: v1.6.2
     - name: ibm-vpc-subnets
       alias: bastion-subnets
       variables:
@@ -114,11 +149,13 @@ spec:
           value:
             - 10.50.30.0/24
             - 10.60.30.0/24
+      version: v1.6.2
     - name: ibm-vpc-ssh
       alias: workload_ssh_bastion
       variables:
         - name: label
           value: bastion
+      version: v1.5.1
     - name: vsi-bastion
       variables:
         - name: image_name
@@ -136,11 +173,13 @@ spec:
           ref: ibm-vpc
         - name: kms_key
           ref: kms-key
+      version: v1.6.0
     - name: ibm-resource-group
       alias: cs_resource_group
       variables:
         - name: provision
           value: false
+      version: v2.3.0
     - name: ibm-object-storage
       alias: cos
       variables:
@@ -152,6 +191,7 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+      version: v3.2.0
     - name: ibm-activity-tracker
       variables:
         - name: provision
@@ -162,6 +202,7 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+      version: v2.2.0
     - name: sysdig
       variables:
         - name: provision
@@ -172,6 +213,7 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+      version: v3.4.0
     - name: ibm-kms-key
       variables:
         - name: provision
@@ -179,6 +221,7 @@ spec:
       dependencies:
         - name: kms
           ref: hpcs
+      version: v1.2.0
     - name: ibm-object-storage-bucket
       alias: flow_log_bucket
       variables:
@@ -186,6 +229,7 @@ spec:
           value: flow-logs
         - name: cross_region_location
           scope: global
+      version: v0.4.0
     - name: ibm-vpe-gateway
       alias: vpe-cos
       dependencies:
@@ -197,6 +241,7 @@ spec:
           ref: resource_group
         - name: vpc
           ref: ibm-vpc
+      version: v1.2.3
     - name: ibm-vpc-subnets
       alias: scc-subnets
       variables:
@@ -226,11 +271,13 @@ spec:
           ref: resource_group
         - name: vpc
           ref: ibm-vpc
+      version: v1.6.2
     - name: ibm-vpc-ssh
       alias: workload_ssh_scc
       variables:
         - name: label
           value: scc
+      version: v1.5.1
     - name: scc-collector
       variables:
         - name: kms_enabled
@@ -246,11 +293,12 @@ spec:
           ref: ibm-vpc
         - name: kms_key
           ref: kms-key
+      version: v1.5.2
     - name: ibm-iam-service-authorization
-      alias: vsi-encrypt-auth
+      alias: kube-encrypt-auth
       variables:
         - name: source_service_name
-          value: server-protect
+          value: containers-kubernetes
         - name: target_service_name
           value: hs-crypto
         - name: roles
@@ -265,7 +313,9 @@ spec:
           ref: source_resource
         - name: target_resource
           ref: target_resource
+      version: v1.1.2
     - name: ibm-transit-gateway
+      version: v0.1.0
   variables:
     - name: workload_resource_group_name
     - name: region
@@ -297,4 +347,3 @@ spec:
     - name: workload_ssh_bastion_private_key_file
     - name: workload_ssh_scc_public_key_file
     - name: workload_ssh_scc_private_key_file
-    - name: cross_region_location

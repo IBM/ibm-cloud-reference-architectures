@@ -71,34 +71,18 @@ module "ibm-flow-logs" {
   provision = var.ibm-flow-logs_provision
 
 }
-module "vsi-encrypt-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
-
-  source_service_name = var.vsi-encrypt-auth_source_service_name
-  source_resource_instance_id = var.vsi-encrypt-auth_source_resource_instance_id
-  source_resource_type = var.vsi-encrypt-auth_source_resource_type
-  source_resource_group_id = module.resource_group.id
-  provision = module.resource_group.provision
-  target_service_name = var.vsi-encrypt-auth_target_service_name
-  target_resource_instance_id = var.vsi-encrypt-auth_target_resource_instance_id
-  target_resource_type = var.vsi-encrypt-auth_target_resource_type
-  target_resource_group_id = module.hpcs_resource_group.id
-  roles = var.vsi-encrypt-auth_roles == null ? null : jsondecode(var.vsi-encrypt-auth_roles)
-  source_service_account = var.vsi-encrypt-auth_source_service_account
-
-}
 module "kube-encrypt-auth" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
 
   source_service_name = var.kube-encrypt-auth_source_service_name
   source_resource_instance_id = var.kube-encrypt-auth_source_resource_instance_id
   source_resource_type = var.kube-encrypt-auth_source_resource_type
-  source_resource_group_id = var.kube-encrypt-auth_source_resource_group_id
-  provision = var.kube-encrypt-auth_provision
+  source_resource_group_id = module.resource_group.id
+  provision = module.resource_group.provision
   target_service_name = var.kube-encrypt-auth_target_service_name
   target_resource_instance_id = var.kube-encrypt-auth_target_resource_instance_id
   target_resource_type = var.kube-encrypt-auth_target_resource_type
-  target_resource_group_id = var.kube-encrypt-auth_target_resource_group_id
+  target_resource_group_id = module.hpcs_resource_group.id
   roles = var.kube-encrypt-auth_roles == null ? null : jsondecode(var.kube-encrypt-auth_roles)
   source_service_account = var.kube-encrypt-auth_source_service_account
 
@@ -129,6 +113,20 @@ module "cos" {
   label = var.cos_label
 
 }
+module "ibm-vpc" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.1"
+
+  resource_group_id = module.resource_group.id
+  resource_group_name = module.resource_group.name
+  region = var.region
+  name = var.ibm-vpc_name
+  name_prefix = var.mgmt_name_prefix
+  ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.ibm-vpc_provision
+  address_prefix_count = var.ibm-vpc_address_prefix_count
+  address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
+
+}
 module "flow_log_bucket" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage-bucket?ref=v0.4.0"
 
@@ -145,20 +143,6 @@ module "flow_log_bucket" {
   label = var.flow_log_bucket_label
   cross_region_location = var.cross_region_location
   storage_class = var.flow_log_bucket_storage_class
-
-}
-module "ibm-vpc" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.1"
-
-  resource_group_id = module.resource_group.id
-  resource_group_name = module.resource_group.name
-  region = var.region
-  name = var.ibm-vpc_name
-  name_prefix = var.mgmt_name_prefix
-  ibmcloud_api_key = var.ibmcloud_api_key
-  provision = var.ibm-vpc_provision
-  address_prefix_count = var.ibm-vpc_address_prefix_count
-  address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
 
 }
 module "scc-subnets" {
@@ -399,7 +383,7 @@ module "vsi-bastion" {
 
 }
 module "vsi-vpn" {
-  source = "github.com/cloud-native-toolkit/terraform-vsi-vpn?ref=v1.4.1"
+  source = "github.com/cloud-native-toolkit/terraform-vsi-vpn?ref=v1.5.0"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name

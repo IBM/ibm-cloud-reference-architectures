@@ -125,16 +125,6 @@ variable "kube-encrypt-auth_source_resource_type" {
   description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "kube-encrypt-auth_source_resource_group_id" {
-  type = string
-  description = "The id of the resource group that will be used to scope which source services will be authorized to access the target service. If not provided the authorization will be scoped to the entire account. This value is superseded by the source_resource_instance_id"
-  default = null
-}
-variable "kube-encrypt-auth_provision" {
-  type = bool
-  description = "Flag indicating that the service authorization should be created"
-  default = true
-}
 variable "kube-encrypt-auth_target_service_name" {
   type = string
   description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
@@ -214,6 +204,26 @@ variable "cos_label" {
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = "cos"
 }
+variable "ibm-vpc_name" {
+  type = string
+  description = "The name of the vpc instance"
+  default = ""
+}
+variable "ibm-vpc_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "ibm-vpc_address_prefix_count" {
+  type = number
+  description = "The number of ipv4_cidr_blocks"
+  default = 4
+}
+variable "ibm-vpc_address_prefixes" {
+  type = string
+  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
+  default = "[\"10.10.0.0/18\",\"10.20.0.0/18\",\"10.30.0.0/18\",\"10.1.0.0/18\"]"
+}
 variable "flow_log_bucket_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
@@ -238,26 +248,6 @@ variable "flow_log_bucket_storage_class" {
   type = string
   description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
   default = "standard"
-}
-variable "ibm-vpc_name" {
-  type = string
-  description = "The name of the vpc instance"
-  default = ""
-}
-variable "ibm-vpc_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
-}
-variable "ibm-vpc_address_prefix_count" {
-  type = number
-  description = "The number of ipv4_cidr_blocks"
-  default = 4
-}
-variable "ibm-vpc_address_prefixes" {
-  type = string
-  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
-  default = "[\"10.10.0.0/18\",\"10.20.0.0/18\",\"10.30.0.0/18\",\"10.1.0.0/18\"]"
 }
 variable "mgmt_ssh_vpn_name" {
   type = string
@@ -397,7 +387,7 @@ variable "worker-subnets_provision" {
 variable "worker-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
-  default = "[]"
+  default = "[{\"name\":\"ingress-all\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"},{\"name\":\"egress-all\",\"action\":\"allow\",\"direction\":\"outbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"}]"
 }
 variable "vpe-subnets_gateways" {
   type = string
@@ -437,7 +427,7 @@ variable "vpe-subnets_provision" {
 variable "vpe-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
-  default = "[]"
+  default = "[{\"name\":\"ingress-all\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"},{\"name\":\"egress-all\",\"action\":\"allow\",\"direction\":\"outbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"}]"
 }
 variable "vpn-subnets__count" {
   type = number

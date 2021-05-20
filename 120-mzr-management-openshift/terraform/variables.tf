@@ -110,46 +110,6 @@ variable "ibm-flow-logs_provision" {
   description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
   default = true
 }
-variable "vsi-encrypt-auth_source_service_name" {
-  type = string
-  description = "The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog."
-  default = "server-protect"
-}
-variable "vsi-encrypt-auth_source_resource_instance_id" {
-  type = string
-  description = "The instance id of the source service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
-  default = null
-}
-variable "vsi-encrypt-auth_source_resource_type" {
-  type = string
-  description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
-  default = null
-}
-variable "vsi-encrypt-auth_target_service_name" {
-  type = string
-  description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
-  default = "hs-crypto"
-}
-variable "vsi-encrypt-auth_target_resource_instance_id" {
-  type = string
-  description = "The instance id of the target service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
-  default = null
-}
-variable "vsi-encrypt-auth_target_resource_type" {
-  type = string
-  description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
-  default = null
-}
-variable "vsi-encrypt-auth_roles" {
-  type = string
-  description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
-  default = "[\"Reader\"]"
-}
-variable "vsi-encrypt-auth_source_service_account" {
-  type = string
-  description = "GUID of the account where the source service is provisioned. This is required to authorize service access across accounts."
-  default = null
-}
 variable "kube-encrypt-auth_source_service_name" {
   type = string
   description = "The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog."
@@ -165,16 +125,6 @@ variable "kube-encrypt-auth_source_resource_type" {
   description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "kube-encrypt-auth_source_resource_group_id" {
-  type = string
-  description = "The id of the resource group that will be used to scope which source services will be authorized to access the target service. If not provided the authorization will be scoped to the entire account. This value is superseded by the source_resource_instance_id"
-  default = null
-}
-variable "kube-encrypt-auth_provision" {
-  type = bool
-  description = "Flag indicating that the service authorization should be created"
-  default = true
-}
 variable "kube-encrypt-auth_target_service_name" {
   type = string
   description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
@@ -188,11 +138,6 @@ variable "kube-encrypt-auth_target_resource_instance_id" {
 variable "kube-encrypt-auth_target_resource_type" {
   type = string
   description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
-  default = null
-}
-variable "kube-encrypt-auth_target_resource_group_id" {
-  type = string
-  description = "The id of the resource group that will be used to scope which services the source services will be authorized to access. If not provided the authorization will be scoped to the entire account. This value is superseded by the target_resource_instance_id"
   default = null
 }
 variable "kube-encrypt-auth_roles" {

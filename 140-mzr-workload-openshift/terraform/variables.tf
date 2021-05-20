@@ -119,42 +119,42 @@ variable "ibm-flow-logs_provision" {
   description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
   default = true
 }
-variable "vsi-encrypt-auth_source_service_name" {
+variable "kube-encrypt-auth_source_service_name" {
   type = string
   description = "The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog."
-  default = "server-protect"
+  default = "containers-kubernetes"
 }
-variable "vsi-encrypt-auth_source_resource_instance_id" {
+variable "kube-encrypt-auth_source_resource_instance_id" {
   type = string
   description = "The instance id of the source service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
   default = null
 }
-variable "vsi-encrypt-auth_source_resource_type" {
+variable "kube-encrypt-auth_source_resource_type" {
   type = string
   description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "vsi-encrypt-auth_target_service_name" {
+variable "kube-encrypt-auth_target_service_name" {
   type = string
   description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
   default = "hs-crypto"
 }
-variable "vsi-encrypt-auth_target_resource_instance_id" {
+variable "kube-encrypt-auth_target_resource_instance_id" {
   type = string
   description = "The instance id of the target service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
   default = null
 }
-variable "vsi-encrypt-auth_target_resource_type" {
+variable "kube-encrypt-auth_target_resource_type" {
   type = string
   description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
   default = null
 }
-variable "vsi-encrypt-auth_roles" {
+variable "kube-encrypt-auth_roles" {
   type = string
   description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
   default = "[\"Reader\"]"
 }
-variable "vsi-encrypt-auth_source_service_account" {
+variable "kube-encrypt-auth_source_service_account" {
   type = string
   description = "GUID of the account where the source service is provisioned. This is required to authorize service access across accounts."
   default = null
@@ -213,31 +213,6 @@ variable "cos_label" {
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = "cos"
 }
-variable "flow_log_bucket_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
-}
-variable "flow_log_bucket_name" {
-  type = string
-  description = "Name of the bucket"
-  default = ""
-}
-variable "flow_log_bucket_label" {
-  type = string
-  description = "Label used to build the bucket name of not provided."
-  default = "flow-logs"
-}
-variable "cross_region_location" {
-  type = string
-  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
-  default = ""
-}
-variable "flow_log_bucket_storage_class" {
-  type = string
-  description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
-  default = "standard"
-}
 variable "management-vpc_name" {
   type = string
   description = "The name of the vpc instance"
@@ -282,6 +257,31 @@ variable "ibm-vpc_address_prefixes" {
   description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
   default = "[\"10.40.0.0/18\",\"10.50.0.0/18\",\"10.60.0.0/18\",\"10.2.0.0/18\"]"
 }
+variable "flow_log_bucket_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "flow_log_bucket_name" {
+  type = string
+  description = "Name of the bucket"
+  default = ""
+}
+variable "flow_log_bucket_label" {
+  type = string
+  description = "Label used to build the bucket name of not provided."
+  default = "flow-logs"
+}
+variable "cross_region_location" {
+  type = string
+  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
+  default = ""
+}
+variable "flow_log_bucket_storage_class" {
+  type = string
+  description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
+  default = "standard"
+}
 variable "vpe-subnets_gateways" {
   type = string
   description = "List of gateway ids and zones"
@@ -320,7 +320,7 @@ variable "vpe-subnets_provision" {
 variable "vpe-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
-  default = "[]"
+  default = "[{\"name\":\"ingress-all\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"},{\"name\":\"egress-all\",\"action\":\"allow\",\"direction\":\"outbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"}]"
 }
 variable "bastion-subnets_gateways" {
   type = string
@@ -555,7 +555,7 @@ variable "worker-subnets_provision" {
 variable "worker-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
-  default = "[]"
+  default = "[{\"name\":\"ingress-all\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"},{\"name\":\"egress-all\",\"action\":\"allow\",\"direction\":\"outbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"0.0.0.0/0\"}]"
 }
 variable "scc-subnets__count" {
   type = number
