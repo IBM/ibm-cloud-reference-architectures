@@ -121,7 +121,7 @@ spec:
           value: false
       dependencies:
         - name: subnets
-          ref: workload-subnets
+          ref: worker-subnets
         - name: kms_key
           ref: kms_key
         - name: resource-group

@@ -412,46 +412,6 @@ variable "cluster_login" {
   description = "Flag indicating that after the cluster is provisioned, the module should log into the cluster"
   default = false
 }
-variable "workload-subnets_gateways" {
-  type = string
-  description = "List of gateway ids and zones"
-  default = "[]"
-}
-variable "workload-subnets__count" {
-  type = number
-  description = "The number of subnets that should be provisioned"
-  default = 3
-}
-variable "workload-subnets_label" {
-  type = string
-  description = "Label for the subnets created"
-  default = "default"
-}
-variable "workload-subnets_zone_offset" {
-  type = number
-  description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
-  default = 0
-}
-variable "workload-subnets_ipv4_cidr_blocks" {
-  type = string
-  description = "List of ipv4 cidr blocks for the subnets that will be created (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
-  default = "[]"
-}
-variable "workload-subnets_ipv4_address_count" {
-  type = number
-  description = "The size of the ipv4 cidr block that should be allocated to the subnet. If {ipv4_cidr_blocks} are provided then this value is ignored."
-  default = 256
-}
-variable "workload-subnets_provision" {
-  type = bool
-  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
-  default = true
-}
-variable "workload-subnets_acl_rules" {
-  type = string
-  description = "List of rules to set on the subnet access control list"
-  default = "[]"
-}
 variable "workload_ssh_bastion_name" {
   type = string
   description = "(Optional) Name given to the ssh key instance. If not provided it will be generated using prefix_name"

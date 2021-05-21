@@ -206,8 +206,8 @@ module "cluster" {
 
   resource_group_name = module.resource_group.name
   vpc_name = module.ibm-vpc.name
-  vpc_subnet_count = module.workload-subnets.count
-  vpc_subnets = module.workload-subnets.subnets
+  vpc_subnet_count = module.worker-subnets.count
+  vpc_subnets = module.worker-subnets.subnets
   cos_id = module.cos.id
   kms_id = module.kms-key.kms_id
   kms_key_id = module.kms-key.id
@@ -224,23 +224,6 @@ module "cluster" {
   kms_enabled = var.cluster_kms_enabled
   kms_private_endpoint = var.cluster_kms_private_endpoint
   login = var.cluster_login
-
-}
-module "workload-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.6.2"
-
-  resource_group_id = module.hpcs_resource_group.id
-  vpc_name = module.management-vpc.name
-  gateways = var.workload-subnets_gateways == null ? null : jsondecode(var.workload-subnets_gateways)
-  region = var.region
-  ibmcloud_api_key = var.ibmcloud_api_key
-  _count = var.workload-subnets__count
-  label = var.workload-subnets_label
-  zone_offset = var.workload-subnets_zone_offset
-  ipv4_cidr_blocks = var.workload-subnets_ipv4_cidr_blocks == null ? null : jsondecode(var.workload-subnets_ipv4_cidr_blocks)
-  ipv4_address_count = var.workload-subnets_ipv4_address_count
-  provision = var.workload-subnets_provision
-  acl_rules = var.workload-subnets_acl_rules == null ? null : jsondecode(var.workload-subnets_acl_rules)
 
 }
 module "ibm-vpc-gateways" {
