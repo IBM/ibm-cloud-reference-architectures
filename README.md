@@ -34,6 +34,7 @@ Clone this repository to access the automation to provision this reference archi
 | 130  | [160 - Workload VSI](./130-mzr-workload)  | Provision a **Workload VPC** with Transit Gateway connecting to **Management VPC**  |  20 mins |   
 | 140  | [140 - Workload + OpenShift Cluster](./140-mzr-workload-openshift)  | Provision a **Workload VPC** with Red Hat OpenShift Cluster and Transit Gateway connecting to **Management VPC**  | 45 mins  |   
 | 160  | [160 - Developer Tools into Management Cluster](./160-openshift-dev-tools)  | Provision a set of common CNCF developer tools into Red Hat OpenShift to provide a DevSecOps SDLC that support industry common best practices for CI/CD  |  20 mins |   
+| 165  | [165 - Workload Cluster setup](./165-openshift-dev-tools)  | Binds the cluster to the IBM Logging and IBM Monitoring instances in common services, sets up some basic cluster configuration, and provisions ArgoCD into the cluster for CD | 10 mins |   
 
 ### Configuration guidance
 

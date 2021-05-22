@@ -1,0 +1,104 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 165-openshift-workload
+spec:
+  modules:
+    - name: ibm-resource-group
+      variables:
+        - name: provision
+          value: false
+        - name: resource_group_name
+          alias: workload_resource_group_name
+          scope: global
+      version: v2.3.0
+    - name: ibm-ocp-vpc
+      dependencies:
+        - name: subnets
+          optional: true
+        - name: cos
+          optional: true
+        - name: vpc
+          optional: true
+        - name: resource-group
+          ref: resource_group
+        - name: kms_key
+          ref: kms-key
+      variables:
+        - name: exists
+          value: true
+        - name: name
+          required: true
+        - name: vpc_subnet_count
+          value: 0
+        - name: vpc_subnets
+          value: '[]'
+        - name: cos_id
+          value: ''
+        - name: vpc_name
+          value: ''
+        - name: login
+          value: true
+      version: v1.5.0
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      variables:
+        - name: provision
+          value: false
+      version: v2.3.0
+    - name: logdna
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+      version: v3.3.1
+    - name: sysdig
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+      version: v3.4.0
+    - name: namespace
+      variables:
+        - name: name
+          value: tools
+      version: v3.0.2
+    - name: ibm-logdna-bind
+      version: v1.0.5
+    - name: sysdig-bind
+      version: v1.1.0
+    - name: ibm-image-registry
+      variables:
+        - name: registry_namespace
+          required: true
+          scope: global
+      version: v2.0.3
+    - name: cluster-config
+      variables:
+        - name: banner_text
+          value: Workload
+        - name: banner_background_color
+          value: red
+      version: v0.1.0
+    - name: argocd
+      version: v2.11.1
+  variables:
+    - name: resource_group_name
+    - name: region
+    - name: ibmcloud_api_key
+      required: true
+    - name: registry_namespace
+      required: true
+    - name: name_prefix
+      required: true
+      alias: workload_name_prefix
