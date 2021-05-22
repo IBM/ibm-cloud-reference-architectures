@@ -122,7 +122,7 @@ module "cos" {
 
 }
 module "management-vpc" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.4"
 
   resource_group_id = module.mgmt_resource_group.id
   resource_group_name = module.mgmt_resource_group.name
@@ -136,7 +136,7 @@ module "management-vpc" {
 
 }
 module "ibm-vpc" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.4"
 
   resource_group_id = module.resource_group.id
   resource_group_name = module.resource_group.name
