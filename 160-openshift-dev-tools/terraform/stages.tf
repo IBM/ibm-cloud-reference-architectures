@@ -20,7 +20,7 @@ module "cluster" {
   resource_group_name = module.resource_group.name
   vpc_name = var.cluster_vpc_name
   vpc_subnet_count = var.cluster_vpc_subnet_count
-  vpc_subnets = var.cluster_vpc_subnets == null ? null : jsondecode(var.cluster_vpc_subnets)
+  vpc_subnets = []
   cos_id = var.cluster_cos_id
   kms_id = var.cluster_kms_id
   kms_key_id = var.cluster_kms_key_id
@@ -56,8 +56,8 @@ module "olm" {
   source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.2.6"
 
   cluster_config_file = module.cluster.config_file_path
-  cluster_type = module.cluster.platform
-  cluster_version = module.cluster.platform
+  cluster_type = module.cluster.platform.type_code
+  cluster_version = module.cluster.platform.version
 
 }
 module "namespace" {
