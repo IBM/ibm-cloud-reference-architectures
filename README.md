@@ -124,11 +124,7 @@ The following post installation steps are required. Install the Security and Com
 
 5. Review the scan results in the [Security and Compliance Center](https://cloud.ibm.com/security-compliance/overview)
 
-### Security and Compliance
-
-From here you can proceed with the rest of the steps, setting up scopes and scans.
-
-## <a name="register-scc-apikey"></a> Register an API key with SCC
+### <a name="register-scc-apikey"></a> Register an API key with SCC
 
 Set API Key for Security and compliance
 
@@ -142,7 +138,7 @@ Set API Key for Security and compliance
    - **IBM API key**: Enter your IBM Cloud API key
 5. Press **Create** to register the API key.
 
-## <a name="generate-ssc"></a> Generate SCC credentials
+### <a name="generate-ssc"></a> Generate SCC credentials
 
 An SCC registration key is required to register an SCC collector with the tool. For each collector instance a new registration key is required.
 
@@ -155,7 +151,7 @@ An SCC registration key is required to register an SCC collector with the tool. 
 5. From the **Collectors** tab, click on the collector you just created to expand the collector information.
 6. Copy the value for the **Registration key**. This will be needed in terraform input to initialize the SCC collector.
 
-## <a name="intall-scc-collector"></a> Install SCC Collector
+### <a name="intall-scc-collector"></a> Install SCC Collector
 
 Install the SCC Collector into the provisioned VSI
 
@@ -175,6 +171,87 @@ Install the SCC Collector into the provisioned VSI
 
 5. Approve the collector After the script finishes running, you should do sub-step 10 of [Step 3](https://cloud.ibm.com/docs/security-compliance?topic=security-compliance-getting-started#gs-collector) which is to Approve the collection back in the Cloud console.
 
+## Configure Security and Compliance for an SCC scan
+
+The following steps are required to set up an SCC scan of the environment after the SCC collectors have been installed. All of the following steps will be performed within the Security and Compliance center - https://cloud.ibm.com/security-compliance/overview
+
+### 1. Create an inventory
+
+1. Open the SCC inventory page - https://cloud.ibm.com/security-compliance/inventory
+2. Click **Create** to create a new inventory
+3. Provide a **name** for the inventory. Provide a name that identifies the environment you are scanning.
+4. Press **Next**.
+5. Check the collector(s) that have been registered for the environment. If the SCC collector steps have been performed successfully they collectors should be in **Ready to install** state.
+6. Click "Save" to create the inventory.
+
+### 2. Create a scope
+
+A scope will define the collection of resources upon which the scan will be performed. Multiple scopes can be created for the same resources so how these scopes are defined is up to you. For now it is assumed you will have one scope per environment (i.e. one for management and one for workload).
+
+1. Open the SCC scope page - https://cloud.ibm.com/security-compliance/scopes
+2. Click **Create** to create a new scope
+3. Provide a **name** for the scope (e.g. management).
+4. Click **Next**
+5. If you have previously created a scope and provided IBM Cloud credentials you can pick it from the list. If not click **Create +** to add a new one.
+    1. Provide a name for the credential that will identify it for later use
+    2. Select `Both` for the **Purpose**
+    3. Press **Next**
+    4. Pick `IBM Cloud` for the **Credential type**
+    5. Provide your **IBM API key** for the account
+    6. Press **Create** to create the credential
+    7. Make sure the newly created credential is selected in the **Credentials** field of Scope dialog
+6. Press **Next** on the Scope page to proceed to the "Collectors" pane
+7. Select the collector(s) that will be used for the environment
+8. Click **Next**
+9. Click **Create** to create the scope
+
+Creating the scope should kick off the Discovery scan which will take 10-30 minutes depending upon how many resources are in the environment.
+
+### 3. Scope the inventory to the desired resources
+
+After the initial Discovery scan, the scope will include **all** of the resources in the account. In most cases you will want to restrict the resources in the scope to those that are related to the particular environment.
+
+1. Open the SCC scope page - https://cloud.ibm.com/security-compliance/scopes
+2. Click on the name of the scope that you want to update.
+3. In the "Inventory" section of the Scope page, click the **Edit** button.
+4. Select/deselect the resources that should be included in the scope. Likely you will want to select just the resource group(s) that make up the environment. (Be sure to include the HPCS resource group, common services, and environment resource group in scope.)
+5. Click **Save* to update the scope.
+
+**Note:** An on-demand Discovery scan can be triggered if you need to update the inventory after changes in the environment. (See next step)
+
+### 4. Run an on-demand scan
+
+Now that the scope is set up, on-demand scans can be performed to get the validation results and update the inventory.
+
+1. Open the SCC scope page - https://cloud.ibm.com/security-compliance/scopes
+2. Find the scope against which you want to run a scan in the table. 
+3. Click the action menu on the right-hand side of the row (the vertical three dots) and select **On-demand scan**
+4. Select `Validation` to run a validation scan. (This will also trigger a Discovery scan that runs before the validation.)
+5. Select `IBM Cloud for Financial Services v0.1` for the **Profile**
+6. Click **Create** to start the scan.
+
+Depending on the number of resources in the scope, the scan will take 20-40 minutes.
+
+### 5. View the scan results
+
+1. Open the SCC scans page - https://cloud.ibm.com/security-compliance/scans
+2. Once the scan is completed you will see an entry for the scan result in the page.
+3. Click on the scan to see the results
+
+### 6. Schedule regular scans of the environment
+
+On-demand scans can be run at any point but you can also schedule scans to be regularly run against the environment.
+
+1. Open the SCC scans page - https://cloud.ibm.com/security-compliance/scans
+2. Click the **Scheduled scans** tab
+3. Click **Schedule** to create a scheduled scan
+4. Provide a **name** for the scan
+5. Select `Validation` for the **Scan type**
+6. Select the scope from the previous step for the **Scope**
+7. Select `IBM Cloud for Financial Services v0.1` for the **Profile**
+8. Click **Next**
+9. Provide the schedule information for how frequently and for what duration the scan should run.
+10. Click **Create** to create the scheduled scan
 
 ## Known Exceptions
 
