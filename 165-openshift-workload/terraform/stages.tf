@@ -96,7 +96,7 @@ module "registry" {
 
 }
 module "ibm-logdna-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.0.5"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.0"
 
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name
@@ -106,8 +106,8 @@ module "ibm-logdna-bind" {
   region = var.region
   private_endpoint = var.private_endpoint
   ibmcloud_api_key = var.ibmcloud_api_key
-  name = var.ibm-logdna-bind_name
-  sync = var.ibm-logdna-bind_sync
+  logdna_id = module.logdna.guid
+  sync = module.sysdig-bind.sync
 
 }
 module "logdna" {
