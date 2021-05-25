@@ -400,6 +400,47 @@ Branch: main
     gitops repository that is created during the pipeline run.
 
 
+## (Optional) Cloud Satellite Setup & OpenShift Marketplace Add
+
+Cloud Satellite can be used to deploy your application to a managed OpenShift environment anywhere on prem, on the Edge, or other Cloud providers.
+
+Deploying Satellite involves the following steps:
+
+1. Creating a Satellite location
+2. Attach hosts to your location
+3. Assigning hosts to the Satellite control plane
+
+Detailed instructions for this can be found here in the [Satellite docs](https://cloud.ibm.com/docs/satellite?topic=satellite-getting-started)
+
+## Adding RedHat Marketplace to a ROKS Satellite Cluster
+
+Post installation of Cloud Satellite, the RedHat Marketplace is not added automatically within the OpenShift Cluster.  This needs to be setup manually.
+
+If you try and install one of the Red Hat Marketplace operators though you’ll find a problem with being unable to pull the operator image. 
+
+You must register your ROKS on Satellite cluster with the Red Hat Marketplace following instructions here: https://marketplace.redhat.com/en-us/workspace/clusters/add/register. 
+
+**NOTE**:  Registering for the marketplace right now is currently only supported with a US based email address.  After registering the marketplace will be available to all users of the cluster regardless of location.
+
+This will create a new namespace `openshift-redhat-marketplace` and a global pull secret.
+
+After step 5 in the Red Hat Marketplace instructions above, you need to restart your workers manually as the update pull secret script doesn’t get applied immediately.
+
+**Prerequisite**
+
+`oc cli version 4.6.23+`
+available here: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.23/
+
+1.	 List your satellite clusters you have access to:
+`ibmcloud ks cluster ls`
+
+2.	 List workers for your satellite cluster:
+`ibmcloud oc worker ls -c <cluster name from list above>`
+
+3.	Restart each of the workers (**Note** this could potentially cause an application outage if done all at once)
+`ibmcloud oc worker reload -c gp-satellite-openshift-cluster -w <workerID>`
+
+
 ## Reference
 
 ### <a name="generate-ssh-keys"></a> Generate SSH Keys
@@ -421,115 +462,4 @@ You need to create a set of unique keys that will be configured for the various 
 
 ## Troubleshooting
 
-
-
-## First Application Setup
-
-**Prerequisites**
-
-1.  ensure VPN is on
-2.  install the garage toolkit
-
-`npm i -g \@ibmgaragecloud/cloud-native-toolkit-cli`
-
-**Note:** for the following example, a sample java app running on
-liberty is used. The samples can be pulled from the Developer Dashboard-> Starter Kits
-
-1.  Open a terminal window and login to OpenShift
-2.  Change to the OpenShift project namespace of your application to
-    deploy, if you don't have one, then create one first
-
-`oc project ts-libertyapp`
-
-3.  Sync the project with the garage tools.
-
-`oc sync ts-libertyapp`
-
-4.  Create the pipeline (Note: It will prompt you for your login
-    credentials for your gitrepo the first time).
-
-The pipeline creation can be run with or without options specified.
-Without options, the tools will prompt you for the information.
-
-**Without command line options**
-
-oc pipeline https://github.com/tcskill/
-
-**Options specified in command line**
-
-```shell
-oc pipeline --tekton https://github.com/tcskill/libertysampleapp
---pipeline ibm-appmod-liberty -p scan-image=false -p health-endpoint=/
--p java-bin-path=CustomerOrderServicesApp/target -p lint-dockerfile=Yes
-
-A pipeline will be created and started, also useful a url to the
-new pipeline within the OpenShift console will be displayed.
-
-Creating pipeline on openshift cluster in ts-libertyapp namespace
-
-Next steps:
-
-Tekton cli:
-
-View PipelineRun info - tkn pr describe libertysampleapp-17957c4cef6
-View PipelineRun logs - tkn pr logs -f libertysampleapp-17957c4cef6
-
-OpenShift console:
-
-View PipelineRun -
-https://console-openshift-console.ivg-mgmt-cluster-19917-i000.us-east.containers.appdomain.cloud/k8s/ns/ts-libertyapp/tekton.dev\~v1beta1\~PipelineRun/libertysampleapp
-```
-
-3.  Create a gitops repository that is empty except for a default readme
-    file. This is a new repository, when you create the repository check
-    the box to initialize with a ReadMe file. For this example, it is
-    called simply "gitops" but could be anything.
-
-4.  Setup gitops for this repository:
-
-```shell
-oc gitops https://github.com/tcskill/gitops
-
-Setting the git credentials in the ts-libertyapp namespace
-
-Git credentials have already been stored for user: tcskill
-
-Project git repo: https://github.com/tcskill/gitops.git
-
-Branch: main
-```
-5.  Verify the setup succeeded by listing the configmap you will see a
-    "gitops-repo" just created.
-
-`oc get configmap`
-
-6.  Create a new OpenShift project where your app will eventually be
-    deployed, you may have one for staging, one for production. For this
-    example, I created just one called: ts-libertyappstaging
-
-7.  From the terminal, add the pull secrets to this new project:
-
-`igc pull-secret ts-libertyappstaging`
-
-8.  Setup ArgoCD for deploying to your target environment. Bring up the
-    ArgoCD UI and setup the repository, Argo project, and Argo
-    application configuration. The detailed instructions for this can be
-    found here:
-    <https://cloudnativetoolkit.dev/tools/argocd#register-the-gitops-repo-in-argocd>
-
-    a.  In Settings, Configure a repository in ArgoCD.
-
-        i.  Repository URL for this example is:
-            https://github.com/tcskill/gitops
-
-        ii. Set UI/PW, for Password you can use a git token
-
-    b.  Configure ArgoCD Project
-
-        i.  Set the Repository as your gitops repository and Destination
-            as the local cluster with the OpenShift namespace the
-            staging project created earlier (ts-libertyappstaging for this example)
-
-    c.  Create a new ArgoCD Application. The Path will be the folder in your
-    gitops repository that is created during the pipeline run.
 
