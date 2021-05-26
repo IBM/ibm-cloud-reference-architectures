@@ -192,7 +192,7 @@ The following steps are required to set up an SCC scan of the environment after 
 2. Click **Create** to create a new inventory
 3. Provide a **name** for the inventory. Provide a name that identifies the environment you are scanning.
 4. Press **Next**.
-5. Check the collector(s) that have been registered for the environment. If the SCC collector steps have been performed successfully they collectors should be in **Ready to install** state.
+5. Check the collector(s) that have been registered for the environment. If the SCC collector steps have been performed successfully they collectors should be in **Ready** state.
 6. Click "Save" to create the inventory.
 
 ### 2. Create a scope
@@ -291,7 +291,7 @@ The following exceptions are know when an SCC scan is performed on the reference
 
 
 
-# Deploy First Application into Red Hat OpenShift
+## Deploy First Application into Red Hat OpenShift
 
 
 **Prerequisites**
