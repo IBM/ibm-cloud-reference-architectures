@@ -12,7 +12,7 @@ This `README.md` will help describe the SRE steps required to provision an IBM C
 
 This guide is optimized for Proof of Technology environments that will enable Global Partners and ISVs to configure a fully working end to end cloud-native environment. This will include Management with Bastion and Client to Site VPN. It will include Workload with OpenShift and support the Red Hat Software Delivery Lifecycle with the [Cloud-Native Toolkit](https://cloudnativetoolkit.dev/).
 
-This set of automation packages was generated using the open-source [`isacable`](https://github.com/cloud-native-toolkit/iascable) tool. This tool enables a Bill of Material yaml file to described you IBM Cloud architecure, which it then generates the terraform modules into a package of infrastructure as code you can use to accelerate the configuration of you IBM Cloud environment. This can be run in IBM Schematics or from your local SRE laptop.
+This set of automation packages was generated using the open-source [`isacable`](https://github.com/cloud-native-toolkit/iascable) tool. This tool enables a Bill of Material yaml file to describe your IBM Cloud architecture, which it then generates the terraform modules into a package of infrastructure as code you can use to accelerate the configuration of you IBM Cloud environment. This can be run in IBM Schematics or from your local SRE laptop.
 
 Automation is provided in following Terraform packages that will need to be run in order.
 
