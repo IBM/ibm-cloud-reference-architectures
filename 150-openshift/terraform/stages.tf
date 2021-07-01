@@ -69,7 +69,7 @@ module "cs_resource_group" {
 
 }
 module "cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.2"
 
   resource_group_name = module.cs_resource_group.name
   name_prefix = var.cs_name_prefix
@@ -81,7 +81,7 @@ module "cos" {
 
 }
 module "ibm-vpc" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.10.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.5"
 
   resource_group_id = module.resource_group.id
   resource_group_name = module.resource_group.name
@@ -95,7 +95,7 @@ module "ibm-vpc" {
 
 }
 module "workload-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.6.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -112,10 +112,10 @@ module "workload-subnets" {
 
 }
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.5.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.9.0"
 
   resource_group_name = module.resource_group.name
-  vpc_name = module.ibm-vpc.name
+  vpc_name = module.workload-subnets.vpc_name
   vpc_subnet_count = module.workload-subnets.count
   vpc_subnets = module.workload-subnets.subnets
   cos_id = module.cos.id
@@ -128,9 +128,10 @@ module "cluster" {
   worker_count = var.worker_count
   ocp_version = var.ocp_version
   exists = var.cluster_exists
-  ocp_entitlement = var.cluster_ocp_entitlement
+  sync = var.cluster_sync
   flavor = var.cluster_flavor
   disable_public_endpoint = var.cluster_disable_public_endpoint
+  ocp_entitlement = var.cluster_ocp_entitlement
   kms_enabled = var.cluster_kms_enabled
   kms_private_endpoint = var.cluster_kms_private_endpoint
   login = var.cluster_login

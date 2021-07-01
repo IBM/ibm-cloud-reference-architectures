@@ -2,53 +2,69 @@
 
 > This collection of IBM Cloud terraform automation bundles has been crafted from a set of [Terraform modules](https://github.com/cloud-native-toolkit/garage-terraform-modules/blob/main/MODULES.md) created by GSI Labs team part of the [Hybrid Cloud Ecosystem organization](https://w3.ibm.com/w3publisher/cloud-ecosystem). Please contact **Matthew Perrins** __mjperrin@us.ibm.com__ or **Sean Sundberg** __seansund@us.ibm.com__ for more details. 
 
-The IBM Cloud defines a [reference architecture](https://test.cloud.ibm.com/docs/allowlist/framework-financial-services?topic=framework-financial-services-vpc-architecture-detailed-openshift) for IBM Cloud for Financial Services. This reference architecture establishes a secure cloud environment that will enable the deployment and management of requlatory compliant workloads.
+The IBM Cloud defines three reference architectures for IBM Cloud for Financial Services. These reference architectures establish a secure cloud environment that will enable the deployment and management of regulatory compliant workloads. This repository addresses the [VPC architecture with virtual servers](https://test.cloud.ibm.com/docs/allowlist/framework-financial-services?topic=framework-financial-services-vpc-architecture-detailed-vsi) and [VPC architecture with Red Hat OpenShift](https://test.cloud.ibm.com/docs/allowlist/framework-financial-services?topic=framework-financial-services-vpc-architecture-detailed-openshift) architectures. 
 
-This repository defines a set of Terraform automation bundles that embodies these best practices for provisioning cloud resources in an IBM Cloud Enterprise Sub account. 
+Within this repository you will find a set of Terraform template bundles that embody best practices for provisioning and configuring cloud resources in an IBM Cloud Enterprise sub-account. 
 
-This `README.md` will help describe the SRE steps required to provision an IBM Cloud for Financial Services environment that will scan cleanly to the Security and Compliance Centers NIST based profiles. 
+This `README.md` describes the SRE steps required to provision an IBM Cloud for Financial Services environment that will scan cleanly to the Security and Compliance Centers NIST based profiles. 
 
 > The Security and Compliance scan has a set of known [exceptions](#exceptions) see below 
 
-This guide is optimized for Proof of Technology environments that will enable Global Partners and ISVs to configure a fully working end to end cloud-native environment. This will include Management with Bastion and Client to Site VPN. It will include Workload with OpenShift and support the Red Hat Software Delivery Lifecycle with the [Cloud-Native Toolkit](https://cloudnativetoolkit.dev/).
+This guide is optimized for Proof of Technology environments that enable IBM Cloud users to configure a fully working end-to-end cloud-native environment. The base environment provides a collection of shared services, a management network, and a workload network. 
 
-This set of automation packages was generated using the open-source [`isacable`](https://github.com/cloud-native-toolkit/iascable) tool. This tool enables a Bill of Material yaml file to describe your IBM Cloud architecture, which it then generates the terraform modules into a package of infrastructure as code you can use to accelerate the configuration of you IBM Cloud environment. This can be run in IBM Schematics or from your local SRE laptop.
+**Shared services**
+
+- Hyper Protect Crypto Service
+- IBM Log Analysis
+- IBM Monitoring
+- Activity Tracker
+
+**Management network**
+
+- Client to Site VPN server or Site to Site VPN Gateway
+- Bastion server(s)
+- Red Hat OpenShift cluster with SDLC tools provided from the [Cloud-Native Toolkit](https://cloudnativetoolkit.dev/)
+
+**Workload network**
+
+- Red Hat OpenShift cluster
+
+This set of automation packages was generated using the open-source [`isacable`](https://github.com/cloud-native-toolkit/iascable) tool. This tool enables a Bill of Material yaml file to describe your IBM Cloud architecture, which it then generates the terraform modules into a package of infrastructure as code you can use to accelerate the configuration of your IBM Cloud environment. Iascable generates standard terraform templates that can be executed from any terraform environment.
 
 Automation is provided in following Terraform packages that will need to be run in order.
 
 ## Reference Architecture
 
-The following is provisioned.
-
 ![Reference Architecture](./images/ibm-cloud-architecture.png)
 
 ## Automation Stages
 
-Clone this repository to access the automation to provision this reference architecture on the IBM Cloud. This repo contains the following defined *Bill of Materials* or **BOMS** for short. They logically build up to deliver a set of IBM Cloud best practices. The reason for having them seperate at this stage is to enabled a layered approach to success. This enables SRE's to use them in logical blocks. One set for Common Services for a collection of **Management** and **Workload** VPCs or a number of **Workload** VPCs that maybe installed in seperate regions. 
+Clone this repository to access the automation to provision this reference architecture on the IBM Cloud. This repo contains the following defined *Bill of Materials* or **BOMS** for short. They logically build up to deliver a set of IBM Cloud best practices. The reason for having them seperate at this stage is to enabled a layered approach to success. This enables SRE's to use them in logical blocks. One set for Shared Services for a collection of **Management** and **Workload** VPCs or a number of **Workload** VPCs that maybe installed in separate regions. 
+
+### VPC with VSIs
 
 | BOM ID | Name  | Description   | Run Time  | 
 |---|---|---|---|
-|  100 | [100 - Common Services](./100-common-services)  | Provision a set of common cloud managed services that can be shared with a **Management** and **Workload** VPCs pairs  | 5 Mins  |   
-| 110  | [160 - Management VSI](./110-mzr-management)  | Provision a **Management VPC** with Client to Site VPN , Bastion and VSI  |  20 mins |   
+|  000 | [000 - Account Setup](./000-account-setup)  | Set up an account for FS Cloud and provision a set of account-wide services. This is intended to only be run one time in an account | 5 Mins  |   
+|  100 | [100 - Shared Services](./100-common-services)  | Provision a set of common cloud managed services that can be shared with a **Management** and **Workload** VPCs pairs  | 5 Mins  |   
+| 110  | [110 - Management VSI](./110-mzr-management)  | Provision a **Management VPC** with Client to Site VPN , Bastion and VSI  |  20 mins |   
+| 130  | [130 - Workload VSI](./130-mzr-workload)  | Provision a **Workload VPC** with Transit Gateway connecting to **Management VPC**  |  20 mins |   
+
+
+### VPC with Red Hat OpenShift
+
+| BOM ID | Name  | Description   | Run Time  | 
+|---|---|---|---|
+|  000 | [000 - Account Setup](./000-account-setup)  | Set up an account for FS Cloud and provision a set of account-wide services. This is intended to only be run one time in an account | 5 Mins  |   
+|  100 | [100 - Shared Services](./100-common-services)  | Provision a set of common cloud managed services that can be shared with a **Management** and **Workload** VPCs pairs  | 5 Mins  |   
 |  120 | [120 - Management + OpenShift Cluster](./120-mzr-management-openshift) | Provision a **Management VPC** with Client to Site VPN , Bastion and Red Hat OpenShift Cluster  |  45 mins |   
-| 130  | [160 - Workload VSI](./130-mzr-workload)  | Provision a **Workload VPC** with Transit Gateway connecting to **Management VPC**  |  20 mins |   
 | 140  | [140 - Workload + OpenShift Cluster](./140-mzr-workload-openshift)  | Provision a **Workload VPC** with Red Hat OpenShift Cluster and Transit Gateway connecting to **Management VPC**  | 45 mins  |   
 | 160  | [160 - Developer Tools into Management Cluster](./160-openshift-dev-tools)  | Provision a set of common CNCF developer tools into Red Hat OpenShift to provide a DevSecOps SDLC that support industry common best practices for CI/CD  |  20 mins |   
-| 165  | [165 - Workload Cluster setup](./165-openshift-dev-tools)  | Binds the cluster to the IBM Logging and IBM Monitoring instances in common services, sets up some basic cluster configuration, and provisions ArgoCD into the cluster for CD | 10 mins |   
+| 165  | [165 - Workload Cluster setup](./165-openshift-dev-tools)  | Binds the cluster to the IBM Logging and IBM Monitoring instances in shared services, sets up some basic cluster configuration, and provisions ArgoCD into the cluster for CD | 10 mins |
 
 ### Configuration guidance
 
 There are a couple of things to keep in mind when preparing to deploy the architectures that will impact the naming conventions:
-
-#### Creating multiple Common Service deployments
-
-If you are planning to create multiple instances of the Common Services architecture in the same account, the following must be accounted for:
-
-1. Only one Activity Tracker instance can be provisioned per region per account. If you are provisioning a second instance of Common Services then set `ibm-activity-tracker_provision="false"` in the **terraform.tfvars** file.
-2. The Service Authorizations that allow the different services like Flow Logs, Block Storage, and Hyper Protect to communicate with each other are scoped at the account level instead of the resource group level due to some limitations and will error out with a conflict. The following values should be set to prevent conflicts:
-   
-    - `vsi-encrypt-auth_provision="false"`
-    - `cos-encrypt-auth_provision="false"`
 
 #### Creating multiple Management or Workload deployments
 
@@ -121,13 +137,13 @@ The following steps will help you setup the VPN server.
 
 ## Post Install of SCC Collectors
 
-> **Limitations** The SCC install script requires human input this is preventing this from being added to the automation. We are working with engineering to make this installation not require humans.
+> **Limitations**: Currently, the managed SCC collector cannot be installed and configured using automation. As the APIs become available these steps will be updated. 
 
-The following post installation steps are required. Install the Security and Compliance collector into the VSI instances that are within **Management** and **Workload** VPC networks.
+The following post installation steps are required to enable scans of the infrastructure using the Security and Compliance Center. This configuration must only be performed one time.
 
 1. Register the API key with  [Security and Compliance Console](#register-scc-api-key) console.
 
-2. Create two SCC collectors with private endpoints following the [Generate SCC credentials](#generate-ssc) instructions below; one for Management BOM and one for Workload BOM. 
+2. [Create an IBM-managed collector with private endpoints](#generate-ssc-collector) by following the instructions below. 
 
 3. [Install the SCC collector](#install-scc-collector) into the already provisioned VSI's within the collector.
 
@@ -149,38 +165,18 @@ Set API Key for Security and compliance
    - **IBM API key**: Enter your IBM Cloud API key
 5. Press **Create** to register the API key.
 
-### <a name="generate-ssc"></a> Generate SCC credentials
+### <a name="generate-ssc-collector"></a> Generate an IBM-managed SCC collector with private endpoints
 
-An SCC registration key is required to register an SCC collector with the tool. For each collector instance a new registration key is required.
+An SCC collector is required to scan the infrastructure within the account for vulnerabilities.
 
 1. Open the IBM Cloud console to the **Security and Compliance** tool - https://cloud.ibm.com/security-compliance/overview.
 2. Under **Manage Posture**, click **Configure** > **Settings**.
-3. On the **Collectors** tab, click **Create**. Provide the following values:
-    - **Name**: Enter a descriptive name for the collector
-    - **Collector Endpoint**: `Private endpoint`
-4. Click **Create** to define the collector instance.
-5. From the **Collectors** tab, click on the collector you just created to expand the collector information.
-6. Copy the value for the **Registration key**. This will be needed in terraform input to initialize the SCC collector.
-
-### <a name="intall-scc-collector"></a> Install SCC Collector
-
-Install the SCC Collector into the provisioned VSI
-
-1. In order to register the SCC collecto, retrieve the private IP address of the SCC VSI instance from the VSI instances page in the IBM Cloud console - https://cloud.ibm.com/vpc-ext/compute/vs
-2. Establish a VPN connection to the VPC cluster
-3. Open a ssh session with the SCC VSI instance , Management is accesible like this `ssh -i ssh-mgmt-scc root@#{private-ip}`
-   
-    where:
-    - `private-ip` is the ip address retrieved in the previous step
-   
-4. Run the scc collector registration script - `scc-collector.sh ${REGISTRATION_KEY}`. 
-
-> **Note**: answer `No` to the proxy question
-
-    where: 
-    - `REGISTRATION_KEY` is the value shown after the SCC collector is created
-
-5. Approve the collector After the script finishes running, you should do sub-step 10 of [Step 3](https://cloud.ibm.com/docs/security-compliance?topic=security-compliance-getting-started#gs-collector) which is to Approve the collection back in the Cloud console.
+3. On the **Collectors** tab, click **Create**. Provide `ibm-managed` for the collector **name** and press **Next**.
+4. On the **Configuration** tab, provide the following values:
+    - **Managed by**: `IBM`
+    - **Endpoint type**: `Private`
+5. Click **Create** to define the collector instance.
+6. From the **Collectors** tab you will see the collector provisioning. It will take several minutes for the collector to be available.
 
 ## Configure Security and Compliance for an SCC scan
 
@@ -192,7 +188,7 @@ The following steps are required to set up an SCC scan of the environment after 
 2. Click **Create** to create a new inventory
 3. Provide a **name** for the inventory. Provide a name that identifies the environment you are scanning.
 4. Press **Next**.
-5. Check the collector(s) that have been registered for the environment. If the SCC collector steps have been performed successfully they collectors should be in **Ready** state.
+5. Check the collector(s) that have been registered for the environment. If the SCC collector steps have been performed successfully the collectors should be in **Ready** state.
 6. Click "Save" to create the inventory.
 
 ### 2. Create a scope
@@ -225,7 +221,7 @@ After the initial Discovery scan, the scope will include **all** of the resource
 1. Open the SCC scope page - https://cloud.ibm.com/security-compliance/scopes
 2. Click on the name of the scope that you want to update.
 3. In the "Inventory" section of the Scope page, click the **Edit** button.
-4. Select/deselect the resources that should be included in the scope. Likely you will want to select just the resource group(s) that make up the environment. (Be sure to include the HPCS resource group, common services, and environment resource group in scope.)
+4. Select/deselect the resources that should be included in the scope. Likely you will want to select just the resource group(s) that make up the environment. (Be sure to include the HPCS resource group, shared services, and environment resource group in scope.)
 5. Click **Save* to update the scope.
 
 **Note:** An on-demand Discovery scan can be triggered if you need to update the inventory after changes in the environment. (See next step)

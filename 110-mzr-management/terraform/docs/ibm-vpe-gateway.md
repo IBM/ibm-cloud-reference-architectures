@@ -2,6 +2,7 @@
 
 Module to provision a Virtual Private Gateway for a provided resource into a provided set of subnets. It is expected that the subnets and the resource (e.g. object storage) have already been provisioned either at a previous time or by the appropriate terraform modules. This module takes the crn of the resource and the ids of the subnets as input then connects the two together with a Virtual Private Gateway. The result of this module will be a virtual private endpoint created in each of the subnets that provides a private network path between the VPC network and the resource through the gateway.
 
+
 ## Software dependencies
 
 The module depends on the following software components:

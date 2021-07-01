@@ -19,7 +19,7 @@ The module depends on the following software components:
 
 ### Terraform providers
 
-- IBM Cloud provider >= 1.22.0
+- IBM Cloud provider >= 1.25.0
 
 ## Module dependencies
 

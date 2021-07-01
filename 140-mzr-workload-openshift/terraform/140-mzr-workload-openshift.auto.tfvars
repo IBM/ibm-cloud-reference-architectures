@@ -31,14 +31,11 @@
 ## region: Geographic location of the resource (e.g. us-south, us-east)
 #region=""
 
-## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
-#cs_name_prefix=""
-
 ## workload_name_prefix: The name_prefix used to build the name if one is not provided. If used the name will be `{name_prefix}-{label}`
 #workload_name_prefix="base"
 
-## mgmt_name_prefix: The name of the vpc resource
-#mgmt_name_prefix=""
+## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
+#cs_name_prefix=""
 
 ## workload_ssh_bastion_public_key: The public key provided for the ssh key. If empty string is provided then a new key will be generated.
 #workload_ssh_bastion_public_key=""
@@ -52,15 +49,6 @@
 ## workload_ssh_bastion_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
 #workload_ssh_bastion_private_key_file=""
 
-## workload_ssh_scc_public_key: The public key provided for the ssh key. If empty string is provided then a new key will be generated.
-#workload_ssh_scc_public_key=""
-
-## workload_ssh_scc_private_key: The private key provided for the ssh key. If empty string is provided then a new key will be generated.
-#workload_ssh_scc_private_key=""
-
-## workload_ssh_scc_public_key_file: The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated.
-#workload_ssh_scc_public_key_file=""
-
-## workload_ssh_scc_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
-#workload_ssh_scc_private_key_file=""
+## mgmt_name_prefix: The name of the vpc resource
+#mgmt_name_prefix=""
 

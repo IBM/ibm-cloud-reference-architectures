@@ -9,6 +9,7 @@ spec:
       variables:
         - name: provision
           value: false
+      version: v2.3.0
     - name: hpcs
       alias: hpcs
       variables:
@@ -19,20 +20,24 @@ spec:
       dependencies:
         - name: resource_group
           ref: hpcs_resource_group
+      version: v1.2.1
     - name: ibm-kms-key
       variables:
         - name: name
           required: true
+      version: v1.2.0
     - name: ibm-resource-group
       variables:
         - name: provision
           value: false
+      version: v2.3.0
     - name: ibm-vpc
       variables:
         - name: provision
           value: false
         - name: name
           required: true
+      version: v1.11.5
     - name: ibm-vpc-subnets
       alias: workload-subnets
       variables:
@@ -42,14 +47,13 @@ spec:
           value: workload
         - name: provision
           value: false
+      version: v1.8.0
     - name: ibm-ocp-vpc
       variables:
         - name: disable_public_endpoint
           value: true
         - name: kms_enabled
           value: true
-        - name: authorize_kms
-          value: false
       dependencies:
         - name: subnets
           ref: workload-subnets
@@ -59,13 +63,15 @@ spec:
           ref: resource_group
         - name: cos
           ref: cos
-        - name: vpc
-          ref: ibm-vpc
+        - name: sync
+          ref: sync
+      version: v1.9.0
     - name: ibm-resource-group
       alias: cs_resource_group
       variables:
         - name: provision
           value: false
+      version: v2.3.0
     - name: ibm-object-storage
       alias: cos
       variables:
@@ -77,6 +83,7 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
+      version: v3.3.2
   variables:
     - name: resource_group_name
     - name: region

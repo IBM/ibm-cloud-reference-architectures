@@ -13,9 +13,9 @@
 ## region: The IBM Cloud region where the cluster will be/has been installed.
 #region=""
 
-## registry_namespace: The namespace that will be created in the IBM Cloud image registry. If not provided the value will default to the resource group
-#registry_namespace=""
-
 ## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
 #cs_name_prefix=""
+
+## registry_namespace: The namespace that will be created in the IBM Cloud image registry. If not provided the value will default to the resource group
+#registry_namespace=""
 

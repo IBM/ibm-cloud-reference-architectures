@@ -24,6 +24,8 @@ spec:
           ref: resource_group
         - name: kms_key
           ref: kms-key
+        - name: sync
+          ref: sync
       variables:
         - name: exists
           value: true
@@ -39,7 +41,7 @@ spec:
           value: ''
         - name: login
           value: true
-      version: v1.5.0
+      version: v1.9.0
     - name: ibm-resource-group
       alias: cs_resource_group
       variables:
@@ -72,9 +74,9 @@ spec:
       variables:
         - name: name
           value: tools
-      version: v3.0.2
+      version: v3.1.2
     - name: ibm-logdna-bind
-      version: v1.0.5
+      version: v1.1.0
     - name: sysdig-bind
       version: v1.1.0
     - name: ibm-image-registry
@@ -91,7 +93,7 @@ spec:
           value: red
       version: v0.1.0
     - name: argocd
-      version: v2.11.1
+      version: v2.16.2
   variables:
     - name: resource_group_name
     - name: region

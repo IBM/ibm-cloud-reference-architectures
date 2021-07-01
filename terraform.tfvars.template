@@ -6,6 +6,8 @@ region="us-east"
 
 ## hpcs_resource_group_name: The name of the resource group
 hpcs_resource_group_name="security-ops"
+hpcs_resource_group_provision="false"
+hpcs_provision="false"
 
 ## hpcs_region: Geographic location of the resource (e.g. us-south, us-east)
 hpcs_region="eu-de"

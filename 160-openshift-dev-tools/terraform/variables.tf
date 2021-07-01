@@ -1,24 +1,32 @@
-variable "mgmt_resource_group_name" {
+variable "artifactory_service_account" {
   type = string
-  description = "The name of the resource group"
+  description = "The service account under which the artifactory pods should run"
+  default = "artifactory-artifactory"
 }
-variable "ibmcloud_api_key" {
+variable "artifactory_chart_version" {
   type = string
-  description = "The IBM Cloud api token"
+  description = "The chart version that will be used for artifactory release"
+  default = "9.4.5"
 }
-variable "resource_group_provision" {
+variable "artifactory_storage_class" {
+  type = string
+  description = "The storage class of the persistence volume claim"
+  default = ""
+}
+variable "artifactory_persistence" {
   type = bool
-  description = "Flag indicating that the resource group should be created"
-  default = false
+  description = "Flag to indicate if PVCs should be used"
+  default = true
 }
-variable "cs_resource_group_name" {
+variable "artifactory_gitops_dir" {
   type = string
-  description = "The name of the resource group"
+  description = "Directory where the gitops repo content should be written"
+  default = ""
 }
-variable "cs_resource_group_provision" {
-  type = bool
-  description = "Flag indicating that the resource group should be created"
-  default = false
+variable "artifactory_mode" {
+  type = string
+  description = "The mode of operation for the module (setup)"
+  default = ""
 }
 variable "cluster_vpc_name" {
   type = string
@@ -57,6 +65,10 @@ variable "mgmt_name_prefix" {
 variable "region" {
   type = string
   description = "The IBM Cloud region where the cluster will be/has been installed."
+}
+variable "ibmcloud_api_key" {
+  type = string
+  description = "The IBM Cloud api token"
 }
 variable "cluster_name" {
   type = string
@@ -108,50 +120,152 @@ variable "cluster_login" {
   description = "Flag indicating that after the cluster is provisioned, the module should log into the cluster"
   default = true
 }
-variable "argocd_name" {
+variable "mgmt_resource_group_name" {
   type = string
-  description = "The name for the instance"
-  default = "argocd"
+  description = "The name of the resource group"
 }
-variable "argocd_operator_version" {
+variable "resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
+variable "cos_resource_location" {
   type = string
-  description = "The starting version of the CSV"
-  default = "v0.0.9"
+  description = "Geographic location of the resource (e.g. us-south, us-east)"
+  default = "global"
+}
+variable "cos_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "cos_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (lite or standard)"
+  default = "standard"
+}
+variable "cos_provision" {
+  type = bool
+  description = "Flag indicating that cos instance should be provisioned"
+  default = true
+}
+variable "cos_label" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  default = "cos"
+}
+variable "ibm-vpc_name" {
+  type = string
+  description = "The name of the vpc instance"
+  default = ""
+}
+variable "ibm-vpc_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "ibm-vpc_address_prefix_count" {
+  type = number
+  description = "The number of ipv4_cidr_blocks"
+  default = 0
+}
+variable "ibm-vpc_address_prefixes" {
+  type = string
+  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
+  default = "[]"
+}
+variable "ibm-vpc-subnets_gateways" {
+  type = string
+  description = "List of gateway ids and zones"
+  default = "[]"
+}
+variable "ibm-vpc-subnets__count" {
+  type = number
+  description = "The number of subnets that should be provisioned"
+  default = 3
+}
+variable "ibm-vpc-subnets_label" {
+  type = string
+  description = "Label for the subnets created"
+  default = "default"
+}
+variable "ibm-vpc-subnets_zone_offset" {
+  type = number
+  description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
+  default = 0
+}
+variable "ibm-vpc-subnets_ipv4_cidr_blocks" {
+  type = string
+  description = "List of ipv4 cidr blocks for the subnets that will be created (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
+  default = "[]"
+}
+variable "ibm-vpc-subnets_ipv4_address_count" {
+  type = number
+  description = "The size of the ipv4 cidr block that should be allocated to the subnet. If {ipv4_cidr_blocks} are provided then this value is ignored."
+  default = 256
+}
+variable "ibm-vpc-subnets_provision" {
+  type = bool
+  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
+  default = true
+}
+variable "ibm-vpc-subnets_acl_rules" {
+  type = string
+  description = "List of rules to set on the subnet access control list"
+  default = "[]"
 }
 variable "namespace_name" {
   type = string
   description = "The namespace that should be created"
   default = "tools"
 }
-variable "artifactory_service_account" {
-  type = string
-  description = "The service account under which the artifactory pods should run"
-  default = "artifactory-artifactory"
-}
-variable "artifactory_chart_version" {
-  type = string
-  description = "The chart version that will be used for artifactory release"
-  default = "9.4.5"
-}
-variable "artifactory_storage_class" {
-  type = string
-  description = "The storage class of the persistence volume claim"
-  default = ""
-}
-variable "artifactory_persistence" {
+variable "namespace_create_operator_group" {
   type = bool
-  description = "Flag to indicate if PVCs should be used"
+  description = "Flag indicating that an operator group should be created in the namespace"
   default = true
 }
-variable "artifactory_gitops_dir" {
+variable "cs_resource_group_name" {
   type = string
-  description = "Directory where the gitops repo content should be written"
+  description = "The name of the resource group"
+}
+variable "cs_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
+variable "cs_name_prefix" {
+  type = string
+  description = "The prefix name for the service. If not provided it will default to the resource group name"
+}
+variable "logdna_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
+  default = "7-day"
+}
+variable "logdna_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "logdna_provision" {
+  type = bool
+  description = "Flag indicating that logdna instance should be provisioned"
+  default = false
+}
+variable "logdna_name" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = ""
 }
-variable "artifactory_mode" {
+variable "logdna_label" {
   type = string
-  description = "The mode of operation for the module (setup)"
-  default = ""
+  description = "The label used to build the resource name if not provided"
+  default = "logging"
+}
+variable "argocd_name" {
+  type = string
+  description = "The name for the instance"
+  default = "argocd-cluster"
 }
 variable "cluster-config_gitops_dir" {
   type = string
@@ -217,45 +331,6 @@ variable "private_endpoint" {
   description = "Flag indicating that the registry url should be created with private endpoints"
   default = "true"
 }
-variable "ibm-logdna-bind_name" {
-  type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
-  default = ""
-}
-variable "ibm-logdna-bind_sync" {
-  type = string
-  description = "Semaphore to synchronize activities between modules"
-  default = ""
-}
-variable "cs_name_prefix" {
-  type = string
-  description = "The prefix name for the service. If not provided it will default to the resource group name"
-}
-variable "logdna_plan" {
-  type = string
-  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
-  default = "7-day"
-}
-variable "logdna_tags" {
-  type = string
-  description = "Tags that should be applied to the service"
-  default = "[]"
-}
-variable "logdna_provision" {
-  type = bool
-  description = "Flag indicating that logdna instance should be provisioned"
-  default = false
-}
-variable "logdna_name" {
-  type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
-  default = ""
-}
-variable "logdna_label" {
-  type = string
-  description = "The label used to build the resource name if not provided"
-  default = "logging"
-}
 variable "mode" {
   type = string
   description = "The mode of operation for the module (setup)"
@@ -286,13 +361,15 @@ variable "sonarqube_storage_class" {
   description = "The storage class of the persistence volume claim"
   default = "ibmc-file-gold"
 }
-variable "git_type" {
+variable "sysdig-bind_namespace" {
   type = string
-  description = "The type of source control system (github or gitlab) currently"
+  description = "The namespace where the agent should be deployed"
+  default = "ibm-observe"
 }
-variable "git_url" {
+variable "sysdig-bind_sync" {
   type = string
-  description = "The url to the git host (base git host, org, or repo url)"
+  description = "Semaphore value to sync up modules"
+  default = ""
 }
 variable "sysdig_plan" {
   type = string
@@ -319,13 +396,16 @@ variable "sysdig_label" {
   description = "The label used to build the resource name if not provided."
   default = "monitoring"
 }
-variable "sysdig-bind_namespace" {
+variable "git_type" {
   type = string
-  description = "The namespace where the agent should be deployed"
-  default = "ibm-observe"
+  description = "The type of source control system (github or gitlab) currently"
 }
-variable "sysdig-bind_sync" {
+variable "git_url" {
   type = string
-  description = "Semaphore value to sync up modules"
-  default = ""
+  description = "The url to the git host (base git host, org, or repo url)"
+}
+variable "tekton_provision" {
+  type = bool
+  description = "Flag indicating that Tekton should be provisioned"
+  default = true
 }

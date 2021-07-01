@@ -72,7 +72,7 @@ variable "kms-key_label" {
 variable "kms-key_rotation_interval" {
   type = number
   description = "The interval in months that a root key needs to be rotated."
-  default = 3 validation { condition = var.rotation_interval >= 1 && var.rotation_interval <= 12 error_message = The rotation interval must be 1 to 12 months. }
+  default = 3
 }
 variable "kms-key_dual_auth_delete" {
   type = bool
@@ -152,7 +152,7 @@ variable "cos_plan" {
 }
 variable "cos_provision" {
   type = bool
-  description = "Flag indicating that key-protect instance should be provisioned"
+  description = "Flag indicating that cos instance should be provisioned"
   default = false
 }
 variable "cos_label" {
@@ -240,10 +240,10 @@ variable "cluster_exists" {
   description = "Flag indicating if the cluster already exists (true or false)"
   default = false
 }
-variable "cluster_ocp_entitlement" {
+variable "cluster_sync" {
   type = string
-  description = "Value that is applied to the entitlements for OCP cluster provisioning"
-  default = "cloud_pak"
+  description = "Value used to order dependencies"
+  default = ""
 }
 variable "cluster_flavor" {
   type = string
@@ -254,6 +254,11 @@ variable "cluster_disable_public_endpoint" {
   type = bool
   description = "Flag indicating that the public endpoint should be disabled"
   default = true
+}
+variable "cluster_ocp_entitlement" {
+  type = string
+  description = "Value that is applied to the entitlements for OCP cluster provisioning"
+  default = "cloud_pak"
 }
 variable "cluster_kms_enabled" {
   type = bool

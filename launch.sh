@@ -25,4 +25,4 @@ docker run -it \
   -e IBMCLOUD_API_KEY=${IBMCLOUD_API_KEY} \
   -v ${PWD}:/terraform \
   -w /terraform/workspace \
-  quay.io/ibmgaragecloud/cli-tools:v0.12.0-lite
+  quay.io/ibmgaragecloud/cli-tools:v14

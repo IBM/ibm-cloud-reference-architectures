@@ -1,26 +1,26 @@
-module "resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+module "artifactory" {
+  source = "github.com/cloud-native-toolkit/terraform-tools-artifactory?ref=v1.10.2"
 
-  resource_group_name = var.mgmt_resource_group_name
-  ibmcloud_api_key = var.ibmcloud_api_key
-  provision = var.resource_group_provision
-
-}
-module "cs_resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
-
-  resource_group_name = var.cs_resource_group_name
-  ibmcloud_api_key = var.ibmcloud_api_key
-  provision = var.cs_resource_group_provision
+  cluster_type = module.cluster.platform.type_code
+  cluster_ingress_hostname = module.cluster.platform.ingress
+  cluster_config_file = module.cluster.config_file_path
+  tls_secret_name = module.cluster.platform.tls_secret
+  releases_namespace = module.namespace.name
+  service_account = var.artifactory_service_account
+  chart_version = var.artifactory_chart_version
+  storage_class = var.artifactory_storage_class
+  persistence = var.artifactory_persistence
+  gitops_dir = var.artifactory_gitops_dir
+  mode = var.artifactory_mode
 
 }
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.5.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-ocp-vpc?ref=v1.7.0"
 
   resource_group_name = module.resource_group.name
   vpc_name = var.cluster_vpc_name
   vpc_subnet_count = var.cluster_vpc_subnet_count
-  vpc_subnets = null
+  vpc_subnets = var.cluster_vpc_subnets == null ? null : jsondecode(var.cluster_vpc_subnets)
   cos_id = var.cluster_cos_id
   kms_id = var.cluster_kms_id
   kms_key_id = var.cluster_kms_key_id
@@ -39,8 +39,88 @@ module "cluster" {
   login = var.cluster_login
 
 }
+module "resource_group" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+
+  resource_group_name = var.mgmt_resource_group_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.resource_group_provision
+
+}
+module "cos" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.2"
+
+  resource_group_name = module.resource_group.name
+  name_prefix = var.mgmt_name_prefix
+  resource_location = var.cos_resource_location
+  tags = var.cos_tags == null ? null : jsondecode(var.cos_tags)
+  plan = var.cos_plan
+  provision = var.cos_provision
+  label = var.cos_label
+
+}
+module "ibm-vpc" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.5"
+
+  resource_group_id = module.resource_group.id
+  resource_group_name = module.resource_group.name
+  region = var.region
+  name = var.ibm-vpc_name
+  name_prefix = var.mgmt_name_prefix
+  ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.ibm-vpc_provision
+  address_prefix_count = var.ibm-vpc_address_prefix_count
+  address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
+
+}
+module "ibm-vpc-subnets" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
+
+  resource_group_id = module.resource_group.id
+  vpc_name = module.ibm-vpc.name
+  gateways = var.ibm-vpc-subnets_gateways == null ? null : jsondecode(var.ibm-vpc-subnets_gateways)
+  region = var.region
+  ibmcloud_api_key = var.ibmcloud_api_key
+  _count = var.ibm-vpc-subnets__count
+  label = var.ibm-vpc-subnets_label
+  zone_offset = var.ibm-vpc-subnets_zone_offset
+  ipv4_cidr_blocks = var.ibm-vpc-subnets_ipv4_cidr_blocks == null ? null : jsondecode(var.ibm-vpc-subnets_ipv4_cidr_blocks)
+  ipv4_address_count = var.ibm-vpc-subnets_ipv4_address_count
+  provision = var.ibm-vpc-subnets_provision
+  acl_rules = var.ibm-vpc-subnets_acl_rules == null ? null : jsondecode(var.ibm-vpc-subnets_acl_rules)
+
+}
+module "namespace" {
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.1.2"
+
+  cluster_config_file_path = module.cluster.config_file_path
+  name = var.namespace_name
+  create_operator_group = var.namespace_create_operator_group
+
+}
+module "cs_resource_group" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+
+  resource_group_name = var.cs_resource_group_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.cs_resource_group_provision
+
+}
+module "logdna" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna?ref=v3.3.1"
+
+  resource_group_name = module.cs_resource_group.name
+  region = var.region
+  name_prefix = var.cs_name_prefix
+  plan = var.logdna_plan
+  tags = var.logdna_tags == null ? null : jsondecode(var.logdna_tags)
+  provision = var.logdna_provision
+  name = var.logdna_name
+  label = var.logdna_label
+
+}
 module "argocd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.11.1"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.14.1"
 
   cluster_type = module.cluster.platform.type_code
   ingress_subdomain = module.cluster.platform.ingress
@@ -49,38 +129,14 @@ module "argocd" {
   operator_namespace = module.olm.target_namespace
   app_namespace = module.namespace.name
   name = var.argocd_name
-  operator_version = var.argocd_operator_version
 
 }
 module "olm" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.2.6"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-olm?ref=v1.3.1"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
   cluster_version = module.cluster.platform.version
-
-}
-module "namespace" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.0.2"
-
-  cluster_config_file_path = module.cluster.config_file_path
-  name = var.namespace_name
-
-}
-module "artifactory" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-artifactory?ref=v1.10.2"
-
-  cluster_type = module.cluster.platform.type_code
-  cluster_ingress_hostname = module.cluster.platform.ingress
-  cluster_config_file = module.cluster.config_file_path
-  tls_secret_name = module.cluster.platform.tls_secret
-  releases_namespace = module.namespace.name
-  service_account = var.artifactory_service_account
-  chart_version = var.artifactory_chart_version
-  storage_class = var.artifactory_storage_class
-  persistence = var.artifactory_persistence
-  gitops_dir = var.artifactory_gitops_dir
-  mode = var.artifactory_mode
 
 }
 module "cluster-config" {
@@ -127,34 +183,6 @@ module "registry" {
   private_endpoint = var.private_endpoint
 
 }
-module "ibm-logdna-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.0"
-
-  cluster_id = module.cluster.id
-  cluster_name = module.cluster.name
-  cluster_config_file_path = module.cluster.platform.kubeconfig
-  tools_namespace = module.namespace.name
-  resource_group_name = module.resource_group.name
-  region = var.region
-  private_endpoint = var.private_endpoint
-  ibmcloud_api_key = var.ibmcloud_api_key
-  logdna_id = module.logdna.guid
-  sync = module.sysdig-bind.sync
-
-}
-module "logdna" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna?ref=v3.3.1"
-
-  resource_group_name = module.cs_resource_group.name
-  region = var.region
-  name_prefix = var.cs_name_prefix
-  plan = var.logdna_plan
-  tags = var.logdna_tags == null ? null : jsondecode(var.logdna_tags)
-  provision = var.logdna_provision
-  name = var.logdna_name
-  label = var.logdna_label
-
-}
 module "pactbroker" {
   source = "github.com/cloud-native-toolkit/terraform-tools-pactbroker?ref=v1.4.3"
 
@@ -182,31 +210,6 @@ module "sonarqube" {
   storage_class = var.sonarqube_storage_class
 
 }
-module "git" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-source-control?ref=v1.2.5"
-
-  cluster_type_code = module.cluster.platform.type_code
-  config_file_path = module.cluster.config_file_path
-  cluster_namespace = module.namespace.name
-  gitops_dir = var.gitops_dir
-  type = var.git_type
-  url = var.git_url
-
-}
-module "sysdig" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig?ref=v3.4.0"
-
-  resource_group_name = module.cs_resource_group.name
-  region = var.region
-  name_prefix = var.cs_name_prefix
-  ibmcloud_api_key = var.ibmcloud_api_key
-  plan = var.sysdig_plan
-  tags = var.sysdig_tags == null ? null : jsondecode(var.sysdig_tags)
-  provision = var.sysdig_provision
-  name = var.sysdig_name
-  label = var.sysdig_label
-
-}
 module "sysdig-bind" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.1.0"
 
@@ -224,8 +227,48 @@ module "sysdig-bind" {
   sync = var.sysdig-bind_sync
 
 }
+module "sysdig" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig?ref=v3.4.0"
+
+  resource_group_name = module.cs_resource_group.name
+  region = var.region
+  name_prefix = var.cs_name_prefix
+  ibmcloud_api_key = var.ibmcloud_api_key
+  plan = var.sysdig_plan
+  tags = var.sysdig_tags == null ? null : jsondecode(var.sysdig_tags)
+  provision = var.sysdig_provision
+  name = var.sysdig_name
+  label = var.sysdig_label
+
+}
+module "ibm-logdna-bind" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.0"
+
+  cluster_id = module.cluster.id
+  cluster_name = module.cluster.name
+  cluster_config_file_path = module.cluster.platform.kubeconfig
+  tools_namespace = module.namespace.name
+  resource_group_name = module.resource_group.name
+  sync = module.sysdig-bind.sync
+  logdna_id = module.logdna.guid
+  region = var.region
+  private_endpoint = var.private_endpoint
+  ibmcloud_api_key = var.ibmcloud_api_key
+
+}
+module "git" {
+  source = "github.com/cloud-native-toolkit/terraform-k8s-source-control?ref=v1.2.5"
+
+  cluster_type_code = module.cluster.platform.type_code
+  config_file_path = module.cluster.config_file_path
+  cluster_namespace = module.namespace.name
+  gitops_dir = var.gitops_dir
+  type = var.git_type
+  url = var.git_url
+
+}
 module "tekton" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton?ref=v2.1.3"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton?ref=v2.2.1"
 
   cluster_type = module.cluster.platform.type_code
   cluster_ingress_hostname = module.cluster.platform.ingress
@@ -235,6 +278,7 @@ module "tekton" {
   operator_namespace = module.olm.target_namespace
   gitops_dir = var.gitops_dir
   mode = var.mode
+  provision = var.tekton_provision
 
 }
 module "tekton-resources" {

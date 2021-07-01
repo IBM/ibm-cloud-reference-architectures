@@ -78,10 +78,10 @@ variable "cluster_exists" {
   description = "Flag indicating if the cluster already exists (true or false)"
   default = true
 }
-variable "cluster_ocp_entitlement" {
+variable "cluster_sync" {
   type = string
-  description = "Value that is applied to the entitlements for OCP cluster provisioning"
-  default = "cloud_pak"
+  description = "Value used to order dependencies"
+  default = ""
 }
 variable "cluster_flavor" {
   type = string
@@ -92,6 +92,11 @@ variable "cluster_disable_public_endpoint" {
   type = bool
   description = "Flag indicating that the public endpoint should be disabled"
   default = false
+}
+variable "cluster_ocp_entitlement" {
+  type = string
+  description = "Value that is applied to the entitlements for OCP cluster provisioning"
+  default = "cloud_pak"
 }
 variable "cluster_kms_enabled" {
   type = bool
@@ -108,20 +113,49 @@ variable "cluster_login" {
   description = "Flag indicating that after the cluster is provisioned, the module should log into the cluster"
   default = true
 }
-variable "argocd_name" {
+variable "cs_name_prefix" {
   type = string
-  description = "The name for the instance"
-  default = "argocd"
+  description = "The prefix name for the service. If not provided it will default to the resource group name"
 }
-variable "argocd_operator_version" {
+variable "logdna_plan" {
   type = string
-  description = "The starting version of the CSV"
-  default = "v0.0.9"
+  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
+  default = "7-day"
+}
+variable "logdna_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "logdna_provision" {
+  type = bool
+  description = "Flag indicating that logdna instance should be provisioned"
+  default = false
+}
+variable "logdna_name" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  default = ""
+}
+variable "logdna_label" {
+  type = string
+  description = "The label used to build the resource name if not provided"
+  default = "logging"
 }
 variable "namespace_name" {
   type = string
   description = "The namespace that should be created"
   default = "tools"
+}
+variable "namespace_create_operator_group" {
+  type = bool
+  description = "Flag indicating that an operator group should be created in the namespace"
+  default = true
+}
+variable "argocd_name" {
+  type = string
+  description = "The name for the instance"
+  default = "argocd-cluster"
 }
 variable "cluster-config_gitops_dir" {
   type = string
@@ -157,44 +191,15 @@ variable "private_endpoint" {
   description = "Flag indicating that the registry url should be created with private endpoints"
   default = "true"
 }
-variable "ibm-logdna-bind_name" {
+variable "sysdig-bind_namespace" {
   type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  description = "The namespace where the agent should be deployed"
+  default = "ibm-observe"
+}
+variable "sysdig-bind_sync" {
+  type = string
+  description = "Semaphore value to sync up modules"
   default = ""
-}
-variable "ibm-logdna-bind_sync" {
-  type = string
-  description = "Semaphore to synchronize activities between modules"
-  default = ""
-}
-variable "cs_name_prefix" {
-  type = string
-  description = "The prefix name for the service. If not provided it will default to the resource group name"
-}
-variable "logdna_plan" {
-  type = string
-  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
-  default = "7-day"
-}
-variable "logdna_tags" {
-  type = string
-  description = "Tags that should be applied to the service"
-  default = "[]"
-}
-variable "logdna_provision" {
-  type = bool
-  description = "Flag indicating that logdna instance should be provisioned"
-  default = false
-}
-variable "logdna_name" {
-  type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
-  default = ""
-}
-variable "logdna_label" {
-  type = string
-  description = "The label used to build the resource name if not provided"
-  default = "logging"
 }
 variable "sysdig_plan" {
   type = string
@@ -220,14 +225,4 @@ variable "sysdig_label" {
   type = string
   description = "The label used to build the resource name if not provided."
   default = "monitoring"
-}
-variable "sysdig-bind_namespace" {
-  type = string
-  description = "The namespace where the agent should be deployed"
-  default = "ibm-observe"
-}
-variable "sysdig-bind_sync" {
-  type = string
-  description = "Semaphore value to sync up modules"
-  default = ""
 }
