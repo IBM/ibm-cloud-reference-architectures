@@ -627,7 +627,7 @@ variable "vsi-bastion_label" {
 variable "vsi-bastion_image_name" {
   type = string
   description = "The name of the image to use for the virtual server"
-  default = "ibm-ubuntu-18-04-1-minimal-amd64-2"
+  default = "ibm-centos-7-9-minimal-amd64-3"
 }
 variable "vsi-bastion_profile_name" {
   type = string
