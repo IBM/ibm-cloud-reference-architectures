@@ -110,7 +110,7 @@ module "registry" {
 
 }
 module "sysdig-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.1.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.1.1"
 
   resource_group_name = module.resource_group.name
   cluster_id = module.cluster.id
@@ -141,7 +141,7 @@ module "sysdig" {
 
 }
 module "ibm-logdna-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.1"
 
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name

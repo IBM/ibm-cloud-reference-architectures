@@ -41,7 +41,7 @@ variable "cluster_vpc_subnet_count" {
 variable "cluster_vpc_subnets" {
   type = string
   description = "List of subnets with labels"
-  default = "\"[]\""
+  default = "[]"
 }
 variable "cluster_cos_id" {
   type = string
@@ -147,7 +147,7 @@ variable "cos_plan" {
 variable "cos_provision" {
   type = bool
   description = "Flag indicating that cos instance should be provisioned"
-  default = true
+  default = false
 }
 variable "cos_label" {
   type = string
@@ -162,7 +162,7 @@ variable "ibm-vpc_name" {
 variable "ibm-vpc_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
+  default = false
 }
 variable "ibm-vpc_address_prefix_count" {
   type = number

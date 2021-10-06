@@ -1,9 +1,55 @@
+module "vsi-encrypt-auth" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.0"
+
+  source_service_name = var.vsi-encrypt-auth_source_service_name
+  source_resource_instance_id = var.vsi-encrypt-auth_source_resource_instance_id
+  source_resource_type = var.vsi-encrypt-auth_source_resource_type
+  source_resource_group_id = var.vsi-encrypt-auth_source_resource_group_id
+  provision = var.vsi-encrypt-auth_provision
+  target_service_name = module.kms.service
+  target_resource_instance_id = module.kms.id
+  target_resource_type = module.kms.type
+  target_resource_group_id = module.kms_resource_group.id
+  roles = var.vsi-encrypt-auth_roles == null ? null : jsondecode(var.vsi-encrypt-auth_roles)
+  source_service_account = var.vsi-encrypt-auth_source_service_account
+  source_instance = var.vsi-encrypt-auth_source_instance
+  target_instance = var.vsi-encrypt-auth_target_instance
+
+}
+module "cos-encrypt-auth" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.0"
+
+  source_service_name = module.cos.service
+  source_resource_instance_id = module.cos.id
+  source_resource_type = module.cos.type
+  source_resource_group_id = var.cos-encrypt-auth_source_resource_group_id
+  provision = var.cos-encrypt-auth_provision
+  target_service_name = module.kms.service
+  target_resource_instance_id = module.kms.id
+  target_resource_type = module.kms.type
+  target_resource_group_id = module.kms_resource_group.id
+  roles = var.cos-encrypt-auth_roles == null ? null : jsondecode(var.cos-encrypt-auth_roles)
+  source_service_account = var.cos-encrypt-auth_source_service_account
+  source_instance = var.cos-encrypt-auth_source_instance
+  target_instance = var.cos-encrypt-auth_target_instance
+
+}
 module "resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.4.6"
 
   resource_group_name = var.cs_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
+  sync = var.resource_group_sync
   provision = var.cs_resource_group_provision
+
+}
+module "kms_resource_group" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.4.6"
+
+  resource_group_name = var.kms_resource_group_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  sync = module.resource_group.sync
+  provision = var.kms_resource_group_provision
 
 }
 module "ibm-access-group" {
@@ -15,55 +61,76 @@ module "ibm-access-group" {
 
 }
 module "flow-log-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.0"
 
   source_service_name = var.flow-log-auth_source_service_name
   source_resource_instance_id = var.flow-log-auth_source_resource_instance_id
   source_resource_type = var.flow-log-auth_source_resource_type
   source_resource_group_id = var.flow-log-auth_source_resource_group_id
   provision = var.flow-log-auth_provision
-  target_service_name = var.flow-log-auth_target_service_name
-  target_resource_instance_id = var.flow-log-auth_target_resource_instance_id
-  target_resource_type = var.flow-log-auth_target_resource_type
+  target_service_name = module.cos.service
+  target_resource_instance_id = module.cos.id
+  target_resource_type = module.cos.type
   target_resource_group_id = module.resource_group.id
   roles = var.flow-log-auth_roles == null ? null : jsondecode(var.flow-log-auth_roles)
   source_service_account = var.flow-log-auth_source_service_account
+  source_instance = var.flow-log-auth_source_instance
+  target_instance = var.flow-log-auth_target_instance
 
 }
-module "vsi-encrypt-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
+module "vsi-encrypt-auth1" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.0"
 
-  source_service_name = var.vsi-encrypt-auth_source_service_name
-  source_resource_instance_id = var.vsi-encrypt-auth_source_resource_instance_id
-  source_resource_type = var.vsi-encrypt-auth_source_resource_type
+  source_service_name = var.vsi-encrypt-auth1_source_service_name
+  source_resource_instance_id = var.vsi-encrypt-auth1_source_resource_instance_id
+  source_resource_type = var.vsi-encrypt-auth1_source_resource_type
   source_resource_group_id = module.resource_group.id
   provision = module.resource_group.provision
-  target_service_name = var.vsi-encrypt-auth_target_service_name
-  target_resource_instance_id = var.vsi-encrypt-auth_target_resource_instance_id
-  target_resource_type = var.vsi-encrypt-auth_target_resource_type
-  target_resource_group_id = var.vsi-encrypt-auth_target_resource_group_id
-  roles = var.vsi-encrypt-auth_roles == null ? null : jsondecode(var.vsi-encrypt-auth_roles)
-  source_service_account = var.vsi-encrypt-auth_source_service_account
+  target_service_name = module.kms.service
+  target_resource_instance_id = module.kms.id
+  target_resource_type = module.kms.type
+  target_resource_group_id = module.kms_resource_group.id
+  roles = var.vsi-encrypt-auth1_roles == null ? null : jsondecode(var.vsi-encrypt-auth1_roles)
+  source_service_account = var.vsi-encrypt-auth1_source_service_account
+  source_instance = var.vsi-encrypt-auth1_source_instance
+  target_instance = var.vsi-encrypt-auth1_target_instance
 
 }
 module "kube-encrypt-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.0"
 
   source_service_name = var.kube-encrypt-auth_source_service_name
   source_resource_instance_id = var.kube-encrypt-auth_source_resource_instance_id
   source_resource_type = var.kube-encrypt-auth_source_resource_type
   source_resource_group_id = module.resource_group.id
   provision = module.resource_group.provision
-  target_service_name = var.kube-encrypt-auth_target_service_name
-  target_resource_instance_id = var.kube-encrypt-auth_target_resource_instance_id
-  target_resource_type = var.kube-encrypt-auth_target_resource_type
-  target_resource_group_id = var.kube-encrypt-auth_target_resource_group_id
+  target_service_name = module.kms.service
+  target_resource_instance_id = module.kms.id
+  target_resource_type = module.kms.type
+  target_resource_group_id = module.kms_resource_group.id
   roles = var.kube-encrypt-auth_roles == null ? null : jsondecode(var.kube-encrypt-auth_roles)
   source_service_account = var.kube-encrypt-auth_source_service_account
+  source_instance = var.kube-encrypt-auth_source_instance
+  target_instance = var.kube-encrypt-auth_target_instance
+
+}
+module "kms" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-kms?ref=v0.2.0"
+
+  resource_group_name = module.kms_resource_group.name
+  region = var.kms_region
+  name_prefix = var.kms_name_prefix
+  name = var.kms_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  private_endpoint = var.private_endpoint
+  tags = var.kms_tags == null ? null : jsondecode(var.kms_tags)
+  provision = var.kms_provision
+  number_of_crypto_units = var.kms_number_of_crypto_units
+  service = var.kms_service
 
 }
 module "cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.3"
 
   resource_group_name = module.resource_group.name
   name_prefix = var.cs_name_prefix
@@ -72,20 +139,6 @@ module "cos" {
   plan = var.cos_plan
   provision = var.cos_provision
   label = var.cos_label
-
-}
-module "key-protect" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-key-protect?ref=v2.1.1"
-
-  resource_group_name = module.resource_group.name
-  region = var.region
-  name_prefix = var.cs_name_prefix
-  ibmcloud_api_key = var.ibmcloud_api_key
-  private_endpoint = var.private_endpoint
-  tags = var.key-protect_tags == null ? null : jsondecode(var.key-protect_tags)
-  plan = var.key-protect_plan
-  provision = var.key-protect_provision
-  label = var.key-protect_label
 
 }
 module "logdna" {

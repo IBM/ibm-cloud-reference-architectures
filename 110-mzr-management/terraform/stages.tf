@@ -1,41 +1,37 @@
-module "hpcs_resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+module "kms_resource_group" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.4.6"
 
-  resource_group_name = var.hpcs_resource_group_name
+  resource_group_name = var.kms_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
-  provision = var.hpcs_resource_group_provision
+  sync = var.kms_resource_group_sync
+  provision = var.kms_resource_group_provision
+
+}
+module "at_resource_group" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.4.6"
+
+  resource_group_name = var.at_resource_group_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  sync = var.at_resource_group_sync
+  provision = var.at_resource_group_provision
 
 }
 module "resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.4.6"
 
   resource_group_name = var.mgmt_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
+  sync = var.resource_group_sync
   provision = var.mgmt_resource_group_provision
 
 }
 module "cs_resource_group" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-resource-group?ref=v2.4.6"
 
   resource_group_name = var.cs_resource_group_name
   ibmcloud_api_key = var.ibmcloud_api_key
+  sync = var.cs_resource_group_sync
   provision = var.cs_resource_group_provision
-
-}
-module "hpcs" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-hpcs?ref=v1.2.1"
-
-  resource_group_name = module.hpcs_resource_group.name
-  region = var.hpcs_region
-  name_prefix = var.hpcs_name_prefix
-  name = var.hpcs_name
-  ibmcloud_api_key = var.ibmcloud_api_key
-  private_endpoint = var.private_endpoint
-  plan = var.hpcs_plan
-  tags = var.hpcs_tags == null ? null : jsondecode(var.hpcs_tags)
-  number_of_crypto_units = var.hpcs_number_of_crypto_units
-  provision = var.hpcs_provision
-  label = var.hpcs_label
 
 }
 module "ibm-access-group" {
@@ -49,7 +45,7 @@ module "ibm-access-group" {
 module "ibm-activity-tracker" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-activity-tracker?ref=v2.3.0"
 
-  resource_group_name = module.hpcs_resource_group.name
+  resource_group_name = module.at_resource_group.name
   resource_location = var.region
   tags = var.ibm-activity-tracker_tags == null ? null : jsondecode(var.ibm-activity-tracker_tags)
   plan = var.ibm-activity-tracker_plan
@@ -70,43 +66,26 @@ module "ibm-flow-logs" {
   provision = var.ibm-flow-logs_provision
 
 }
-module "vsi-encrypt-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
+module "kms" {
+  source = "github.com/cloud-native-toolkit/terraform-ibm-kms?ref=v0.2.0"
 
-  source_service_name = var.vsi-encrypt-auth_source_service_name
-  source_resource_instance_id = var.vsi-encrypt-auth_source_resource_instance_id
-  source_resource_type = var.vsi-encrypt-auth_source_resource_type
-  source_resource_group_id = module.resource_group.id
-  provision = module.resource_group.provision
-  target_service_name = var.vsi-encrypt-auth_target_service_name
-  target_resource_instance_id = var.vsi-encrypt-auth_target_resource_instance_id
-  target_resource_type = var.vsi-encrypt-auth_target_resource_type
-  target_resource_group_id = module.hpcs_resource_group.id
-  roles = var.vsi-encrypt-auth_roles == null ? null : jsondecode(var.vsi-encrypt-auth_roles)
-  source_service_account = var.vsi-encrypt-auth_source_service_account
-
-}
-module "kube-encrypt-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.1.2"
-
-  source_service_name = var.kube-encrypt-auth_source_service_name
-  source_resource_instance_id = var.kube-encrypt-auth_source_resource_instance_id
-  source_resource_type = var.kube-encrypt-auth_source_resource_type
-  source_resource_group_id = module.resource_group.id
-  provision = module.resource_group.provision
-  target_service_name = var.kube-encrypt-auth_target_service_name
-  target_resource_instance_id = var.kube-encrypt-auth_target_resource_instance_id
-  target_resource_type = var.kube-encrypt-auth_target_resource_type
-  target_resource_group_id = module.hpcs_resource_group.id
-  roles = var.kube-encrypt-auth_roles == null ? null : jsondecode(var.kube-encrypt-auth_roles)
-  source_service_account = var.kube-encrypt-auth_source_service_account
+  resource_group_name = module.kms_resource_group.name
+  region = var.kms_region
+  name_prefix = var.kms_name_prefix
+  name = var.kms_name
+  ibmcloud_api_key = var.ibmcloud_api_key
+  private_endpoint = var.private_endpoint
+  tags = var.kms_tags == null ? null : jsondecode(var.kms_tags)
+  provision = var.kms_provision
+  number_of_crypto_units = var.kms_number_of_crypto_units
+  service = var.kms_service
 
 }
 module "kms-key" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-kms-key?ref=v1.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-kms-key?ref=v1.3.0"
 
-  kms_id = module.hpcs.guid
-  region = module.hpcs.location
+  kms_id = module.kms.guid
+  region = module.kms.location
   ibmcloud_api_key = var.ibmcloud_api_key
   name_prefix = var.mgmt_name_prefix
   provision = var.kms-key_provision
@@ -114,10 +93,11 @@ module "kms-key" {
   label = var.kms-key_label
   rotation_interval = var.kms-key_rotation_interval
   dual_auth_delete = var.kms-key_dual_auth_delete
+  force_delete = var.kms-key_force_delete
 
 }
 module "cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.3"
 
   resource_group_name = module.cs_resource_group.name
   name_prefix = var.cs_name_prefix
@@ -129,7 +109,7 @@ module "cos" {
 
 }
 module "ibm-vpc" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.5"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.7"
 
   resource_group_id = module.resource_group.id
   resource_group_name = module.resource_group.name
@@ -140,6 +120,7 @@ module "ibm-vpc" {
   provision = var.ibm-vpc_provision
   address_prefix_count = var.ibm-vpc_address_prefix_count
   address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
+  base_security_group_name = var.ibm-vpc_base_security_group_name
 
 }
 module "flow_log_bucket" {
@@ -164,16 +145,17 @@ module "flow_log_bucket" {
 
 }
 module "ibm-vpc-gateways" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-gateways?ref=v1.4.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-gateways?ref=v1.5.1"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
   region = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.ibm-vpc-gateways_provision
 
 }
 module "mgmt_ssh_vpn" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-ssh?ref=v1.5.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-ssh?ref=v1.6.0"
 
   resource_group_name = module.resource_group.name
   region = var.region
@@ -189,7 +171,7 @@ module "mgmt_ssh_vpn" {
 
 }
 module "mgmt_ssh_bastion" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-ssh?ref=v1.5.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-ssh?ref=v1.6.0"
 
   resource_group_name = module.resource_group.name
   region = var.region
@@ -205,7 +187,7 @@ module "mgmt_ssh_bastion" {
 
 }
 module "worker-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.1"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -222,7 +204,7 @@ module "worker-subnets" {
 
 }
 module "vpe-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.1"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -239,7 +221,7 @@ module "vpe-subnets" {
 
 }
 module "vpn-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.1"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -256,7 +238,7 @@ module "vpn-subnets" {
 
 }
 module "bastion-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.1"
 
   resource_group_id = module.resource_group.id
   vpc_name = module.ibm-vpc.name
@@ -288,7 +270,7 @@ module "ibm-vpc-vpn-gateway" {
 
 }
 module "vpe-cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpe-gateway?ref=v1.4.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpe-gateway?ref=v1.5.0"
 
   resource_group_name = module.resource_group.name
   region = var.region

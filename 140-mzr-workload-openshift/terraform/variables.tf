@@ -1,154 +1,6 @@
-variable "hpcs_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
 variable "ibmcloud_api_key" {
   type = string
   description = "The IBM Cloud api token"
-}
-variable "hpcs_resource_group_provision" {
-  type = bool
-  description = "Flag indicating that the resource group should be created"
-  default = false
-}
-variable "mgmt_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "mgmt_resource_group_provision" {
-  type = bool
-  description = "Flag indicating that the resource group should be created"
-  default = false
-}
-variable "workload_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "workload_resource_group_provision" {
-  type = bool
-  description = "Flag indicating that the resource group should be created"
-  default = true
-}
-variable "cs_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "cs_resource_group_provision" {
-  type = bool
-  description = "Flag indicating that the resource group should be created"
-  default = false
-}
-variable "hpcs_region" {
-  type = string
-  description = "Geographic location of the resource (e.g. us-south, us-east)"
-}
-variable "hpcs_name_prefix" {
-  type = string
-  description = "The prefix name for the service. If not provided it will default to the resource group name"
-}
-variable "hpcs_name" {
-  type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
-  default = ""
-}
-variable "private_endpoint" {
-  type = string
-  description = "Flag indicating that the service should be created with private endpoints"
-  default = "true"
-}
-variable "hpcs_plan" {
-  type = string
-  description = "The type of plan the service instance should run under (tiered-pricing)"
-  default = "standard"
-}
-variable "hpcs_tags" {
-  type = string
-  description = "Tags that should be applied to the service"
-  default = "[]"
-}
-variable "hpcs_number_of_crypto_units" {
-  type = number
-  description = "No of crypto units that has to be attached to the instance."
-  default = 2
-}
-variable "hpcs_provision" {
-  type = bool
-  description = "Flag indicating that hpcs instance should be provisioned. If 'false' then the instance is expected to already exist."
-  default = false
-}
-variable "hpcs_label" {
-  type = string
-  description = "The label that will be used to generate the name from the name_prefix."
-  default = "hpcs"
-}
-variable "region" {
-  type = string
-  description = "Geographic location of the resource (e.g. us-south, us-east)"
-}
-variable "ibm-activity-tracker_tags" {
-  type = string
-  description = "Tags that should be applied to the service"
-  default = "[]"
-}
-variable "ibm-activity-tracker_plan" {
-  type = string
-  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
-  default = "7-day"
-}
-variable "ibm-activity-tracker_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned"
-  default = false
-}
-variable "ibm-flow-logs_auth_id" {
-  type = string
-  description = "The id of the service authorization that allows the flow log to write to the cos bucket"
-  default = ""
-}
-variable "ibm-flow-logs_provision" {
-  type = bool
-  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
-  default = true
-}
-variable "vsi-encrypt-auth_source_service_name" {
-  type = string
-  description = "The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog."
-  default = "server-protect"
-}
-variable "vsi-encrypt-auth_source_resource_instance_id" {
-  type = string
-  description = "The instance id of the source service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
-  default = null
-}
-variable "vsi-encrypt-auth_source_resource_type" {
-  type = string
-  description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
-  default = null
-}
-variable "vsi-encrypt-auth_target_service_name" {
-  type = string
-  description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
-  default = "hs-crypto"
-}
-variable "vsi-encrypt-auth_target_resource_instance_id" {
-  type = string
-  description = "The instance id of the target service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
-  default = null
-}
-variable "vsi-encrypt-auth_target_resource_type" {
-  type = string
-  description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
-  default = null
-}
-variable "vsi-encrypt-auth_roles" {
-  type = string
-  description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
-  default = "[\"Reader\"]"
-}
-variable "vsi-encrypt-auth_source_service_account" {
-  type = string
-  description = "GUID of the account where the source service is provisioned. This is required to authorize service access across accounts."
-  default = null
 }
 variable "workload_name_prefix" {
   type = string
@@ -179,6 +31,148 @@ variable "kms-key_dual_auth_delete" {
   description = "Flag indicating that the key requires dual authorization to be deleted."
   default = false
 }
+variable "kms-key_force_delete" {
+  type = bool
+  description = "Flag indicating that 'force' should be applied to key on delete"
+  default = true
+}
+variable "kms_region" {
+  type = string
+  description = "Geographic location of the resource (e.g. us-south, us-east)"
+}
+variable "kms_name_prefix" {
+  type = string
+  description = "The prefix name for the service. If not provided it will default to the resource group name"
+}
+variable "kms_name" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  default = ""
+}
+variable "private_endpoint" {
+  type = string
+  description = "Flag indicating that the service should be created with private endpoints"
+  default = "true"
+}
+variable "kms_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "kms_provision" {
+  type = bool
+  description = "Flag indicating that key-protect instance should be provisioned"
+  default = false
+}
+variable "kms_number_of_crypto_units" {
+  type = number
+  description = "No of crypto units that has to be attached to the instance."
+  default = 2
+}
+variable "kms_service" {
+  type = string
+  description = "The name of the KMS provider that should be used (keyprotect or hpcs)"
+  default = "keyprotect"
+}
+variable "workload_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "workload_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = true
+}
+variable "kms_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "kms_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "kms_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
+variable "at_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "at_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "at_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
+variable "mgmt_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "mgmt_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "mgmt_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
+variable "cs_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "cs_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "cs_resource_group_provision" {
+  type = bool
+  description = "Flag indicating that the resource group should be created"
+  default = false
+}
+variable "region" {
+  type = string
+  description = "Geographic location of the resource (e.g. us-south, us-east)"
+}
+variable "ibm-activity-tracker_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "ibm-activity-tracker_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (lite, 7-day, 14-day, or 30-day)"
+  default = "7-day"
+}
+variable "ibm-activity-tracker_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned"
+  default = false
+}
+variable "ibm-flow-logs_auth_id" {
+  type = string
+  description = "The id of the service authorization that allows the flow log to write to the cos bucket"
+  default = ""
+}
+variable "ibm-flow-logs_provision" {
+  type = bool
+  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
+  default = true
+}
 variable "cs_name_prefix" {
   type = string
   description = "The prefix name for the service. If not provided it will default to the resource group name"
@@ -208,137 +202,12 @@ variable "cos_label" {
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = "cos"
 }
-variable "flow_log_bucket_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
-}
-variable "flow_log_bucket_name" {
-  type = string
-  description = "Name of the bucket"
-  default = ""
-}
-variable "flow_log_bucket_label" {
-  type = string
-  description = "Label used to build the bucket name of not provided."
-  default = "flow-logs"
-}
-variable "flow_log_bucket_cross_region_location" {
-  type = string
-  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
-  default = ""
-}
-variable "flow_log_bucket_storage_class" {
-  type = string
-  description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
-  default = "standard"
-}
-variable "flow_log_bucket_allowed_ip" {
-  type = string
-  description = "A list of IPv4 or IPv6 addresses in CIDR notation that you want to allow access to your IBM Cloud Object Storage bucket."
-  default = "[\"0.0.0.0/0\"]"
-}
-variable "workload_ssh_bastion_name" {
-  type = string
-  description = "(Optional) Name given to the ssh key instance. If not provided it will be generated using prefix_name"
-  default = ""
-}
-variable "workload_ssh_bastion_label" {
-  type = string
-  description = "(Optional) Label used for the instance. It will be added to the name_prefix to create the name if the name is not provided."
-  default = "bastion"
-}
-variable "workload_ssh_bastion_public_key" {
-  type = string
-  description = "The public key provided for the ssh key. If empty string is provided then a new key will be generated."
-  default = ""
-}
-variable "workload_ssh_bastion_private_key" {
-  type = string
-  description = "The private key provided for the ssh key. If empty string is provided then a new key will be generated."
-  default = ""
-}
-variable "workload_ssh_bastion_public_key_file" {
-  type = string
-  description = "The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated."
-  default = ""
-}
-variable "workload_ssh_bastion_private_key_file" {
-  type = string
-  description = "The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated."
-  default = ""
-}
-variable "workload_ssh_bastion_rsa_bits" {
-  type = number
-  description = "The number of bits for the rsa key, if it will be generated"
-  default = 3072
-}
-variable "bastion-subnets_gateways" {
-  type = string
-  description = "List of gateway ids and zones"
-  default = "[]"
-}
-variable "bastion-subnets__count" {
-  type = number
-  description = "The number of subnets that should be provisioned"
-  default = 2
-}
-variable "bastion-subnets_label" {
-  type = string
-  description = "Label for the subnets created"
-  default = "bastion"
-}
-variable "bastion-subnets_zone_offset" {
-  type = number
-  description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
-  default = 1
-}
-variable "bastion-subnets_ipv4_cidr_blocks" {
-  type = string
-  description = "List of ipv4 cidr blocks for the subnets that will be created (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
-  default = "[\"10.50.30.0/24\",\"10.60.30.0/24\"]"
-}
-variable "bastion-subnets_ipv4_address_count" {
-  type = number
-  description = "The size of the ipv4 cidr block that should be allocated to the subnet. If {ipv4_cidr_blocks} are provided then this value is ignored."
-  default = 256
-}
-variable "bastion-subnets_provision" {
-  type = bool
-  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
-  default = true
-}
-variable "bastion-subnets_acl_rules" {
-  type = string
-  description = "List of rules to set on the subnet access control list"
-  default = "[]"
-}
-variable "ibm-vpc_name" {
-  type = string
-  description = "The name of the vpc instance"
-  default = ""
-}
-variable "ibm-vpc_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
-}
-variable "ibm-vpc_address_prefix_count" {
-  type = number
-  description = "The number of ipv4_cidr_blocks"
-  default = 4
-}
-variable "ibm-vpc_address_prefixes" {
-  type = string
-  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
-  default = "[\"10.40.0.0/18\",\"10.50.0.0/18\",\"10.60.0.0/18\",\"10.2.0.0/18\"]"
-}
 variable "cluster_name" {
   type = string
   description = "The name of the cluster that will be created within the resource group"
   default = ""
 }
-variable "worker_count" {
+variable "workload_worker_count" {
   type = number
   description = "The number of worker nodes that should be provisioned for classic infrastructure"
   default = 3
@@ -388,7 +257,7 @@ variable "cluster_login" {
   description = "Flag indicating that after the cluster is provisioned, the module should log into the cluster"
   default = false
 }
-variable "worker-subnets__count" {
+variable "workload_worker_subnet_count" {
   type = number
   description = "The number of subnets that should be provisioned"
   default = 3
@@ -423,6 +292,31 @@ variable "worker-subnets_acl_rules" {
   description = "List of rules to set on the subnet access control list"
   default = "[]"
 }
+variable "ibm-vpc_name" {
+  type = string
+  description = "The name of the vpc instance"
+  default = ""
+}
+variable "ibm-vpc_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "ibm-vpc_address_prefix_count" {
+  type = number
+  description = "The number of ipv4_cidr_blocks"
+  default = 4
+}
+variable "ibm-vpc_address_prefixes" {
+  type = string
+  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
+  default = "[\"10.40.0.0/18\",\"10.50.0.0/18\",\"10.60.0.0/18\",\"10.2.0.0/18\"]"
+}
+variable "ibm-vpc_base_security_group_name" {
+  type = string
+  description = "The name of the base security group. If not provided the name will be based on the vpc name"
+  default = ""
+}
 variable "management-vpc_name" {
   type = string
   description = "The name of the vpc instance"
@@ -446,6 +340,81 @@ variable "management-vpc_address_prefixes" {
   type = string
   description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
   default = "[]"
+}
+variable "management-vpc_base_security_group_name" {
+  type = string
+  description = "The name of the base security group. If not provided the name will be based on the vpc name"
+  default = ""
+}
+variable "flow_log_bucket_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "flow_log_bucket_name" {
+  type = string
+  description = "Name of the bucket"
+  default = ""
+}
+variable "flow_log_bucket_label" {
+  type = string
+  description = "Label used to build the bucket name of not provided."
+  default = "flow-logs"
+}
+variable "flow_log_bucket_cross_region_location" {
+  type = string
+  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
+  default = ""
+}
+variable "flow_log_bucket_storage_class" {
+  type = string
+  description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
+  default = "standard"
+}
+variable "flow_log_bucket_allowed_ip" {
+  type = string
+  description = "A list of IPv4 or IPv6 addresses in CIDR notation that you want to allow access to your IBM Cloud Object Storage bucket."
+  default = "[\"0.0.0.0/0\"]"
+}
+variable "ibm-vpc-gateways_provision" {
+  type = bool
+  description = "Flag indicating that the gateway must be provisioned"
+  default = true
+}
+variable "workload_ssh_bastion_name" {
+  type = string
+  description = "(Optional) Name given to the ssh key instance. If not provided it will be generated using prefix_name"
+  default = ""
+}
+variable "workload_ssh_bastion_label" {
+  type = string
+  description = "(Optional) Label used for the instance. It will be added to the name_prefix to create the name if the name is not provided."
+  default = "bastion"
+}
+variable "workload_ssh_bastion_public_key" {
+  type = string
+  description = "The public key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
+}
+variable "workload_ssh_bastion_private_key" {
+  type = string
+  description = "The private key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
+}
+variable "workload_ssh_bastion_public_key_file" {
+  type = string
+  description = "The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
+}
+variable "workload_ssh_bastion_private_key_file" {
+  type = string
+  description = "The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated."
+  default = ""
+}
+variable "workload_ssh_bastion_rsa_bits" {
+  type = number
+  description = "The number of bits for the rsa key, if it will be generated"
+  default = 3072
 }
 variable "vpe-subnets_gateways" {
   type = string
@@ -483,6 +452,46 @@ variable "vpe-subnets_provision" {
   default = true
 }
 variable "vpe-subnets_acl_rules" {
+  type = string
+  description = "List of rules to set on the subnet access control list"
+  default = "[]"
+}
+variable "bastion-subnets_gateways" {
+  type = string
+  description = "List of gateway ids and zones"
+  default = "[]"
+}
+variable "bastion-subnets__count" {
+  type = number
+  description = "The number of subnets that should be provisioned"
+  default = 2
+}
+variable "bastion-subnets_label" {
+  type = string
+  description = "Label for the subnets created"
+  default = "bastion"
+}
+variable "bastion-subnets_zone_offset" {
+  type = number
+  description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
+  default = 1
+}
+variable "bastion-subnets_ipv4_cidr_blocks" {
+  type = string
+  description = "List of ipv4 cidr blocks for the subnets that will be created (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
+  default = "[\"10.50.30.0/24\",\"10.60.30.0/24\"]"
+}
+variable "bastion-subnets_ipv4_address_count" {
+  type = number
+  description = "The size of the ipv4 cidr block that should be allocated to the subnet. If {ipv4_cidr_blocks} are provided then this value is ignored."
+  default = 256
+}
+variable "bastion-subnets_provision" {
+  type = bool
+  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
+  default = true
+}
+variable "bastion-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
   default = "[]"

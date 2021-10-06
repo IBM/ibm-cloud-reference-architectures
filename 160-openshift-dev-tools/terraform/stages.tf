@@ -47,18 +47,7 @@ module "resource_group" {
   provision = var.resource_group_provision
 
 }
-module "cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage?ref=v3.3.2"
 
-  resource_group_name = module.resource_group.name
-  name_prefix = var.mgmt_name_prefix
-  resource_location = var.cos_resource_location
-  tags = var.cos_tags == null ? null : jsondecode(var.cos_tags)
-  plan = var.cos_plan
-  provision = var.cos_provision
-  label = var.cos_label
-
-}
 module "ibm-vpc" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-vpc?ref=v1.11.5"
 
@@ -71,23 +60,6 @@ module "ibm-vpc" {
   provision = var.ibm-vpc_provision
   address_prefix_count = var.ibm-vpc_address_prefix_count
   address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
-
-}
-module "ibm-vpc-subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets?ref=v1.8.0"
-
-  resource_group_id = module.resource_group.id
-  vpc_name = module.ibm-vpc.name
-  gateways = var.ibm-vpc-subnets_gateways == null ? null : jsondecode(var.ibm-vpc-subnets_gateways)
-  region = var.region
-  ibmcloud_api_key = var.ibmcloud_api_key
-  _count = var.ibm-vpc-subnets__count
-  label = var.ibm-vpc-subnets_label
-  zone_offset = var.ibm-vpc-subnets_zone_offset
-  ipv4_cidr_blocks = var.ibm-vpc-subnets_ipv4_cidr_blocks == null ? null : jsondecode(var.ibm-vpc-subnets_ipv4_cidr_blocks)
-  ipv4_address_count = var.ibm-vpc-subnets_ipv4_address_count
-  provision = var.ibm-vpc-subnets_provision
-  acl_rules = var.ibm-vpc-subnets_acl_rules == null ? null : jsondecode(var.ibm-vpc-subnets_acl_rules)
 
 }
 module "namespace" {
@@ -211,7 +183,7 @@ module "sonarqube" {
 
 }
 module "sysdig-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.1.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-sysdig-bind?ref=v1.1.1"
 
   resource_group_name = module.resource_group.name
   cluster_id = module.cluster.id
@@ -242,7 +214,7 @@ module "sysdig" {
 
 }
 module "ibm-logdna-bind" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-logdna-bind?ref=v1.1.1"
 
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name

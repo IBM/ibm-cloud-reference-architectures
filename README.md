@@ -107,20 +107,38 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 ### Terraform IasC Automation
 
 1. Clone this repository to your local SRE laptop and open a terminal to the cloned directory.
-2. Copy `terraform.tfvars.template` to `terraform.tfvars`. This is the file you will use to provide input to the terraform scripts.
-3. Run the `setup-workspace.sh` script to create a copy of the Terraform scripts in a `workspace/` directory and generate the SSH keys needed for the various VSI instances.
-4. Update **terraform.tfvars** in the `workspace/` directoyr with the appropriate values for your deployment. Note: The values are currently set up to place everything in the same resource group. To use different resource groups, provide different values for each of the `*_resource_group_name` variables and comment out the `*_resource_group_provision="false"` values.
+2. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
+    - `full`: Full IBM Cloud Financial Services reference architecture deployment, including Hyper Protect Crypto Services instance.
+    - `small`: IBM Financial Services reference architecture scaled down for a POC environment deployment. Hyper Protect Crypto Service has been replaced with Key Protect and the clusters have been reduced to single region.
+3. Determine which reference architecture you will be deploying. There are currently two options available:
+    - `vpc`: IBM Cloud for Financial Services VPC with virtual servers reference architecture
+    - `ocp`: IBM Cloud for Financial Services VPC with Red Hat OpenShift reference architecture
+4. Run the `setup-workspace.sh -t {FLAVOR} -a {ARCH}` script to create a copy of the Terraform scripts in a `workspace/` directory and generate the SSH keys needed for the various VSI instances.
+5. Update **terraform.tfvars** in the `workspace/` directory with the appropriate values for your deployment. Note: The values are currently set up to place everything in the same resource group. To use different resource groups, provide different values for each of the `*_resource_group_name` variables and comment out the `*_resource_group_provision="false"` values.
 
 ## Terraform Apply
 
+### Set up credentials
+
 1. Copy `credentials.template` to `credentials.properties`.
 2. Provide your IBM Cloud API key as the value for the `ibmcloud.api.key` variable in `credentials.properties` (**Note:** `*.properties` has been added to `.gitignore` to ensure that the file containing the apikey cannot be checked into Git.)
-3. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts. 
-4. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
-5. Change directory to the terraform directory that will be applied (e.g. `100-common-services`)
-6. Initialize the environment with `terraform init`
-7. Apply the terraform with `terraform apply -auto-approve`. If all is configured properly you should not be prompted again and the terraform should run to completion.
-8. It is recommend to run Terraform bundles `100`, `120` , `140` and then `160` in sequence following the instruction listed above.  After running the `120 Management + OpenShift` architecture and before running `160 OpenShift Developer Tools`, the VPN server needs to be set up.
+
+### Apply all architectures in the solution
+
+1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
+2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
+3. Run the `./apply-all.sh` script to sequentially provision the included architectures.
+
+**Note:** You can clean everything up by running `./destroy-all.sh`. It will destroy each architecture in reverse order.
+
+### Apply each architecture in the solution
+
+1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts. 
+2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
+3. Change directory to the terraform directory that will be applied (e.g. `100-common-services`)
+4. Initialize the environment with `terraform init`
+5. Apply the terraform with `terraform apply -auto-approve`. If all is configured properly you should not be prompted again and the terraform should run to completion.
+6. It is recommended to run Terraform bundles `100`, `120` , `140` and then `160` in sequence following the instruction listed above.  After running the `120 Management + OpenShift` architecture and before running `160 OpenShift Developer Tools`, the VPN server needs to be set up.
 
 ## Configure VPN
 

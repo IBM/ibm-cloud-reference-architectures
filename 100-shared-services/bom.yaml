@@ -12,17 +12,77 @@ spec:
         - name: provision
           alias: cs_resource_group_provision
           scope: global
-      version: v2.3.0
+      version: v2.4.6
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      variables:
+        - name: resource_group_name
+          alias: kms_resource_group_name
+          scope: global
+        - name: provision
+          alias: kms_resource_group_provision
+          scope: global
+          value: false
+      dependencies:
+        - name: sync
+          ref: resource_group
+      version: v2.4.6
+    - name: ibm-kms
+      alias: kms
+      variables:
+        - name: region
+          alias: kms_region
+        - name: name_prefix
+          alias: kms_name_prefix
+          scope: global
+        - name: name
+          required: true
+      dependencies:
+        - name: resource_group
+          ref: kms_resource_group
+      version: v0.2.0
     - name: ibm-access-group
       version: v2.3.0
-    - name: key-protect
-      version: v2.1.1
     - name: ibm-object-storage
-      version: v3.3.2
+      version: v3.3.3
     - name: sysdig
       version: v3.4.0
     - name: logdna
       version: v3.3.1
+    - name: ibm-iam-service-authorization
+      alias: vsi-encrypt-auth
+      variables:
+        - name: source_service_name
+          value: server-protect
+        - name: roles
+          value:
+            - Reader
+      dependencies:
+        - name: target_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
+        - name: source_resource
+          ref: source_resource
+        - name: source_resource_group
+          ref: source_resource_group
+      version: v1.2.0
+    - name: ibm-iam-service-authorization
+      alias: cos-encrypt-auth
+      variables:
+        - name: roles
+          value:
+            - Reader
+      dependencies:
+        - name: target_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
+        - name: source_resource
+          ref: cos
+        - name: source_resource_group
+          ref: source_resource_group
+      version: v1.2.0
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
       variables:
@@ -30,28 +90,24 @@ spec:
           value: is
         - name: source_resource_type
           value: flow-log-collector
-        - name: target_service_name
-          value: cloud-object-storage
         - name: roles
           value:
             - Writer
       dependencies:
         - name: target_resource_group
           ref: resource_group
+        - name: target_resource
+          ref: cos
         - name: source_resource
           ref: source_resource
         - name: source_resource_group
           ref: source_resource_group
-        - name: target_resource
-          ref: target_resource
-      version: v1.1.2
+      version: v1.2.0
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth
       variables:
         - name: source_service_name
           value: server-protect
-        - name: target_service_name
-          value: hs-crypto
         - name: roles
           value:
             - Reader
@@ -59,19 +115,17 @@ spec:
         - name: source_resource_group
           ref: resource_group
         - name: target_resource_group
-          ref: hpcs_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
         - name: source_resource
           ref: source_resource
-        - name: target_resource
-          ref: target_resource
-      version: v1.1.2
+      version: v1.2.0
     - name: ibm-iam-service-authorization
       alias: kube-encrypt-auth
       variables:
         - name: source_service_name
           value: containers-kubernetes
-        - name: target_service_name
-          value: hs-crypto
         - name: roles
           value:
             - Reader
@@ -79,15 +133,17 @@ spec:
         - name: source_resource_group
           ref: resource_group
         - name: target_resource_group
-          ref: hpcs_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
         - name: source_resource
           ref: source_resource
-        - name: target_resource
-          ref: target_resource
-      version: v1.1.2
+      version: v1.2.0
   variables:
+    - name: kms_resource_group_provision
     - name: cs_resource_group_provision
     - name: name_prefix
       alias: cs_name_prefix
     - name: region
     - name: cs_resource_group_name
+    - name: kms_service

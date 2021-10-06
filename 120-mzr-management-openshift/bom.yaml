@@ -5,26 +5,32 @@ metadata:
 spec:
   modules:
     - name: ibm-resource-group
-      alias: hpcs_resource_group
+      alias: kms_resource_group
       variables:
         - name: provision
           value: false
-      version: v2.3.0
-    - name: hpcs
-      alias: hpcs
+      version: v2.4.6
+    - name: ibm-resource-group
+      alias: at_resource_group
+      variables:
+        - name: provision
+          value: false
+      version: v2.4.6
+    - name: ibm-kms
+      alias: kms
       variables:
         - name: provision
           value: false
         - name: region
-          alias: hpcs_region
+          alias: kms_region
         - name: name_prefix
-          alias: hpcs_name_prefix
+          alias: kms_name_prefix
           scope: global
           value: ''
       dependencies:
         - name: resource_group
-          ref: hpcs_resource_group
-      version: v1.2.1
+          ref: kms_resource_group
+      version: v0.2.0
     - name: ibm-resource-group
       variables:
         - name: resource_group_name
@@ -33,7 +39,7 @@ spec:
         - name: provision
           alias: mgmt_resource_group_provision
           scope: global
-      version: v2.3.0
+      version: v2.4.6
     - name: ibm-access-group
       version: v2.3.0
     - name: ibm-vpc
@@ -46,7 +52,7 @@ spec:
             - 10.20.0.0/18
             - 10.30.0.0/18
             - 10.1.0.0/18
-      version: v1.11.5
+      version: v1.11.7
     - name: ibm-flow-logs
       dependencies:
         - name: target
@@ -59,11 +65,13 @@ spec:
           ref: auth
       version: v1.0.0
     - name: ibm-vpc-gateways
-      version: v1.4.0
+      version: v1.5.1
     - name: ibm-vpc-subnets
       alias: worker-subnets
       variables:
         - name: _count
+          alias: mgmt_worker_subnet_count
+          scope: global
           value: 3
         - name: label
           value: worker
@@ -79,7 +87,7 @@ spec:
           ref: resource_group
         - name: vpc
           ref: ibm-vpc
-      version: v1.8.0
+      version: v1.8.1
     - name: ibm-ocp-vpc
       alias: cluster
       variables:
@@ -87,6 +95,8 @@ spec:
           value: true
         - name: kms_enabled
           value: true
+        - name: worker_count
+          alias: mgmt_worker_count
       dependencies:
         - name: subnets
           ref: worker-subnets
@@ -111,7 +121,7 @@ spec:
             - 10.10.20.0/24
             - 10.20.20.0/24
             - 10.30.20.0/24
-      version: v1.8.0
+      version: v1.8.1
     - name: ibm-vpc-subnets
       alias: vpn-subnets
       variables:
@@ -122,7 +132,7 @@ spec:
         - name: ipv4_cidr_blocks
           value:
             - 10.10.30.0/24
-      version: v1.8.0
+      version: v1.8.1
     - name: ibm-vpc-subnets
       alias: bastion-subnets
       variables:
@@ -136,13 +146,13 @@ spec:
           value:
             - 10.20.30.0/24
             - 10.30.30.0/24
-      version: v1.8.0
+      version: v1.8.1
     - name: ibm-vpc-ssh
       alias: mgmt_ssh_vpn
       variables:
         - name: label
           value: vpn
-      version: v1.5.1
+      version: v1.6.0
     - name: ibm-vpc-vpn-gateway
       dependencies:
         - name: subnets
@@ -173,7 +183,7 @@ spec:
       variables:
         - name: label
           value: bastion
-      version: v1.5.1
+      version: v1.6.0
     - name: vsi-bastion
       variables:
         - name: image_name
@@ -197,7 +207,7 @@ spec:
       variables:
         - name: provision
           value: false
-      version: v2.3.0
+      version: v2.4.6
     - name: ibm-object-storage
       alias: cos
       variables:
@@ -209,22 +219,22 @@ spec:
       dependencies:
         - name: resource_group
           ref: cs_resource_group
-      version: v3.3.2
+      version: v3.3.3
     - name: ibm-kms-key
       variables:
         - name: provision
           value: true
       dependencies:
         - name: kms
-          ref: hpcs
-      version: v1.2.0
+          ref: kms
+      version: v1.3.0
     - name: ibm-activity-tracker
       variables:
         - name: provision
           value: false
       dependencies:
         - name: resource_group
-          ref: hpcs_resource_group
+          ref: at_resource_group
       version: v2.3.0
     - name: sysdig
       variables:
@@ -257,47 +267,7 @@ spec:
           ref: cluster
         - name: resource_group
           ref: resource_group
-      version: v1.4.0
-    - name: ibm-iam-service-authorization
-      alias: vsi-encrypt-auth
-      variables:
-        - name: source_service_name
-          value: server-protect
-        - name: target_service_name
-          value: hs-crypto
-        - name: roles
-          value:
-            - Reader
-      dependencies:
-        - name: source_resource_group
-          ref: resource_group
-        - name: target_resource_group
-          ref: hpcs_resource_group
-        - name: source_resource
-          ref: source_resource
-        - name: target_resource
-          ref: target_resource
-      version: v1.1.2
-    - name: ibm-iam-service-authorization
-      alias: kube-encrypt-auth
-      variables:
-        - name: source_service_name
-          value: containers-kubernetes
-        - name: target_service_name
-          value: hs-crypto
-        - name: roles
-          value:
-            - Reader
-      dependencies:
-        - name: source_resource_group
-          ref: resource_group
-        - name: target_resource_group
-          ref: hpcs_resource_group
-        - name: source_resource
-          ref: source_resource
-        - name: target_resource
-          ref: target_resource
-      version: v1.1.2
+      version: v1.5.0
   variables:
     - name: mgmt_resource_group_name
     - name: mgmt_resource_group_provision
@@ -321,3 +291,4 @@ spec:
     - name: mgmt_ssh_vpn_private_key_file
     - name: mgmt_ssh_bastion_public_key_file
     - name: mgmt_ssh_bastion_private_key_file
+    - name: kms_service

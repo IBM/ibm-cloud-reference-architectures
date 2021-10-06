@@ -1,0 +1,124 @@
+###
+### Small deployment template
+###
+
+## region: The IBM Cloud region where the cluster will be/has been installed.
+region="us-east"
+
+## ***************
+## KMS service
+## ***************
+
+## kms_region: Geographic location of the KMS service (e.g. us-south, us-east)
+kms_region="us-east"
+
+## kms_service: The service that should be used for the kms instance (keyprotect or hpcs)
+kms_service="keyprotect"
+#kms_provision="false"
+
+#kms_name=""
+
+## ***************
+## Resource groups
+## ***************
+
+## at_resource_group_name: The name of the activity tracker resource group
+at_resource_group_name="default"
+
+## cs_resource_group_name: The name of the common services resource group
+cs_resource_group_name="common"
+
+## kms_resource_group_name: The name of the kms resource group
+kms_resource_group_name="common"
+
+## mgmt_resource_group_name: The name of the management resource group
+mgmt_resource_group_name="management"
+
+## workload_resource_group_name: The name of the worklaod resource group
+workload_resource_group_name="workload"
+
+
+## at_resource_group_provision: Flag indicating that the activity tracker resource group should be created
+at_resource_group_provision="false"
+
+## cs_resource_group_provision: Flag indicating that the resource group should be created
+#cs_resource_group_provision="false"
+
+## kms_resource_group_provision: Flag indicating that the resource group should be created
+kms_resource_group_provision="false"
+
+## mgmt_resource_group_provision: Flag indicating that the resource group should be created
+#mgmt_resource_group_provision="false"
+
+## workload_resource_group_provision: Flag indicating that the resource group should be created
+#workload_resource_group_provision="false"
+
+## ***************
+## Name Prefixes
+## ***************
+
+## kms_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
+kms_name_prefix="common"
+
+## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
+cs_name_prefix="common"
+
+## mgmt_name_prefix: The name of the vpc resource
+mgmt_name_prefix="management"
+
+## workload_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
+workload_name_prefix="workload"
+
+## ***************
+## Cluster Variables
+## ***************
+
+#cluster_flavor=""
+
+mgmt_worker_count="2"
+mgmt_worker_subnet_count="1"
+
+workload_worker_count="2"
+workload_worker_subnet_count="1"
+
+## ***************
+## Misc Variables
+## ***************
+
+registry_namespace = ""
+git_type = "github"
+git_url = "https://github.com/cloud-native-toolkit"
+
+## ***************
+## SSH Keys
+## ***************
+
+## mgmt_ssh_vpn_public_key_file: The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated.
+mgmt_ssh_vpn_public_key_file="ssh-mgmt-openvpn.pub"
+
+## mgmt_ssh_vpn_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
+mgmt_ssh_vpn_private_key_file="ssh-mgmt-openvpn"
+
+## mgmt_ssh_bastion_public_key_file: The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated.
+mgmt_ssh_bastion_public_key_file="ssh-mgmt-bastion.pub"
+
+## mgmt_ssh_bastion_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
+mgmt_ssh_bastion_private_key_file="ssh-mgmt-bastion"
+
+## workload_ssh_vpn_public_key_file: The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated.
+workload_ssh_vpn_public_key_file="ssh-workload-openvpn.pub"
+
+## workload_ssh_vpn_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
+workload_ssh_vpn_private_key_file="ssh-workload-openvpn"
+
+## workload_ssh_bastion_public_key_file: The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated.
+workload_ssh_bastion_public_key_file="ssh-workload-bastion.pub"
+
+## workload_ssh_bastion_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
+workload_ssh_bastion_private_key_file="ssh-workload-bastion"
+
+## workload_ssh_scc_public_key_file: The name of the file containing the public key provided for the ssh key. If empty string is provided then a new key will be generated.
+workload_ssh_scc_public_key_file="ssh-workload-scc.pub"
+
+## workload_ssh_scc_private_key_file: The name of the file containing the private key provided for the ssh key. If empty string is provided then a new key will be generated.
+workload_ssh_scc_private_key_file="ssh-workload-scc"
