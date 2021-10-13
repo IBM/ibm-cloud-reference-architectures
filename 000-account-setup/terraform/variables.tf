@@ -14,7 +14,7 @@ variable "resource_group_sync" {
 variable "at_resource_group_provision" {
   type = bool
   description = "Flag indicating that the resource group should be created"
-  default = false
+  default = true
 }
 variable "at-us-east_region" {
   type = string
