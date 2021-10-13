@@ -24,7 +24,7 @@ variable "kms-key_label" {
 variable "kms-key_rotation_interval" {
   type = number
   description = "The interval in months that a root key needs to be rotated."
-  default = 3 validation { condition = var.rotation_interval >= 1 && var.rotation_interval <= 12 error_message = The rotation interval must be 1 to 12 months. }
+  default = 3
 }
 variable "kms-key_dual_auth_delete" {
   type = bool
