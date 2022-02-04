@@ -2,6 +2,14 @@ apiVersion: cloud.ibm.com/v1alpha1
 kind: BillOfMaterial
 metadata:
   name: 100-shared-services
+  labels:
+    platform: ibm
+    code: 100
+  annotations:
+    displayName: Shared services
+    description: >-
+      Managed services that are shared across the management and workload
+      networks
 spec:
   modules:
     - name: ibm-resource-group
@@ -12,7 +20,7 @@ spec:
         - name: provision
           alias: cs_resource_group_provision
           scope: global
-      version: v2.4.6
+      version: v3.0.1
     - name: ibm-resource-group
       alias: kms_resource_group
       variables:
@@ -22,11 +30,11 @@ spec:
         - name: provision
           alias: kms_resource_group_provision
           scope: global
-          value: false
+          value: true
       dependencies:
         - name: sync
           ref: resource_group
-      version: v2.4.6
+      version: v3.0.1
     - name: ibm-kms
       alias: kms
       variables:
@@ -40,15 +48,15 @@ spec:
       dependencies:
         - name: resource_group
           ref: kms_resource_group
-      version: v0.2.0
+      version: v0.3.2
     - name: ibm-access-group
-      version: v2.3.0
+      version: v3.0.0
     - name: ibm-object-storage
-      version: v3.3.3
+      version: v4.0.0
     - name: sysdig
-      version: v3.4.0
+      version: v4.0.1
     - name: logdna
-      version: v3.3.1
+      version: v4.0.0
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth
       variables:
@@ -66,7 +74,7 @@ spec:
           ref: source_resource
         - name: source_resource_group
           ref: source_resource_group
-      version: v1.2.0
+      version: v1.2.5
     - name: ibm-iam-service-authorization
       alias: cos-encrypt-auth
       variables:
@@ -82,7 +90,7 @@ spec:
           ref: cos
         - name: source_resource_group
           ref: source_resource_group
-      version: v1.2.0
+      version: v1.2.5
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
       variables:
@@ -102,7 +110,7 @@ spec:
           ref: source_resource
         - name: source_resource_group
           ref: source_resource_group
-      version: v1.2.0
+      version: v1.2.5
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth
       variables:
@@ -120,7 +128,7 @@ spec:
           ref: kms
         - name: source_resource
           ref: source_resource
-      version: v1.2.0
+      version: v1.2.5
     - name: ibm-iam-service-authorization
       alias: kube-encrypt-auth
       variables:
@@ -138,7 +146,29 @@ spec:
           ref: kms
         - name: source_resource
           ref: source_resource
-      version: v1.2.0
+      version: v1.2.5
+    - name: ibm-cert-manager
+      variables:
+        - name: private_endpoint
+          value: false
+      dependencies:
+        - name: resource_group
+        - name: kms_key
+          ref: kms-key
+      version: v1.1.0
+    - name: ibm-iam-service-authorization
+      alias: vpn-cert-manager-auth
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: vpn-server
+        - name: roles
+          value:
+            - Writer
+        - name: target_service_name
+          value: cloudcerts
+      version: v1.2.5
   variables:
     - name: kms_resource_group_provision
     - name: cs_resource_group_provision

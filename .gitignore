@@ -8,3 +8,8 @@ gitops/
 .kube/
 ssh-*
 terraform.tfvars
+
+
+workspace/*
+workspace-*/*
+credentials.properties

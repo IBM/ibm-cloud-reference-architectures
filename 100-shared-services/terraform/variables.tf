@@ -23,6 +23,10 @@ variable "vsi-encrypt-auth_provision" {
   description = "Flag indicating that the service authorization should be created"
   default = true
 }
+variable "ibmcloud_api_key" {
+  type = string
+  description = "The IBM Cloud api key"
+}
 variable "vsi-encrypt-auth_roles" {
   type = string
   description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
@@ -77,10 +81,6 @@ variable "cs_resource_group_name" {
   type = string
   description = "The name of the resource group"
 }
-variable "ibmcloud_api_key" {
-  type = string
-  description = "The IBM Cloud api token"
-}
 variable "resource_group_sync" {
   type = string
   description = "Value used to order the provisioning of the resource group"
@@ -98,6 +98,65 @@ variable "kms_resource_group_name" {
 variable "kms_resource_group_provision" {
   type = bool
   description = "Flag indicating that the resource group should be created"
+  default = true
+}
+variable "ibm-cert-manager_kms_id" {
+  type = string
+  description = "The crn of the KMS instance that will be used to encrypt the instance."
+  default = null
+}
+variable "ibm-cert-manager_kms_key_crn" {
+  type = string
+  description = "The crn of the root key in the KMS"
+  default = null
+}
+variable "ibm-cert-manager_kms_private_url" {
+  type = string
+  description = "The private url of the KMS instance that will be used to encrypt the instance."
+  default = null
+}
+variable "ibm-cert-manager_kms_public_url" {
+  type = string
+  description = "The public url of the KMS instance that will be used to encrypt the instance."
+  default = null
+}
+variable "region" {
+  type = string
+  description = "The region where the Certificate Manager will be/has been provisioned."
+}
+variable "cs_name_prefix" {
+  type = string
+  description = "The name prefix for the Certificate Manager resource. If not provided will default to resource group name."
+  default = ""
+}
+variable "ibm-cert-manager_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "ibm-cert-manager_kms_enabled" {
+  type = bool
+  description = "Flag indicating that kms encryption should be enabled for this instance"
+  default = false
+}
+variable "ibm-cert-manager_kms_private_endpoint" {
+  type = bool
+  description = "Flag indicating the KMS private endpoint should be used"
+  default = true
+}
+variable "ibm-cert-manager_name" {
+  type = string
+  description = "Name of the Certificate Manager. If not provided will be generated as $name_prefix-$label"
+  default = ""
+}
+variable "ibm-cert-manager_label" {
+  type = string
+  description = "Label used to build the Certificate Manager name if not provided."
+  default = "cm"
+}
+variable "ibm-cert-manager_private_endpoint" {
+  type = bool
+  description = "Flag indicating that the service should be access using private endpoints"
   default = false
 }
 variable "flow-log-auth_source_service_name" {
@@ -215,6 +274,71 @@ variable "kube-encrypt-auth_target_instance" {
   description = "Flag indicating that the target instance id should be mapped"
   default = false
 }
+variable "vpn-cert-manager-auth_source_service_name" {
+  type = string
+  description = "The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog."
+  default = "is"
+}
+variable "vpn-cert-manager-auth_source_resource_instance_id" {
+  type = string
+  description = "The instance id of the source service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
+  default = null
+}
+variable "vpn-cert-manager-auth_source_resource_type" {
+  type = string
+  description = "The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
+  default = "vpn-server"
+}
+variable "vpn-cert-manager-auth_source_resource_group_id" {
+  type = string
+  description = "The id of the resource group that will be used to scope which source services will be authorized to access the target service. If not provided the authorization will be scoped to the entire account. This value is superseded by the source_resource_instance_id"
+  default = null
+}
+variable "vpn-cert-manager-auth_provision" {
+  type = bool
+  description = "Flag indicating that the service authorization should be created"
+  default = true
+}
+variable "vpn-cert-manager-auth_target_service_name" {
+  type = string
+  description = "The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog."
+  default = "cloudcerts"
+}
+variable "vpn-cert-manager-auth_target_resource_instance_id" {
+  type = string
+  description = "The instance id of the target service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account."
+  default = null
+}
+variable "vpn-cert-manager-auth_target_resource_type" {
+  type = string
+  description = "The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector)."
+  default = null
+}
+variable "vpn-cert-manager-auth_target_resource_group_id" {
+  type = string
+  description = "The id of the resource group that will be used to scope which services the source services will be authorized to access. If not provided the authorization will be scoped to the entire account. This value is superseded by the target_resource_instance_id"
+  default = null
+}
+variable "vpn-cert-manager-auth_roles" {
+  type = string
+  description = "A list of roles that should be granted on the target service (e.g. Reader, Writer)."
+  default = "[\"Writer\"]"
+}
+variable "vpn-cert-manager-auth_source_service_account" {
+  type = string
+  description = "GUID of the account where the source service is provisioned. This is required to authorize service access across accounts."
+  default = null
+}
+variable "vpn-cert-manager-auth_source_instance" {
+  type = bool
+  description = "Flag indicating that the source instance id should be mapped"
+  default = false
+}
+variable "vpn-cert-manager-auth_target_instance" {
+  type = bool
+  description = "Flag indicating that the target instance id should be mapped"
+  default = false
+}
 variable "kms_region" {
   type = string
   description = "Geographic location of the resource (e.g. us-south, us-east)"
@@ -254,11 +378,6 @@ variable "kms_service" {
   description = "The name of the KMS provider that should be used (keyprotect or hpcs)"
   default = "keyprotect"
 }
-variable "cs_name_prefix" {
-  type = string
-  description = "The prefix name for the service. If not provided it will default to the resource group name"
-  default = ""
-}
 variable "cos_resource_location" {
   type = string
   description = "Geographic location of the resource (e.g. us-south, us-east)"
@@ -283,10 +402,6 @@ variable "cos_label" {
   type = string
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = "cos"
-}
-variable "region" {
-  type = string
-  description = "Geographic location of the resource (e.g. us-south, us-east)"
 }
 variable "logdna_plan" {
   type = string

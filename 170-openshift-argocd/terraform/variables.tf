@@ -1,9 +1,8 @@
 variable "server_url" {
   type = string
   description = "The url for the OpenShift api"
-  default = ""
 }
-variable "login_user" {
+variable "cluster_login_user" {
   type = string
   description = "Username for login"
   default = "apikey"
@@ -13,15 +12,29 @@ variable "ibmcloud_api_key" {
   description = "Password for login"
   default = ""
 }
-variable "login_token" {
+variable "cluster_login_token" {
   type = string
   description = "Token used for authentication"
-  default = ""
 }
-variable "login_skip" {
+variable "cluster_skip" {
   type = bool
   description = "Flag indicating that the cluster login has already been performed"
   default = false
+}
+variable "cluster_cluster_version" {
+  type = string
+  description = "The version of the cluster (passed through to the output)"
+  default = ""
+}
+variable "cluster_ingress_subdomain" {
+  type = string
+  description = "The ingress subdomain of the cluster (passed through to the output)"
+  default = ""
+}
+variable "cluster_tls_secret_name" {
+  type = string
+  description = "The name of the secret containing the tls certificates for the ingress subdomain (passed through to the output)"
+  default = ""
 }
 variable "namespace_name" {
   type = string
@@ -33,25 +46,10 @@ variable "namespace_create_operator_group" {
   description = "Flag indicating that an operator group should be created in the namespace"
   default = true
 }
-variable "cluster_user" {
+variable "argocd_cluster_type" {
   type = string
-  description = "Username for login"
-  default = ""
-}
-variable "cluster_password" {
-  type = string
-  description = "Password for login"
-  default = ""
-}
-variable "cluster_token" {
-  type = string
-  description = "Token used for authentication"
-  default = ""
-}
-variable "cluster_skip" {
-  type = bool
-  description = "Flag indicating that the cluster login has already been performed"
-  default = false
+  description = "The type of cluster (openshift or kubernetes)"
+  default = "ocp4"
 }
 variable "argocd_name" {
   type = string

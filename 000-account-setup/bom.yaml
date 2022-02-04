@@ -2,6 +2,14 @@ apiVersion: cloud.ibm.com/v1alpha1
 kind: BillOfMaterial
 metadata:
   name: 000-account-setup
+  labels:
+    platform: ibm
+    code: 0
+  annotations:
+    displayName: Account setup
+    description: >-
+      Sets up an IBM Cloud account with required Financial Services reference
+      architecture settings
 spec:
   modules:
     - name: ibm-resource-group
@@ -13,7 +21,7 @@ spec:
           alias: at_resource_group_provision
           scope: global
           value: false
-      version: v2.4.6
+      version: v3.0.1
     - name: ibm-activity-tracker
       alias: at-us-east
       variables:
@@ -22,7 +30,7 @@ spec:
           scope: module
         - name: provision
           value: true
-      version: v2.3.0
+      version: v2.4.0
     - name: ibm-activity-tracker
       alias: at-us-south
       variables:
@@ -31,7 +39,7 @@ spec:
           scope: module
         - name: provision
           value: true
-      version: v2.3.0
+      version: v2.4.0
     - name: ibm-activity-tracker
       alias: at-eu-de
       variables:
@@ -40,7 +48,7 @@ spec:
           scope: module
         - name: provision
           value: true
-      version: v2.3.0
+      version: v2.4.0
     - name: ibm-activity-tracker
       alias: at-eu-gb
       variables:
@@ -49,7 +57,7 @@ spec:
           scope: module
         - name: provision
           value: true
-      version: v2.3.0
+      version: v2.4.0
     - name: ibm-onboard-fs-account
       variables:
         - name: action
@@ -60,7 +68,7 @@ spec:
           value: RESTRICTED
         - name: restrict_create_platform_apikey
           value: RESTRICTED
-      version: v1.0.1
+      version: v1.1.0
   variables:
     - name: at_resource_group_provision
     - name: at_resource_group_name

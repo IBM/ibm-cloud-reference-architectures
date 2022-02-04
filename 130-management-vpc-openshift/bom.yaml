@@ -1,0 +1,257 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 130-management-vpc-openshift
+  labels:
+    platform: ibm
+    code: 130
+  annotations:
+    displayName: Management VPC OpenShift
+    description: Management VPC and Red Hat OpenShift servers
+spec:
+  modules:
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      variables:
+        - name: provision
+          value: false
+      version: v3.0.1
+    - name: ibm-resource-group
+      alias: at_resource_group
+      variables:
+        - name: provision
+          value: false
+      version: v3.0.1
+    - name: ibm-kms
+      alias: kms
+      variables:
+        - name: provision
+          value: false
+        - name: region
+          alias: kms_region
+        - name: name_prefix
+          alias: kms_name_prefix
+          scope: global
+          value: ''
+      dependencies:
+        - name: resource_group
+          ref: kms_resource_group
+      version: v0.3.2
+    - name: ibm-resource-group
+      variables:
+        - name: resource_group_name
+          alias: mgmt_resource_group_name
+          scope: global
+        - name: provision
+          alias: mgmt_resource_group_provision
+          scope: global
+      version: v3.0.1
+    - name: ibm-access-group
+      version: v3.0.0
+    - name: ibm-vpc
+      variables:
+        - name: address_prefix_count
+          value: 3
+        - name: address_prefixes
+          value:
+            - 10.10.0.0/18
+            - 10.20.0.0/18
+            - 10.30.0.0/18
+      version: v1.13.0
+    - name: ibm-flow-logs
+      dependencies:
+        - name: target
+          ref: ibm-vpc
+        - name: cos_bucket
+          ref: flow_log_bucket
+        - name: resource_group
+          ref: resource_group
+        - name: auth
+          ref: auth
+      version: v1.0.0
+    - name: ibm-vpc-gateways
+      version: v1.6.1
+    - name: ibm-vpc-subnets
+      alias: worker-subnets
+      variables:
+        - name: _count
+          alias: mgmt_worker_subnet_count
+          scope: global
+          value: 3
+        - name: label
+          value: worker
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.10.10.0/24
+            - 10.20.10.0/24
+            - 10.30.10.0/24
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+        - name: resource-group
+          ref: resource_group
+        - name: vpc
+          ref: ibm-vpc
+      version: v1.9.4
+    - name: ibm-ocp-vpc
+      alias: cluster
+      variables:
+        - name: disable_public_endpoint
+          value: true
+        - name: kms_enabled
+          value: true
+        - name: worker_count
+          alias: mgmt_worker_count
+        - name: ocp_version
+          value: 4.8
+      dependencies:
+        - name: subnets
+          ref: worker-subnets
+        - name: kms_key
+          ref: kms_key
+        - name: resource-group
+          ref: resource_group
+        - name: cos
+          ref: cos
+        - name: sync
+          ref: sync
+      version: v1.10.3
+    - name: ibm-vpc-subnets
+      alias: vpe-subnets
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: vpe
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.10.20.0/24
+            - 10.20.20.0/24
+            - 10.30.20.0/24
+      version: v1.9.4
+    - name: ibm-vpc-subnets
+      alias: ingress-subnets
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: ingress
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.10.30.0/24
+            - 10.20.30.0/24
+            - 10.30.30.0/24
+      version: v1.9.4
+    - name: ibm-vpc-vpn-gateway
+      dependencies:
+        - name: subnets
+          ref: vpn-subnets
+        - name: resource_group
+          ref: resource_group
+      version: v1.1.2
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      variables:
+        - name: provision
+          value: false
+      version: v3.0.1
+    - name: ibm-object-storage
+      alias: cos
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+      version: v4.0.0
+    - name: ibm-kms-key
+      variables:
+        - name: provision
+          value: true
+      dependencies:
+        - name: kms
+          ref: kms
+      version: v1.5.0
+    - name: ibm-activity-tracker
+      variables:
+        - name: provision
+          value: false
+      dependencies:
+        - name: resource_group
+          ref: at_resource_group
+      version: v2.4.0
+    - name: ibm-object-storage-bucket
+      alias: flow_log_bucket
+      variables:
+        - name: label
+          value: flow-logs
+        - name: allowed_ip
+          value:
+            - 0.0.0.0/0
+      version: v0.8.2
+    - name: ibm-vpe-gateway
+      alias: vpe-cos
+      dependencies:
+        - name: resource
+          ref: cos
+        - name: subnets
+          ref: vpe-subnets
+        - name: sync
+          ref: cluster
+        - name: resource_group
+          ref: resource_group
+      version: v1.6.0
+    - name: ibm-transit-gateway
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource-group
+          ref: cs_resource_group
+        - name: vpc
+          ref: '*'
+      version: v0.2.2
+    - name: logdna
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+      version: v4.0.0
+    - name: sysdig
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+      version: v4.0.1
+    - name: ibm-logdna-bind
+      version: v1.2.3
+    - name: sysdig-bind
+      version: v1.2.3
+  variables:
+    - name: mgmt_resource_group_name
+    - name: mgmt_resource_group_provision
+    - name: region
+    - name: ibmcloud_api_key
+    - name: name_prefix
+      alias: mgmt_name_prefix
+      required: true
+    - name: cs_resource_group_name
+    - name: cs_name_prefix
+    - name: worker_count
+    - name: kms_service

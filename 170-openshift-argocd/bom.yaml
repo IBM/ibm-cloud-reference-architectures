@@ -8,17 +8,17 @@ spec:
       variables:
         - name: server_url
           required: true
-        - name: user
+        - name: login_user
           value: apikey
-        - name: password
+        - name: login_password
           alias: ibmcloud_api_key
           scope: global
-      version: v1.0.0
+      version: v1.2.4
     - name: namespace
       variables:
         - name: name
           value: tools
-      version: v3.1.1
+      version: v3.1.3
     - name: cluster-config
       alias: config
       variables:
@@ -26,8 +26,8 @@ spec:
           value: Workload
         - name: banner_background_color
           value: red
-      version: v0.1.0
+      version: v0.1.2
     - name: argocd
-      version: v2.12.1
+      version: v2.17.9
   variables:
     - name: config_banner_text

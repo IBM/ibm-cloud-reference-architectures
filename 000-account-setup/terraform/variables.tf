@@ -2,10 +2,6 @@ variable "at_resource_group_name" {
   type = string
   description = "The name of the resource group"
 }
-variable "ibmcloud_api_key" {
-  type = string
-  description = "The IBM Cloud api token"
-}
 variable "resource_group_sync" {
   type = string
   description = "Value used to order the provisioning of the resource group"
@@ -14,7 +10,7 @@ variable "resource_group_sync" {
 variable "at_resource_group_provision" {
   type = bool
   description = "Flag indicating that the resource group should be created"
-  default = true
+  default = false
 }
 variable "at-us-east_region" {
   type = string
@@ -95,6 +91,10 @@ variable "at-eu-gb_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned"
   default = true
+}
+variable "ibmcloud_api_key" {
+  type = string
+  description = "The api key for IBM Cloud access"
 }
 variable "region" {
   type = string

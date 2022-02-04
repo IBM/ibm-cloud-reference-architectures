@@ -45,11 +45,19 @@ echo "*****"
 
 ../create-ssh-keys.sh
 cp "../terraform.tfvars.template-${TEMPLATE_FLAVOR}" ./terraform.tfvars
+
+# append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
+if command -v openssl &> /dev/null
+then
+    printf "\n\nsuffix=\"$(openssl rand -hex 4)\"\n" >> ./terraform.tfvars
+fi
+
+
 cp ../apply-all.sh ./apply-all.sh
 cp ../destroy-all.sh ./destroy-all.sh
 
-VPC_ARCH="000|100|110|130"
-OCP_ARCH="000|100|120|140|160|165"
+VPC_ARCH="000|100|110|120|140"
+OCP_ARCH="000|100|110|130|150|160|165"
 
 find .. -type d -maxdepth 1 | grep -vE "[.][.]/[.].*" | grep -v workspace | sort | \
   while read dir;

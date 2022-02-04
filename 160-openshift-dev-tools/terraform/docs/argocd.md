@@ -11,7 +11,6 @@ The module depends on the following software components:
 
 - terraform v12
 - kubectl
-- helm terraform provider >= 1.1.1 (provided by terraform provider)
 
 ## Module dependencies
 
