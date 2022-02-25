@@ -1,3 +1,9 @@
+# ⚠️⚠️ This project has been moved to the public repo at: https://github.com/IBM/ibmcloud-ref-arch
+
+All new development will happen on the public repo at: https://github.com/IBM/ibmcloud-ref-arch
+
+----
+
 # IBM Cloud for Financial Services - Terraform Automation
 
 ### Change Log
