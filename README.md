@@ -1,32 +1,27 @@
-# ⚠️⚠️ 
-# This project has been moved to the public repo at: https://github.com/IBM/ibmcloud-ref-arch
-
-All new development will happen on the public repo at: https://github.com/IBM/ibmcloud-ref-arch
-
-# ⚠️⚠️ 
-
-# IBM Cloud for Financial Services - Terraform Automation
+# IBM Cloud Reference Architecture - Terraform Automation
 
 ### Change Log
 
 - **11/2021** - Updated to use Client-to-site VPN service (beta) instead of a VSI running a VPN server
 - **11/2021** - Updated to support the Edge VPC infrastructure in addition to Management and Workload VPCs.
+- **06/2021** - Initial release
 
-> This collection of IBM Cloud terraform automation bundles has been crafted from a set of [Terraform modules](https://github.com/cloud-native-toolkit/garage-terraform-modules/blob/main/MODULES.md) created by GSI Labs team part of the [Hybrid Cloud Ecosystem organization](https://w3.ibm.com/w3publisher/cloud-ecosystem). Please contact **Matthew Perrins** __mjperrin@us.ibm.com__, **Sean Sundberg** __seansund@us.ibm.com__, or **Andrew Trice** __amtrice@us.ibm.com__ for more details.
+> This collection of IBM Cloud terraform automation bundles has been crafted from a set of [Terraform modules](https://modules.cloudnativetoolkit.dev/) created by the IBM Ecosystem Labs team part of the [IBM Ecosystem organization](https://www.ibm.com/partnerworld/public?mhsrc=ibmsearch_a&mhq=partnerworld). Please contact **Matthew Perrins** __mjperrin@us.ibm.com__, **Sean Sundberg** __seansund@us.ibm.com__, or **Andrew Trice** __amtrice@us.ibm.com__ for more details or raise an issue on the repository for bugs or feature requests.
 
-The IBM Cloud defines three reference architectures for IBM Cloud for Financial Services. These reference architectures establish a secure cloud environment that will enable the deployment and management of regulatory compliant workloads. This repository addresses the [VPC architecture with virtual servers](https://test.cloud.ibm.com/docs/allowlist/framework-financial-services?topic=framework-financial-services-vpc-architecture-detailed-vsi) and [VPC architecture with Red Hat OpenShift](https://test.cloud.ibm.com/docs/allowlist/framework-financial-services?topic=framework-financial-services-vpc-architecture-detailed-openshift) architectures.
+The automation supports three reference architectures to establish a secure cloud environment that will enable the deployment and management of secure workloads.
 
-Within this repository you will find a set of Terraform template bundles that embody best practices for provisioning and configuring cloud resources in an IBM Cloud Enterprise sub-account.
+Within this repository you will find a set of Terraform template bundles that embody best practices for provisioning and configuring cloud resources in an IBM Cloud cloud account. We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
 
-This `README.md` describes the SRE steps required to provision an IBM Cloud for Financial Services environment that will scan cleanly to the Security and Compliance Centers NIST based profiles.
+This `README.md` describes the SRE steps required to provision an environment that will scan cleanly with the Security and Compliance Centers NIST based profiles.
 
-> The Security and Compliance scan has a set of known [exceptions](#exceptions) see below
+> The Security and Compliance scan currently has a set of known [exceptions](#exceptions) see below.
 
-This guide is optimized for Proof of Technology environments that enable IBM Cloud users to configure a fully working end-to-end cloud-native environment. The base environment provides a collection of shared services, a management network, and a workload network.
+This suite of automation can be used for a Proof of Technology environment, or used as a foundation for production workloads with a fully working end-to-end cloud-native environment. The base environment provides a collection of shared services, an edge network, a management network, and a workload network. This automation contains includes OpenShift Developer Tools from the [Cloud-Native Toolkit project](https://cloudnativetoolkit.dev/)
+
 
 **Shared services**
 
-- Hyper Protect Crypto Service
+- IBM Key Protect _- For the highest level of security, you can also use a Hyper Protect Crypto Service_ instance
 - IBM Log Analysis
 - IBM Monitoring
 - Activity Tracker
@@ -45,33 +40,48 @@ This guide is optimized for Proof of Technology environments that enable IBM Clo
 
 - Red Hat OpenShift cluster
 
-This set of automation packages was generated using the open-source [`isacable`](https://github.com/cloud-native-toolkit/iascable) tool. This tool enables a Bill of Material yaml file to describe your IBM Cloud architecture, which it then generates the terraform modules into a package of infrastructure as code you can use to accelerate the configuration of your IBM Cloud environment. Iascable generates standard terraform templates that can be executed from any terraform environment.
+**Developer Tools installed into OpenShift**
 
-Automation is provided in following Terraform packages that will need to be run in order.
+- OpenShift Pipelines (Tekton)
+- OpenShift GitOps (ArgoCD)
+- Artifactory
+- SonarQube
+- Swagger Editor
+- Developer Dashboard ( Starter Kits Code Samples )
+- Pre-validated Tekton Pipelines and Tasks
+- CLI Tools to assit pipeline creation
+
+This set of automation packages was generated using the open-source [`isacable`](https://github.com/cloud-native-toolkit/iascable) tool. This tool enables a [Bill of Material yaml](https://github.com/cloud-native-toolkit/automation-solutions/tree/main/boms/ibmcloud-ref-arch-fs) file to describe your IBM Cloud architecture, which it then generates the terraform modules into a package of infrastructure as code that you can use to accelerate the configuration of your IBM Cloud environment. Iascable generates standard terraform templates that can be executed from any terraform environment.
+
+> The `iascable` tool is targeted for use by advanced SRE developers. It requires deep knowledge of how the modules plug together into a customized architecture. This repository is a fully tested output from that tool. This makes it ready to consume for projects. 
+
+The following diagram gives a visual representation of the what your IBM Cloud account will contain after the automation has been successfully executed.
 
 ## Reference Architecture
 
 ![Reference Architecture](./images/ibm-cloud-architecture.png)
 
+Automation is provided in following Terraform packages that will need to be run in order. The bundles have been created this way to give the SRE team the most flexibility possible when building infrastructure for a project.
+
 ## Automation Stages
 
-Clone this repository to access the automation to provision this reference architecture on the IBM Cloud. This repo contains the following defined _Bill of Materials_ or **BOMS** for short. They logically build up to deliver a set of IBM Cloud best practices. The reason for having them seperate at this stage is to enabled a layered approach to success. This enables SRE's to use them in logical blocks. One set for Shared Services for a collection of **Edge**, **Management** and **Workload** VPCs or a number of **Workload** VPCs that maybe installed in separate regions.
+Clone this repository to access the automation to provision this reference architecture on the IBM Cloud. This repo contains the following defined _Bill of Materials_ or **BOMS** for short. They logically build up to deliver a set of IBM Cloud best practices. The reason for having them separate at this stage is to enable a layered approach to success. This enables SREs to use them in logical blocks. One set for Shared Services for a collection of **Edge**, **Management** and **Workload** VPCs or a number of **Workload** VPCs that maybe installed in separate regions.
 
 ### VPC with VSIs
 
-| BOM ID | Name                                           | Description                                                                                                                         | Run Time |
-| ------ | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 000    | [000 - Account Setup](./000-account-setup)     | Set up an account for FS Cloud and provision a set of account-wide services. This is intended to only be run one time in an account | 5 Mins   |
-| 100    | [100 - Shared Services](./100-shared-services) | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs               | 5 Mins   |
-| 110    | [110 - Edge VPC](./110-edge-vpc)               | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                                         | 10 Mins  |
-| 120    | [120 - Management VPC](./120-management-vpc)   | Provision a **Management VPC** and connect to Transit Gateway                                                                       | 10 mins  |
-| 140    | [140 - Workload VPC](./140-workload-vpc)       | Provision a **Workload VPC** and connect to Transit Gateway                                                                         | 10 mins  |
+| BOM ID | Name                                           | Description                                                                                                           | Run Time |
+| ------ | ---------------------------------------------- |-----------------------------------------------------------------------------------------------------------------------| -------- |
+| 000    | [000 - Account Setup](./000-account-setup)     | Set up account and provision a set of account-wide services. This is intended to only be run one time in an account | 5 Mins   |
+| 100    | [100 - Shared Services](./100-shared-services) | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs | 5 Mins   |
+| 110    | [110 - Edge VPC](./110-edge-vpc)               | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                           | 10 Mins  |
+| 120    | [120 - Management VPC](./120-management-vpc)   | Provision a **Management VPC** and connect to Transit Gateway                                                         | 10 mins  |
+| 140    | [140 - Workload VPC](./140-workload-vpc)       | Provision a **Workload VPC** and connect to Transit Gateway                                                           | 10 mins  |
 
 ### VPC with Red Hat OpenShift
 
 | BOM ID | Name                                                                       | Description                                                                                                                                                                   | Run Time |
 | ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 000    | [000 - Account Setup](./000-account-setup)                                 | Set up an account for FS Cloud and provision a set of account-wide services. This is intended to only be run one time in an account                                           | 5 Mins   |
+| 000    | [000 - Account Setup](./000-account-setup)                                 | Set up account and provision a set of account-wide services. This is intended to only be run one time in an account                                           | 5 Mins   |
 | 100    | [100 - Shared Services](./100-shared-services)                             | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs                                                         | 5 Mins   |
 | 110    | [110 - Edge VPC](./110-edge-vpc)                                           | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                                                                                   | 10 Mins  |
 | 130    | [130 - Management + OpenShift Cluster](./130-management-vpc-openshift)     | Provision a **Management VPC** with and Red Hat OpenShift Cluster and connect to Transit Gateway                                                                              | 45 mins  |
@@ -95,15 +105,14 @@ If you are planning to create multiple instances of the Management or Workload a
 
 2. Download OpenVPN Client from https://openvpn.net/vpn-server-resources/connecting-to-access-server-with-macos/#installing-a-client-application for your client device, this has been tested on MacOS
 
-3. At this time the most reliable way of running this automation is with Terraform in your local machine either through a bootstrapped docker image or with native tools installed.
+3. At this time the most reliable way of running this automation is with Terraform in your local machine either through a bootstrapped docker image or with native tools installed. We provide a Container image that has all the common SRE tools installed. [CLI Tools Image,](https://quay.io/repository/ibmgaragecloud/cli-tools?tab=tags) [Source Code for CLI Tools](https://github.com/cloud-native-toolkit/image-cli-tools)
 
-> The schematics service is producing intermittent issues.
 
 ## Setup
 
-### Hyper Protect Crypto
+### Key Management
 
-The first step is provision a Hyper Protect Crypto Services instance into the nominated account and initialise the key ceronmony. You can do this with the following automation. We recommend to follow the product docs to perform the quick initialization.
+The first step in this automation is to provision a Key Management service instance.  By default, this Terraform automation will provision an instance of the Key Protect key management service.  Optionally, you can provision a Hyper Protect Crypto Services instance into the nominated account and initialise the key ceronmony by changing the `kms_service` tfvar value to `hpcs`. You can do this with the following automation. We recommend to follow the product docs to perform the quick initialization.
 
 [Hyper Protect Cyrpto Service Documentation](https://cloud.ibm.com/docs/hs-crypto?topic=hs-crypto-get-started)
 
@@ -116,20 +125,22 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 1. Open the IBM Cloud console and click on **Manage** down arrow and select **Account** - https://cloud.ibm.com/account
 2. After selecting **Account**,select **Account settings** from the left side menu - https://cloud.ibm.com/account/settings
 3. Click **On** for the Financial Services Validated option.
-4. Read the information about enabling the setting, and select **I understand and agree to these terms**.Click **On**.
-
-[Financial Services Validated Button](./images/ibm-cloud-architecture.png)
+4. Read the information about enabling the setting, and select **I understand and agree to these terms**. Click **On**.
 
 ### Terraform IasC Automation
 
-1. Clone this repository to your local SRE laptop and open a terminal to the cloned directory.
+1. Clone this repository to your local SRE laptop or into a secure terminal. Open a shell into the cloned directory.
 2. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
-   - `full`: Full IBM Cloud Financial Services reference architecture deployment, including Hyper Protect Crypto Services instance.
-   - `small`: IBM Financial Services reference architecture scaled down for a POC environment deployment. Hyper Protect Crypto Service has been replaced with Key Protect and the clusters have been reduced to single region.
+   - `full`: Full IBM Cloud reference architecture deployment, including a Key Protect instance.
+   - `small`: IBM reference architecture scaled down for a POC environment deployment. This includes Key Protect and the clusters have been reduced to single region.
 3. Determine which reference architecture you will be deploying. There are currently two options available:
-   - `vpc`: IBM Cloud for Financial Services VPC with virtual servers reference architecture
-   - `ocp`: IBM Cloud for Financial Services VPC with Red Hat OpenShift reference architecture
+   - `vpc`: IBM Cloud - VPC with virtual servers reference architecture
+   - `ocp`: IBM Cloud - VPC with Red Hat OpenShift reference architecture
+   - `all`: Will copy all the terraform bundles into your workspace bundles prefixed `000` to `170`
 4. Run the `setup-workspace.sh -t {FLAVOR} -a {ARCH}` script to create a copy of the Terraform scripts in a `workspace/` directory and generate the SSH keys needed for the various VSI instances.
+   ```
+   ./setup-workspace.sh -t small -a all
+   ```
 5. Update **terraform.tfvars** in the `workspace/` directory with the appropriate values for your deployment. Note: The values are currently set up to place everything in the same resource group. To use different resource groups, provide different values for each of the `*_resource_group_name` variables and comment out the `*_resource_group_provision="false"` values.
 
 ## Terraform Apply
@@ -139,22 +150,19 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 1. Copy `credentials.template` to `credentials.properties`.
 2. Provide your IBM Cloud API key as the value for the `ibmcloud.api.key` variable in `credentials.properties` (**Note:** `*.properties` has been added to `.gitignore` to ensure that the file containing the apikey cannot be checked into Git.)
 
-### Apply all architectures in the solution
-
-1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
-2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
-3. Run the `./apply-all.sh` script to sequentially provision the included architectures.
-
-**Note:** You can clean everything up by running `./destroy-all.sh`. It will destroy each architecture in reverse order.
 
 ### Apply each architecture in the solution
 
 1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
+
+   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. 
+
 2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
-3. Change directory to the terraform directory that will be applied (e.g. `100-common-services`)
+3. Change directory to the terraform directory that will be applied (e.g. `000-account-setup` and `100-common-services`)
 4. Initialize the environment with `terraform init`
 5. Apply the terraform with `terraform apply -auto-approve`. If all is configured properly you should not be prompted again and the terraform should run to completion.
 6. It is recommended to run Terraform bundles in this order:
+   - `000`
    - `110`
    - `130`
    - `150`
@@ -179,6 +187,8 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 > 1. Make sure you are connected to the VPN
 > 2. Delete the `terraform.tfstate` file
 > 3. Re-run the `terraform apply` command
+
+> We are working on an air gapped install of developer tools from within the private VPC network for Management Cluster. 
 
 ## Configure VPN
 
@@ -313,7 +323,7 @@ On-demand scans can be run at any point but you can also schedule scans to be re
 
 ## Known Exceptions
 
-The following exceptions are know when an SCC scan is performed on the reference architecure.
+The following exceptions are know when an SCC scan is performed on the reference architecure. These will need to be resolved for a production deployment. They are linked to the VPN client configuration.
 
 ### <a name="exceptions"></a> SCC Scan Exceptions
 
@@ -334,12 +344,16 @@ The following exceptions are know when an SCC scan is performed on the reference
 
 ## Deploy First Application into Red Hat OpenShift
 
+IBM is a multi-cloud company and we fully embrace consistent development tooling across cloud enviroments including IBM Cloud.
+
+We recommend using the RedHat OpenShift developer tools for container based development. The Cloud-Native Toolkit gives a consistent developer experience and a set of SDLC tools (Software Delivery LifeCycle) that run inside on any OpenShift environment. These tools are installed as part of `160` and `170`. You can find more information about the toolkit here. [Cloud-Native Toolkit](https://cloudnativetoolkit.dev/)  
+
 **Prerequisites**
 
 1. Ensure VPN is on
 2. Follow the [Cloud Native Toolkit Dev-Setup guide](https://cloudnativetoolkit.dev/learning/dev-setup/) to configure dependencies.
-3. Create your first application and toolchain using the [Cloud Native Toolkit Continuous Integration Fast-start tutorial](https://cloudnativetoolkit.dev/learning/fast-ci/).
-4. Configure your first Continuous Delivery application using ArgoCD by following the [Cloud Native Toolkit Countinuous Delivery Fast-start tutorial](https://cloudnativetoolkit.dev/learning/fast-cd/).
+3. Create your first application pipeline using OpenShift Pipelines (Tekton) using the [Cloud Native Toolkit Continuous Integration Fast-start tutorial](https://cloudnativetoolkit.dev/learning/fast-ci/).
+4. Configure your first Continuous Delivery application using OpenShift GitOps (ArgoCD) by following the [Cloud Native Toolkit Countinuous Delivery Fast-start tutorial](https://cloudnativetoolkit.dev/learning/fast-cd/).
 
 ## (Optional) Cloud Satellite Setup & OpenShift Marketplace Add
 
