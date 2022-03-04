@@ -68,7 +68,7 @@ module "kms" {
   service = var.kms_service
 }
 module "kms-key" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-kms-key?ref=v1.5.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-kms-key?ref=v1.5.1"
 
   kms_id = module.kms.guid
   kms_public_url = module.kms.public_url

@@ -8,6 +8,7 @@ gitops/
 .kube/
 ssh-*
 terraform.tfvars
+*.iml
 
 
 workspace/*
