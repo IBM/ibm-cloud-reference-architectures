@@ -1,0 +1,118 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 165-ibm-fs-openshift-workload
+  labels:
+    type: infrastructure
+    platform: ibm
+    code: '165'
+  annotations:
+    displayName: OpenShift Workload
+    description: Configures workload cluster
+spec:
+  modules:
+    - name: ibm-resource-group
+      alias: resource_group
+      version: v3.2.13
+      variables: &ref_0
+        - name: provision
+          value: false
+        - name: resource_group_name
+          alias: workload_resource_group_name
+          scope: global
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      version: v3.2.13
+      variables: *ref_0
+    - name: ibm-ocp-vpc
+      alias: cluster
+      version: v1.13.2
+      dependencies:
+        - name: subnets
+          optional: true
+        - name: cos
+          optional: true
+        - name: vpc
+          optional: true
+      variables:
+        - name: exists
+          value: true
+        - name: name
+          required: true
+        - name: vpc_subnet_count
+          value: 0
+        - name: vpc_subnets
+          value: '[]'
+        - name: cos_id
+          value: ''
+        - name: vpc_name
+          value: ''
+        - name: login
+          value: true
+    - name: namespace
+      alias: tools_namespace
+      version: v3.2.0
+      default: true
+      variables:
+        - name: name
+          value: tools
+    - name: argocd
+      alias: argocd
+      version: v2.18.6
+    - name: cluster-config
+      alias: cluster-config
+      version: v0.1.2
+      variables:
+        - name: banner_text
+          value: Workload
+        - name: banner_background_color
+          value: red
+    - name: ibm-image-registry
+      alias: registry
+      version: v2.1.2
+      variables:
+        - name: registry_namespace
+          required: true
+          scope: global
+    - name: olm
+      version: v1.3.2
+    - name: namespace
+      alias: openshift-gitops
+      version: v3.2.0
+  variables:
+    - name: ibmcloud_api_key
+      type: string
+      description: The IBM Cloud api key
+    - name: workload_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: region
+      type: string
+    - name: cs_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: worker_count
+      type: number
+      description: >-
+        The number of worker nodes that should be provisioned for classic
+        infrastructure
+      defaultValue: 3
+    - name: cluster_flavor
+      type: string
+      description: The machine type that will be provisioned for classic infrastructure
+      defaultValue: bx2.4x16
+    - name: workload_name_prefix
+      type: string
+      description: >-
+        The prefix name for the service. If not provided it will default to the
+        resource group name
+      defaultValue: ''
+    - name: registry_namespace
+      type: string
+      description: >-
+        The namespace that will be created in the IBM Cloud image registry. If
+        not provided the value will default to the resource group
+      defaultValue: ''
+    - name: openshift-gitops_name
+      type: string
+      description: The namespace that should be created

@@ -141,7 +141,7 @@ Enable your IBM Cloud account to use Financial Services Validated Products
    ```
    ./setup-workspace.sh -t small -a all
    ```
-5. Update **terraform.tfvars** in the `workspace/` directory with the appropriate values for your deployment. Note: The values are currently set up to place everything in the same resource group. To use different resource groups, provide different values for each of the `*_resource_group_name` variables and comment out the `*_resource_group_provision="false"` values.
+5. Update **terraform.tfvars** in the `workspace/` directory with the appropriate values for your deployment. Note: The values are currently set up to separate resource resource groups for common services, edge, management, and workload resources. These can be changed to all use the same resource group, if desired.
 
 ## Terraform Apply
 

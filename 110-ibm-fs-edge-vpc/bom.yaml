@@ -1,0 +1,304 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 110-ibm-fs-edge-vpc
+  labels:
+    type: infrastructure
+    platform: ibm
+    code: 110
+  annotations:
+    displayName: Edge VPC
+    description: Edge VPC with VPN and Bastion servers
+spec:
+  modules:
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      version: v3.2.13
+    - name: ibm-resource-group
+      alias: at_resource_group
+      version: v3.2.13
+    - name: ibm-resource-group
+      alias: resource_group
+      version: v3.2.13
+      variables: &ref_0
+        - name: resource_group_name
+          alias: edge_resource_group_name
+          scope: global
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      version: v3.2.13
+      variables: *ref_0
+    - name: ibm-access-group
+      alias: ibm-access-group
+      version: v3.1.2
+    - name: ibm-activity-tracker
+      alias: ibm-activity-tracker
+      version: v2.4.12
+      dependencies:
+        - name: resource_group
+          ref: at_resource_group
+    - name: ibm-cloud-monitoring
+      alias: sysdig
+      version: v4.1.2
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-flow-logs
+      alias: ibm-flow-logs
+      version: v1.0.1
+      dependencies:
+        - name: target
+          ref: ibm-vpc
+        - name: cos_bucket
+          ref: flow_log_bucket
+    - name: ibm-iam-service-authorization
+      alias: flow-log-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: flow-log-collector
+        - name: roles
+          value:
+            - Writer
+      dependencies:
+        - name: target_resource_group
+          ref: ibm-resource-group
+        - name: target_resource
+          ref: cos
+    - name: ibm-kms
+      alias: kms
+      version: v0.3.4
+      variables:
+        - name: provision
+          value: false
+        - name: region
+          alias: kms_region
+        - name: name_prefix
+          alias: kms_name_prefix
+          scope: global
+          value: ''
+      dependencies:
+        - name: resource_group
+          ref: kms_resource_group
+    - name: ibm-kms-key
+      alias: kms-key
+      version: v1.5.2
+      variables:
+        - name: provision
+          value: true
+      dependencies:
+        - name: kms
+          ref: kms
+    - name: ibm-cert-manager
+      alias: ibm-cert-manager
+      version: v1.1.0
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-object-storage
+      alias: cos
+      version: v4.0.3
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-vpc
+      alias: ibm-vpc
+      version: v1.15.5
+      variables:
+        - name: address_prefix_count
+          value: 3
+        - name: address_prefixes
+          value:
+            - 10.1.0.0/18
+            - 10.2.0.0/18
+            - 10.3.0.0/18
+    - name: ibm-object-storage-bucket
+      alias: flow_log_bucket
+      version: v0.8.3
+      variables:
+        - name: label
+          value: flow-logs
+        - name: allowed_ip
+          value:
+            - 0.0.0.0/0
+    - name: ibm-vpc-gateways
+      alias: ibm-vpc-gateways
+      version: v1.8.2
+    - name: ibm-vpc-ssh
+      alias: edge_ssh_bastion
+      version: v1.7.1
+      variables:
+        - name: label
+          value: bastion
+    - name: ibm-vpc-subnets
+      alias: ingress-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: ingress
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.1.10.0/24
+            - 10.2.10.0/24
+            - 10.3.10.0/24
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+    - name: ibm-vpc-subnets
+      alias: bastion-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: bastion
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.1.20.0/24
+            - 10.2.20.0/24
+            - 10.3.20.0/24
+    - name: ibm-vpc-subnets
+      alias: egress-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: egress
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.1.30.0/24
+            - 10.2.30.0/24
+            - 10.3.30.0/24
+    - name: ibm-vpc-vpn-gateway
+      alias: ibm-vpc-vpn-gateway
+      version: v1.1.2
+      dependencies:
+        - name: subnets
+          ref: ingress-subnets
+    - name: ibm-vpn-server
+      alias: ibm-vpn-server
+      version: v0.0.11
+      dependencies:
+        - name: subnets
+          ref: ingress-subnets
+        - name: ibm-cert-manager
+          ref: cert-manager
+    - name: vsi-bastion
+      alias: vsi-bastion
+      version: v1.10.0
+      variables:
+        - name: image_name
+          scope: module
+        - name: kms_enabled
+          value: true
+      dependencies:
+        - name: subnets
+          ref: bastion-subnets
+        - name: vpcssh
+          ref: edge_ssh_bastion
+    - name: ibm-transit-gateway
+      alias: ibm-transit-gateway
+      version: v0.2.2
+      variables:
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource-group
+          ref: cs_resource_group
+  variables:
+    - name: ibmcloud_api_key
+      type: string
+      description: The IBM Cloud api key
+    - name: kms_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: region
+      type: string
+    - name: at_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: edge_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_name_prefix
+      type: string
+      description: >-
+        The prefix name for the service. If not provided it will default to the
+        resource group name
+      defaultValue: ''
+    - name: kms_region
+      type: string
+      description: Geographic location of the resource (e.g. us-south, us-east)
+    - name: kms_service
+      type: string
+      description: The name of the KMS provider that should be used (keyprotect or hpcs)
+      defaultValue: keyprotect
+    - name: edge_name_prefix
+      type: string
+      description: >-
+        The name_prefix used to build the name if one is not provided. If used
+        the name will be `{name_prefix}-{label}`
+      defaultValue: base
+    - name: edge_ssh_bastion_public_key
+      type: string
+      description: >-
+        The public key provided for the ssh key. If empty string is provided
+        then a new key will be generated.
+      defaultValue: ''
+    - name: edge_ssh_bastion_private_key
+      type: string
+      description: >-
+        The private key provided for the ssh key. If empty string is provided
+        then a new key will be generated.
+      defaultValue: ''
+    - name: edge_ssh_bastion_public_key_file
+      type: string
+      description: >-
+        The name of the file containing the public key provided for the ssh key.
+        If empty string is provided then a new key will be generated.
+      defaultValue: ''
+    - name: edge_ssh_bastion_private_key_file
+      type: string
+      description: >-
+        The name of the file containing the private key provided for the ssh
+        key. If empty string is provided then a new key will be generated.
+      defaultValue: ''
+    - name: ingress-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: bastion-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: egress-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3

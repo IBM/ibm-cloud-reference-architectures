@@ -1,0 +1,17 @@
+digraph {
+    rankdir="BT"
+    "cluster (ocp-login)"
+"tools_namespace (namespace)" -> "cluster (ocp-login)"
+"tools_namespace (namespace)"
+"argocd (argocd)" -> "cluster (ocp-login)"
+"argocd (argocd)" -> "olm (olm)"
+"argocd (argocd)" -> "openshift-gitops (namespace)"
+"argocd (argocd)"
+"olm (olm)" -> "cluster (ocp-login)"
+"olm (olm)"
+"openshift-gitops (namespace)" -> "cluster (ocp-login)"
+"openshift-gitops (namespace)"
+"config (cluster-config)" -> "cluster (ocp-login)"
+"config (cluster-config)" -> "tools_namespace (namespace)"
+"config (cluster-config)"
+  }

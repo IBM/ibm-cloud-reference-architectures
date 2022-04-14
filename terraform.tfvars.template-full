@@ -42,24 +42,6 @@ mgmt_resource_group_name="PREFIXmanagement"
 workload_resource_group_name="PREFIXworkload"
 
 
-## at_resource_group_provision: Flag indicating that the activity tracker resource group should be created
-at_resource_group_provision="false"
-
-## cs_resource_group_provision: Flag indicating that the shared services resource group should be created
-#cs_resource_group_provision="false"
-
-## kms_resource_group_provision: Flag indicating that the kms resource group should be created
-#kms_resource_group_provision="false"
-
-## edge_resource_group_provision: Flag indicating that the management resource group should be created
-#edge_resource_group_provision="false"
-
-## mgmt_resource_group_provision: Flag indicating that the management resource group should be created
-#mgmt_resource_group_provision="false"
-
-## workload_resource_group_provision: Flag indicating that the workload resource group should be created
-#workload_resource_group_provision="false"
-
 ## ***************
 ## Name Prefixes
 ## ***************

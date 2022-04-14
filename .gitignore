@@ -14,3 +14,5 @@ terraform.tfvars
 workspace/*
 workspace-*/*
 credentials.properties
+
+.DS_Store

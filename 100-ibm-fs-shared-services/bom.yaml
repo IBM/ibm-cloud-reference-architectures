@@ -1,0 +1,178 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 100-ibm-fs-shared-services
+  labels:
+    type: infrastructure
+    platform: ibm
+    code: 100
+  annotations:
+    displayName: Shared services
+    description: >-
+      Managed services that are shared across the management and workload
+      networks
+spec:
+  modules:
+    - name: ibm-resource-group
+      alias: at_resource_group
+      version: v3.2.13
+      variables:
+        - name: resource_group_name
+          alias: at_resource_group_name
+          scope: global
+      dependencies:
+        - name: sync
+          ref: kms_resource_group
+    - name: ibm-resource-group
+      alias: resource_group
+      version: v3.2.13
+      variables: &ref_0
+        - name: resource_group_name
+          alias: cs_resource_group_name
+          scope: global
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      version: v3.2.13
+      variables: *ref_0
+    - name: ibm-access-group
+      alias: ibm-access-group
+      version: v3.1.2
+    - name: ibm-activity-tracker
+      alias: ibm-activity-tracker
+      version: v2.4.12
+      variables: &ref_1
+        - name: resource_location
+          alias: region
+    - name: ibm-activity-tracker
+      alias: at-ibm-activity-tracker
+      version: v2.4.12
+      variables: *ref_1
+    - name: ibm-cert-manager
+      alias: ibm-cert-manager
+      version: v1.1.0
+      variables:
+        - name: private_endpoint
+          value: false
+      dependencies:
+        - name: resource_group
+    - name: ibm-cloud-monitoring
+      alias: sysdig
+      version: v4.1.2
+    - name: ibm-iam-service-authorization
+      alias: vsi-encrypt-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: server-protect
+        - name: roles
+          value:
+            - Reader
+      dependencies:
+        - name: target_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
+    - name: ibm-iam-service-authorization
+      alias: cos-encrypt-auth
+      version: v1.2.9
+      variables:
+        - name: roles
+          value:
+            - Reader
+      dependencies:
+        - name: target_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
+        - name: source_resource
+          ref: cos
+    - name: ibm-iam-service-authorization
+      alias: flow-log-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: flow-log-collector
+        - name: roles
+          value:
+            - Writer
+      dependencies:
+        - name: target_resource_group
+          ref: resource_group
+        - name: target_resource
+          ref: cos
+    - name: ibm-iam-service-authorization
+      alias: vsi-encrypt-auth1
+      version: v1.2.9
+    - name: ibm-iam-service-authorization
+      alias: kube-encrypt-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: containers-kubernetes
+        - name: roles
+          value:
+            - Reader
+      dependencies:
+        - name: source_resource_group
+          ref: resource_group
+        - name: target_resource_group
+          ref: kms_resource_group
+        - name: target_resource
+          ref: kms
+    - name: ibm-iam-service-authorization
+      alias: vpn-cert-manager-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: vpn-server
+        - name: roles
+          value:
+            - Writer
+        - name: target_service_name
+          value: cloudcerts
+    - name: ibm-kms
+      alias: kms
+      version: v0.3.4
+      variables:
+        - name: region
+          alias: kms_region
+        - name: name_prefix
+          alias: kms_name_prefix
+          scope: global
+        - name: name
+          required: true
+      dependencies:
+        - name: resource_group
+          ref: kms_resource_group
+    - name: ibm-log-analysis
+      alias: logdna
+      version: v4.1.2
+    - name: ibm-object-storage
+      alias: cos
+      version: v4.0.3
+  variables:
+    - name: ibmcloud_api_key
+      type: string
+      description: The IBM Cloud api key
+    - name: at_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: region
+      type: string
+    - name: cs_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: kms_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: kms_region
+      type: string
+      description: Geographic location of the resource (e.g. us-south, us-east)
+    - name: kms_service
+      type: string
+      description: The name of the KMS provider that should be used (keyprotect or hpcs)
+      defaultValue: keyprotect

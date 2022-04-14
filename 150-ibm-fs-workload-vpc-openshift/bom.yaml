@@ -1,0 +1,299 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 150-ibm-fs-workload-vpc-openshift
+  labels:
+    type: infrastructure
+    platform: ibm
+    code: 150
+  annotations:
+    displayName: Workload VPC OpenShift
+    description: >-
+      Workload VPC with Red Hat OpenShift cluster and VPC Transit Gateway to
+      Management VPC
+spec:
+  modules:
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      version: v3.2.13
+    - name: ibm-resource-group
+      alias: at_resource_group
+      version: v3.2.13
+    - name: ibm-resource-group
+      alias: resource_group
+      version: v3.2.13
+      variables: &ref_0
+        - name: resource_group_name
+          alias: workload_resource_group_name
+          scope: global
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      version: v3.2.13
+      variables: *ref_0
+    - name: ibm-access-group
+      alias: ibm-access-group
+      version: v3.1.2
+    - name: ibm-activity-tracker
+      alias: ibm-activity-tracker
+      version: v2.4.12
+      dependencies:
+        - name: resource_group
+          ref: at_resource_group
+    - name: ibm-cloud-monitoring
+      alias: sysdig
+      version: v4.1.2
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-cloud-monitoring-bind
+      alias: sysdig-bind
+      version: v1.3.3
+    - name: ibm-flow-logs
+      alias: ibm-flow-logs
+      version: v1.0.1
+      dependencies:
+        - name: target
+          ref: ibm-vpc
+        - name: cos_bucket
+          ref: flow_log_bucket
+    - name: ibm-iam-service-authorization
+      alias: flow-log-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: flow-log-collector
+        - name: roles
+          value:
+            - Writer
+      dependencies:
+        - name: target_resource_group
+          ref: ibm-resource-group
+        - name: target_resource
+          ref: cos
+    - name: ibm-kms
+      alias: kms
+      version: v0.3.4
+      variables:
+        - name: provision
+          value: false
+          scope: module
+        - name: region
+          alias: kms_region
+        - name: name_prefix
+          alias: kms_name_prefix
+          scope: global
+          value: ''
+      dependencies:
+        - name: resource_group
+          ref: kms_resource_group
+    - name: ibm-kms-key
+      alias: kms-key
+      version: v1.5.2
+      variables:
+        - name: provision
+          value: true
+      dependencies:
+        - name: kms
+          ref: kms
+    - name: ibm-log-analysis
+      alias: logdna
+      version: v4.1.2
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-log-analysis-bind
+      alias: ibm-logdna-bind
+      version: v1.3.3
+    - name: ibm-object-storage
+      alias: cos
+      version: v4.0.3
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-object-storage-bucket
+      alias: flow_log_bucket
+      version: v0.8.3
+      variables:
+        - name: label
+          value: flow-logs
+        - name: allowed_ip
+          value:
+            - 0.0.0.0/0
+    - name: ibm-ocp-vpc
+      alias: cluster
+      version: v1.13.2
+      variables:
+        - name: disable_public_endpoint
+          value: true
+        - name: kms_enabled
+          value: true
+        - name: worker_count
+          alias: workload_worker_count
+        - name: ocp_version
+          value: 4.8
+      dependencies:
+        - name: subnets
+          ref: worker-subnets
+        - name: kms_key
+          ref: kms-key
+    - name: ibm-vpc
+      alias: ibm-vpc
+      version: v1.15.5
+      variables:
+        - name: address_prefix_count
+          value: 3
+        - name: address_prefixes
+          value:
+            - 10.40.0.0/18
+            - 10.50.0.0/18
+            - 10.60.0.0/18
+    - name: ibm-vpc-gateways
+      alias: ibm-vpc-gateways
+      version: v1.8.2
+    - name: ibm-vpc-subnets
+      alias: worker-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          alias: workload_worker_subnet_count
+          scope: global
+          value: 3
+        - name: label
+          value: worker
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.40.10.0/24
+            - 10.50.10.0/24
+            - 10.60.10.0/24
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+    - name: ibm-vpc-subnets
+      alias: vpe-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: vpe
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.40.20.0/24
+            - 10.50.20.0/24
+            - 10.60.20.0/24
+    - name: ibm-vpc-subnets
+      alias: ingress-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: ingress
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.40.30.0/24
+            - 10.50.30.0/24
+            - 10.60.30.0/24
+    - name: ibm-vpe-gateway
+      alias: vpe-cos
+      version: v1.6.0
+      dependencies:
+        - name: resource
+          ref: cos
+        - name: subnets
+          ref: vpe-subnets
+        - name: sync
+          ref: cluster
+    - name: ibm-transit-gateway
+      alias: ibm-transit-gateway
+      version: v0.2.2
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource-group
+          ref: cs_resource_group
+        - name: connections
+          ref: ibm-vpc
+  variables:
+    - name: ibmcloud_api_key
+      type: string
+      description: The IBM Cloud api key
+    - name: kms_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: region
+      type: string
+    - name: at_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: workload_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_name_prefix
+      type: string
+      description: >-
+        The prefix name for the service. If not provided it will default to the
+        resource group name
+      defaultValue: ''
+    - name: kms_region
+      type: string
+      description: Geographic location of the resource (e.g. us-south, us-east)
+    - name: kms_service
+      type: string
+      description: The name of the KMS provider that should be used (keyprotect or hpcs)
+      defaultValue: keyprotect
+    - name: workload_name_prefix
+      type: string
+      description: >-
+        The name_prefix used to build the name if one is not provided. If used
+        the name will be `{name_prefix}-{label}`
+      defaultValue: base
+    - name: workload_worker_count
+      type: number
+      description: >-
+        The number of worker nodes that should be provisioned for classic
+        infrastructure
+      defaultValue: 3
+    - name: cluster_flavor
+      type: string
+      description: The machine type that will be provisioned for classic infrastructure
+      defaultValue: bx2.4x16
+    - name: workload_worker_subnet_count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: vpe-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: ingress-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3

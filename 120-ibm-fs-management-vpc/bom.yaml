@@ -1,0 +1,265 @@
+apiVersion: cloud.ibm.com/v1alpha1
+kind: BillOfMaterial
+metadata:
+  name: 120-ibm-fs-management-vpc
+  labels:
+    type: infrastructure
+    platform: ibm
+    code: 120
+  annotations:
+    displayName: Management VPC
+    description: Management VPC and Tools
+spec:
+  modules:
+    - name: ibm-resource-group
+      alias: kms_resource_grou
+      version: v3.2.13
+    - name: ibm-resource-group
+      alias: at_resource_group
+      version: v3.2.13
+    - name: ibm-resource-group
+      alias: resource_group
+      version: v3.2.13
+      variables: &ref_0
+        - name: resource_group_name
+          alias: mgmt_resource_group_name
+          scope: global
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      version: v3.2.13
+      variables: *ref_0
+    - name: ibm-access-group
+      alias: ibm-access-group
+      version: v3.1.2
+    - name: ibm-activity-tracker
+      alias: ibm-activity-tracker
+      version: v2.4.12
+      dependencies:
+        - name: resource_group
+          ref: at_resource_group
+    - name: ibm-cloud-monitoring
+      alias: sysdig
+      version: v4.1.2
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-flow-logs
+      alias: ibm-flow-logs
+      version: v1.0.1
+      dependencies:
+        - name: target
+          ref: ibm-vpc
+        - name: cos_bucket
+          ref: flow_log_bucket
+    - name: ibm-iam-service-authorization
+      alias: flow-log-auth
+      version: v1.2.9
+      variables:
+        - name: source_service_name
+          value: is
+        - name: source_resource_type
+          value: flow-log-collector
+        - name: roles
+          value:
+            - Writer
+      dependencies:
+        - name: target_resource_group
+          ref: ibm-resource-group
+        - name: target_resource
+          ref: cos
+    - name: ibm-kms
+      alias: kms
+      version: v0.3.4
+      variables:
+        - name: provision
+          value: false
+        - name: region
+          alias: kms_region
+        - name: name_prefix
+          alias: kms_name_prefix
+          scope: global
+          value: ''
+      dependencies:
+        - name: resource_group
+          ref: kms_resource_group
+    - name: ibm-kms-key
+      alias: kms-key
+      version: v1.5.2
+      variables:
+        - name: provision
+          value: true
+      dependencies:
+        - name: kms
+          ref: kms
+    - name: ibm-object-storage
+      alias: cos
+      version: v4.0.3
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource_group
+          ref: cs_resource_group
+    - name: ibm-vpc
+      alias: ibm-vpc
+      version: v1.15.5
+      variables:
+        - name: address_prefix_count
+          value: 3
+        - name: address_prefixes
+          value:
+            - 10.10.0.0/18
+            - 10.20.0.0/18
+            - 10.30.0.0/18
+    - name: ibm-object-storage-bucket
+      alias: flow_log_bucket
+      version: v0.8.3
+      variables:
+        - name: label
+          value: flow-logs
+        - name: allowed_ip
+          value:
+            - 0.0.0.0/0
+    - name: ibm-vpc-gateways
+      alias: ibm-vpc-gateways
+      version: v1.8.2
+    - name: ibm-vpc-subnets
+      alias: worker-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: worker
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.10.10.0/24
+            - 10.20.10.0/24
+            - 10.30.10.0/24
+      dependencies:
+        - name: gateways
+          ref: ibm-vpc-gateways
+    - name: ibm-vpc-subnets
+      alias: vpe-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: vpe
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.10.20.0/24
+            - 10.20.20.0/24
+            - 10.30.20.0/24
+    - name: ibm-vpc-subnets
+      alias: ingress-subnets
+      version: v1.12.2
+      variables:
+        - name: _count
+          value: 3
+        - name: label
+          value: ingress
+        - name: ipv4_cidr_blocks
+          value:
+            - 10.10.30.0/24
+            - 10.20.30.0/24
+            - 10.30.30.0/24
+    - name: ibm-vpc-vpn-gateway
+      alias: ibm-vpc-vpn-gateway
+      version: v1.1.2
+      dependencies:
+        - name: subnets
+          ref: vpn-subnets
+    - name: ibm-vpe-gateway
+      alias: vpe-cos
+      version: v1.6.0
+      dependencies:
+        - name: resource
+          ref: cos
+        - name: subnets
+          ref: vpe-subnets
+    - name: ibm-transit-gateway
+      alias: ibm-transit-gateway
+      version: v0.2.2
+      variables:
+        - name: provision
+          value: false
+        - name: name_prefix
+          alias: cs_name_prefix
+          scope: global
+      dependencies:
+        - name: resource-group
+          ref: cs_resource_group
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      version: v3.2.13
+      variables: *ref_0
+    - name: ibm-vpc-subnets
+      alias: vpn-subnets
+      version: v1.12.2
+  variables:
+    - name: ibmcloud_api_key
+      type: string
+      description: The IBM Cloud api key
+    - name: kms_resource_grou_name
+      type: string
+      description: The name of the resource group
+    - name: region
+      type: string
+    - name: at_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: mgmt_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_name_prefix
+      type: string
+      description: >-
+        The prefix name for the service. If not provided it will default to the
+        resource group name
+      defaultValue: ''
+    - name: kms_region
+      type: string
+      description: Geographic location of the resource (e.g. us-south, us-east)
+    - name: kms_service
+      type: string
+      description: The name of the KMS provider that should be used (keyprotect or hpcs)
+      defaultValue: keyprotect
+    - name: mgmt_name_prefix
+      type: string
+      description: >-
+        The name_prefix used to build the name if one is not provided. If used
+        the name will be `{name_prefix}-{label}`
+      defaultValue: base
+    - name: worker-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: vpe-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: ingress-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
+    - name: kms_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: vpn-subnets__count
+      type: number
+      description: The number of subnets that should be provisioned
+      defaultValue: 3
