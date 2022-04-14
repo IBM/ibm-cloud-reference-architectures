@@ -2,6 +2,7 @@
 
 ### Change Log
 
+- **04/2022** - Improved usability & update to latest modules
 - **11/2021** - Updated to use Client-to-site VPN service (beta) instead of a VSI running a VPN server
 - **11/2021** - Updated to support the Edge VPC infrastructure in addition to Management and Workload VPCs.
 - **06/2021** - Initial release
