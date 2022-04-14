@@ -5,6 +5,11 @@ find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -vE "^[.]$" | grep -v w
 do
   name=$(echo "$dir" | sed -E "s~[.]/(.*)~\1~g")
 
+  if [[ "$name" = "160"* ]]; then
+    echo "Please connect to your vpn instance using the .ovpn profile within the 110-ibm-fs-edge-vpc directory and press ENTER to proceed."
+    read throwaway
+  fi
+
   echo "*** Applying ${name} ***"
 
   cd "${name}" && \
