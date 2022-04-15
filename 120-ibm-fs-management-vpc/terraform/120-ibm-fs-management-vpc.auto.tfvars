@@ -1,8 +1,8 @@
 ## ibmcloud_api_key: The IBM Cloud api key
 #ibmcloud_api_key=""
 
-## kms_resource_grou_name: The name of the resource group
-#kms_resource_grou_name=""
+## kms_resource_group_name: The name of the resource group
+#kms_resource_group_name=""
 
 ## region: the value of region
 #region=""
@@ -36,9 +36,6 @@
 
 ## ingress-subnets__count: The number of subnets that should be provisioned
 #ingress-subnets__count="3"
-
-## kms_resource_group_name: The name of the resource group
-#kms_resource_group_name=""
 
 ## vpn-subnets__count: The number of subnets that should be provisioned
 #vpn-subnets__count="3"

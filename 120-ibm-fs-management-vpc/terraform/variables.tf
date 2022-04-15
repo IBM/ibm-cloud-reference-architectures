@@ -2,11 +2,11 @@ variable "ibmcloud_api_key" {
   type = string
   description = "The IBM Cloud api key"
 }
-variable "kms_resource_grou_name" {
+variable "kms_resource_group_name" {
   type = string
   description = "The name of the resource group"
 }
-variable "kms_resource_grou_sync" {
+variable "kms_resource_group_sync" {
   type = string
   description = "Value used to order the provisioning of the resource group"
   default = ""
@@ -454,15 +454,6 @@ variable "ibm-transit-gateway_provision" {
   type = bool
   description = "Flag indicating that the transit gateway must be provisioned"
   default = false
-}
-variable "kms_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "kms_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
 }
 variable "vpn-subnets_zone_offset" {
   type = number

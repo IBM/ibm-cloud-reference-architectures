@@ -74,7 +74,8 @@ module "ibm-access-group" {
   resource_group_name = module.resource_group.name
 }
 module "ibm-activity-tracker" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-activity-tracker?ref=v2.4.12"
+  source = "cloud-native-toolkit/activity-tracker/ibm"
+  version = "2.4.14"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.ibm-activity-tracker_plan
@@ -169,14 +170,6 @@ module "kms" {
   resource_group_name = module.kms_resource_group.name
   service = var.kms_service
   tags = var.kms_tags == null ? null : jsondecode(var.kms_tags)
-}
-module "kms_resource_grou" {
-  source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
-
-  ibmcloud_api_key = var.ibmcloud_api_key
-  resource_group_name = var.kms_resource_grou_name
-  sync = var.kms_resource_grou_sync
 }
 module "kms_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"

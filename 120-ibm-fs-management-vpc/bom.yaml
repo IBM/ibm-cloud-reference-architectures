@@ -12,7 +12,7 @@ metadata:
 spec:
   modules:
     - name: ibm-resource-group
-      alias: kms_resource_grou
+      alias: kms_resource_group
       version: v3.2.13
     - name: ibm-resource-group
       alias: at_resource_group
@@ -33,7 +33,7 @@ spec:
       version: v3.1.2
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.12
+      version: v2.4.14
       dependencies:
         - name: resource_group
           ref: at_resource_group
@@ -200,10 +200,6 @@ spec:
       dependencies:
         - name: resource-group
           ref: cs_resource_group
-    - name: ibm-resource-group
-      alias: kms_resource_group
-      version: v3.2.13
-      variables: *ref_0
     - name: ibm-vpc-subnets
       alias: vpn-subnets
       version: v1.12.2
@@ -211,7 +207,7 @@ spec:
     - name: ibmcloud_api_key
       type: string
       description: The IBM Cloud api key
-    - name: kms_resource_grou_name
+    - name: kms_resource_group_name
       type: string
       description: The name of the resource group
     - name: region
@@ -256,9 +252,6 @@ spec:
       type: number
       description: The number of subnets that should be provisioned
       defaultValue: 3
-    - name: kms_resource_group_name
-      type: string
-      description: The name of the resource group
     - name: vpn-subnets__count
       type: number
       description: The number of subnets that should be provisioned
