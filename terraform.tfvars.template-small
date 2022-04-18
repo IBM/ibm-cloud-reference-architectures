@@ -14,7 +14,6 @@ kms_region="us-east"
 
 ## kms_service: The service that should be used for the kms instance (keyprotect or hpcs)
 kms_service="keyprotect"
-#kms_provision="false"
 
 #kms_name=""
 
