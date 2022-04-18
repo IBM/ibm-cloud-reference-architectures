@@ -33,7 +33,7 @@ spec:
       version: v3.1.2
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.12
+      version: v2.4.14
       dependencies:
         - name: resource_group
           ref: at_resource_group
@@ -112,7 +112,7 @@ spec:
           ref: cs_resource_group
     - name: ibm-vpc
       alias: ibm-vpc
-      version: v1.15.5
+      version: v1.15.7
       variables:
         - name: address_prefix_count
           value: 3

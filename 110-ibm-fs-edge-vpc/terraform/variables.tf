@@ -418,7 +418,7 @@ variable "ingress-subnets_provision" {
 variable "ingress-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
-  default = "[]"
+  default = "[{\"name\":\"allow-vpn-ingress\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"10.0.0.0/8\"},{\"name\":\"allow-vpn-egress\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"10.0.0.0/8\",\"destination\":\"0.0.0.0/0\"}]"
 }
 variable "bastion-subnets_zone_offset" {
   type = number

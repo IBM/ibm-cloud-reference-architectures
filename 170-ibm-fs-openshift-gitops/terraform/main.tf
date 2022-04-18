@@ -1,5 +1,5 @@
 module "argocd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.18.6"
+  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.18.7"
 
   app_namespace = module.openshift-gitops.name
   cluster_config_file = module.cluster.config_file_path

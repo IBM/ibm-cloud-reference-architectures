@@ -98,7 +98,7 @@ module "ibm-flow-logs" {
 module "ibm-transit-gateway" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-transit-gateway?ref=v0.2.2"
 
-  connections = [module.ibm-vpc.crn]
+  connections = module.ibm-vpc.crn
   name = var.ibm-transit-gateway_name
   name_prefix = var.cs_name_prefix
   provision = var.ibm-transit-gateway_provision
@@ -107,7 +107,7 @@ module "ibm-transit-gateway" {
 }
 module "ibm-vpc" {
   source = "cloud-native-toolkit/vpc/ibm"
-  version = "1.15.5"
+  version = "1.15.7"
 
   address_prefix_count = var.ibm-vpc_address_prefix_count
   address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)

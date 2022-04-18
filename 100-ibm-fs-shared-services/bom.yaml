@@ -39,13 +39,13 @@ spec:
       version: v3.1.2
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.12
+      version: v2.4.14
       variables: &ref_1
         - name: resource_location
           alias: region
     - name: ibm-activity-tracker
       alias: at-ibm-activity-tracker
-      version: v2.4.12
+      version: v2.4.14
       variables: *ref_1
     - name: ibm-cert-manager
       alias: ibm-cert-manager

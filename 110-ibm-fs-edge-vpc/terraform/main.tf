@@ -119,7 +119,8 @@ module "ibm-access-group" {
   resource_group_name = module.resource_group.name
 }
 module "ibm-activity-tracker" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-activity-tracker?ref=v2.4.12"
+  source = "cloud-native-toolkit/activity-tracker/ibm"
+  version = "2.4.14"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.ibm-activity-tracker_plan
@@ -168,7 +169,7 @@ module "ibm-transit-gateway" {
 }
 module "ibm-vpc" {
   source = "cloud-native-toolkit/vpc/ibm"
-  version = "1.15.5"
+  version = "1.15.7"
 
   address_prefix_count = var.ibm-vpc_address_prefix_count
   address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)

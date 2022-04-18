@@ -30,7 +30,7 @@ spec:
           value: tools
     - name: argocd
       alias: argocd
-      version: v2.18.6
+      version: v2.18.7
     - name: cluster-config
       alias: config
       version: v0.1.2
