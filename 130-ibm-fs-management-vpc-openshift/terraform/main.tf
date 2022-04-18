@@ -139,7 +139,7 @@ module "ibm-logdna-bind" {
 module "ibm-transit-gateway" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-transit-gateway?ref=v0.2.2"
 
-  connections = module.ibm-vpc.crn
+  connections = [module.ibm-vpc.crn]
   name = var.ibm-transit-gateway_name
   name_prefix = var.cs_name_prefix
   provision = var.ibm-transit-gateway_provision
