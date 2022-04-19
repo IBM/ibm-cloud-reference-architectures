@@ -49,7 +49,6 @@ else
     helpFunction "The ${ENV}.properties file is not found."
 fi
 
-echo ${IBMCLOUD_API_KEY}
 
 echo "Initializing container ${CONTAINER_NAME} from ${DOCKER_IMAGE}"
 ${DOCKER_CMD} run -itd --name ${CONTAINER_NAME} \
