@@ -56,9 +56,12 @@ spec:
       variables:
         - name: name
           value: tools
-    - name: argocd
-      alias: argocd
-      version: v2.18.7
+    - name: namespace
+      alias: openshift-gitops
+      version: v3.2.0
+      variables:
+        - name: name
+          value: openshift-gitops
     - name: artifactory
       alias: artifactory
       version: v1.12.2
@@ -78,6 +81,9 @@ spec:
         - name: registry_namespace
           required: true
           scope: global
+    - name: openshift-cicd
+      alias: openshift-cicd
+      version: v1.7.15
     - name: pactbroker
       alias: pactbroker
       version: v1.5.5
@@ -87,19 +93,23 @@ spec:
     - name: source-control
       alias: git
       version: v1.3.1
-    - name: tekton
-      alias: tekton
-      version: v2.4.0
     - name: tekton-resources
       alias: tekton-resources
       version: v2.3.0
+    - name: console-link-job
+      version: v1.0.2
     - name: olm
       version: v1.3.2
     - name: namespace
-      alias: openshift-gitops
+      alias: tools
       version: v3.2.0
-    - name: console-link-job
-      version: v1.0.2
+    - name: namespace
+      alias: sealed-secret
+      version: v3.2.0
+    - name: sealed-secret-cert
+      version: v1.0.0
+    - name: tekton
+      version: v2.4.0
   variables:
     - name: ibmcloud_api_key
       type: string
@@ -140,6 +150,11 @@ spec:
     - name: git_url
       type: string
       description: The url to the git host (base git host, org, or repo url)
-    - name: openshift-gitops_name
+    - name: tools_name
       type: string
       description: The namespace that should be created
+      defaultValue: tools
+    - name: sealed-secret_name
+      type: string
+      description: The namespace that should be created
+      defaultValue: sealed-secrets

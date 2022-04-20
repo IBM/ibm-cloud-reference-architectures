@@ -1,13 +1,3 @@
-module "argocd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd?ref=v2.18.7"
-
-  app_namespace = module.openshift-gitops.name
-  cluster_config_file = module.cluster.config_file_path
-  cluster_type = var.argocd_cluster_type
-  name = var.argocd_name
-  olm_namespace = module.olm.olm_namespace
-  operator_namespace = module.olm.operator_namespace
-}
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
   version = "1.13.2"
@@ -64,6 +54,20 @@ module "olm" {
   cluster_type = module.cluster.platform.type_code
   cluster_version = module.cluster.platform.version
 }
+module "openshift-cicd" {
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.15"
+
+  cluster_config_file = module.cluster.config_file_path
+  cluster_type = module.cluster.platform.type_code
+  gitops_namespace = module.openshift-gitops.name
+  ingress_subdomain = module.cluster.platform.ingress
+  olm_namespace = module.olm.olm_namespace
+  operator_namespace = module.olm.target_namespace
+  sealed_secret_cert = module.sealed-secret-cert.cert
+  sealed_secret_namespace = module.sealed-secret.name
+  sealed_secret_private_key = module.sealed-secret-cert.private_key
+  tools_namespace = module.tools.name
+}
 module "openshift-gitops" {
   source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
 
@@ -91,6 +95,28 @@ module "resource_group" {
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.workload_resource_group_name
   sync = var.resource_group_sync
+}
+module "sealed-secret" {
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
+
+  cluster_config_file_path = module.cluster.config_file_path
+  create_operator_group = var.sealed-secret_create_operator_group
+  name = var.sealed-secret_name
+}
+module "sealed-secret-cert" {
+  source = "github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert?ref=v1.0.0"
+
+  cert = var.sealed-secret-cert_cert
+  cert_file = var.sealed-secret-cert_cert_file
+  private_key = var.sealed-secret-cert_private_key
+  private_key_file = var.sealed-secret-cert_private_key_file
+}
+module "tools" {
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
+
+  cluster_config_file_path = module.cluster.config_file_path
+  create_operator_group = var.tools_create_operator_group
+  name = var.tools_name
 }
 module "tools_namespace" {
   source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"

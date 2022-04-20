@@ -46,16 +46,6 @@ variable "tools_namespace_create_operator_group" {
   description = "Flag indicating that an operator group should be created in the namespace"
   default = true
 }
-variable "argocd_cluster_type" {
-  type = string
-  description = "The type of cluster (openshift or kubernetes)"
-  default = "ocp4"
-}
-variable "argocd_name" {
-  type = string
-  description = "The name for the instance"
-  default = "argocd-cluster"
-}
 variable "config_gitops_dir" {
   type = string
   description = "Directory where the gitops repo content should be written"
@@ -84,4 +74,44 @@ variable "openshift-gitops_create_operator_group" {
   type = bool
   description = "Flag indicating that an operator group should be created in the namespace"
   default = true
+}
+variable "tools_name" {
+  type = string
+  description = "The namespace that should be created"
+  default = "tools"
+}
+variable "tools_create_operator_group" {
+  type = bool
+  description = "Flag indicating that an operator group should be created in the namespace"
+  default = true
+}
+variable "sealed-secret_name" {
+  type = string
+  description = "The namespace that should be created"
+  default = "sealed-secrets"
+}
+variable "sealed-secret_create_operator_group" {
+  type = bool
+  description = "Flag indicating that an operator group should be created in the namespace"
+  default = true
+}
+variable "sealed-secret-cert_cert" {
+  type = string
+  description = "The public key that will be used to encrypt sealed secrets. If not provided, a new one will be generated"
+  default = ""
+}
+variable "sealed-secret-cert_private_key" {
+  type = string
+  description = "The private key that will be used to decrypt sealed secrets. If not provided, a new one will be generated"
+  default = ""
+}
+variable "sealed-secret-cert_cert_file" {
+  type = string
+  description = "The file containing the public key that will be used to encrypt the sealed secrets. If not provided a new public key will be generated"
+  default = ""
+}
+variable "sealed-secret-cert_private_key_file" {
+  type = string
+  description = "The file containin the private key that will be used to encrypt the sealed secrets. If not provided a new private key will be generated"
+  default = ""
 }

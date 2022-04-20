@@ -56,9 +56,6 @@ spec:
       variables:
         - name: name
           value: tools
-    - name: argocd
-      alias: argocd
-      version: v2.18.7
     - name: cluster-config
       alias: cluster-config
       version: v0.1.2
@@ -74,11 +71,22 @@ spec:
         - name: registry_namespace
           required: true
           scope: global
+    - name: openshift-cicd
+      alias: openshift-cicd
+      version: v1.7.15
     - name: olm
       version: v1.3.2
     - name: namespace
       alias: openshift-gitops
       version: v3.2.0
+    - name: namespace
+      alias: tools
+      version: v3.2.0
+    - name: namespace
+      alias: sealed-secret
+      version: v3.2.0
+    - name: sealed-secret-cert
+      version: v1.0.0
   variables:
     - name: ibmcloud_api_key
       type: string
@@ -116,3 +124,11 @@ spec:
     - name: openshift-gitops_name
       type: string
       description: The namespace that should be created
+    - name: tools_name
+      type: string
+      description: The namespace that should be created
+      defaultValue: tools
+    - name: sealed-secret_name
+      type: string
+      description: The namespace that should be created
+      defaultValue: sealed-secrets

@@ -28,6 +28,9 @@
 ## git_url: The url to the git host (base git host, org, or repo url)
 #git_url=""
 
-## openshift-gitops_name: The namespace that should be created
-#openshift-gitops_name=""
+## tools_name: The namespace that should be created
+#tools_name="tools"
+
+## sealed-secret_name: The namespace that should be created
+#sealed-secret_name="sealed-secrets"
 

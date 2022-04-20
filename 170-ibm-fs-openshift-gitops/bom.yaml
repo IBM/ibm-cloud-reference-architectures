@@ -12,7 +12,7 @@ spec:
   modules:
     - name: ocp-login
       alias: cluster
-      version: v1.2.8
+      version: v1.2.10
       variables:
         - name: server_url
           required: true
@@ -28,9 +28,6 @@ spec:
       variables:
         - name: name
           value: tools
-    - name: argocd
-      alias: argocd
-      version: v2.18.7
     - name: cluster-config
       alias: config
       version: v0.1.2
@@ -39,11 +36,22 @@ spec:
           value: Workload
         - name: banner_background_color
           value: red
+    - name: openshift-cicd
+      alias: openshift-cicd
+      version: v1.7.15
     - name: olm
       version: v1.3.2
     - name: namespace
       alias: openshift-gitops
       version: v3.2.0
+    - name: namespace
+      alias: tools
+      version: v3.2.0
+    - name: namespace
+      alias: sealed-secret
+      version: v3.2.0
+    - name: sealed-secret-cert
+      version: v1.0.0
   variables:
     - name: server_url
       type: string
@@ -59,3 +67,11 @@ spec:
     - name: openshift-gitops_name
       type: string
       description: The namespace that should be created
+    - name: tools_name
+      type: string
+      description: The namespace that should be created
+      defaultValue: tools
+    - name: sealed-secret_name
+      type: string
+      description: The namespace that should be created
+      defaultValue: sealed-secrets
