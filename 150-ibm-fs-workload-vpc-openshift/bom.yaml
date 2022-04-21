@@ -185,6 +185,18 @@ spec:
             - 10.40.10.0/24
             - 10.50.10.0/24
             - 10.60.10.0/24
+        - name: acl_rules
+          value:
+            - name: allow-vpn-ingress
+              action: allow
+              direction: inbound
+              source: 0.0.0.0/0
+              destination: 10.0.0.0/8
+            - name: allow-vpn-egress
+              action: allow
+              direction: inbound
+              source: 10.0.0.0/8
+              destination: 0.0.0.0/0
       dependencies:
         - name: gateways
           ref: ibm-vpc-gateways
