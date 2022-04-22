@@ -155,7 +155,7 @@ spec:
               destination: 10.0.0.0/8
             - name: allow-vpn-egress
               action: allow
-              direction: inbound
+              direction: outbound
               source: 10.0.0.0/8
               destination: 0.0.0.0/0
       dependencies:
