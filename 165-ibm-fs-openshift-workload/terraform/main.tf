@@ -55,7 +55,7 @@ module "olm" {
   cluster_version = module.cluster.platform.version
 }
 module "openshift-cicd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.15"
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.16"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
@@ -104,7 +104,7 @@ module "sealed-secret" {
   name = var.sealed-secret_name
 }
 module "sealed-secret-cert" {
-  source = "github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert?ref=v1.0.0"
+  source = "github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert?ref=v1.0.1"
 
   cert = var.sealed-secret-cert_cert
   cert_file = var.sealed-secret-cert_cert_file

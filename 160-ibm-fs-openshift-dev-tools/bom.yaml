@@ -83,7 +83,7 @@ spec:
           scope: global
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.15
+      version: v1.7.16
     - name: pactbroker
       alias: pactbroker
       version: v1.5.5
@@ -107,7 +107,7 @@ spec:
       alias: sealed-secret
       version: v3.2.0
     - name: sealed-secret-cert
-      version: v1.0.0
+      version: v1.0.1
     - name: tekton
       version: v2.4.0
   variables:

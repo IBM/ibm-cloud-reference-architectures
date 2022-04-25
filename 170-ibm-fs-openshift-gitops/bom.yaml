@@ -38,7 +38,7 @@ spec:
           value: red
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.15
+      version: v1.7.16
     - name: olm
       version: v1.3.2
     - name: namespace
@@ -51,7 +51,7 @@ spec:
       alias: sealed-secret
       version: v3.2.0
     - name: sealed-secret-cert
-      version: v1.0.0
+      version: v1.0.1
   variables:
     - name: server_url
       type: string
