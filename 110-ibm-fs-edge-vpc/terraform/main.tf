@@ -1,6 +1,6 @@
 module "at_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.at_resource_group_name
@@ -36,7 +36,7 @@ module "cos" {
 }
 module "cs_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.cs_resource_group_name
@@ -120,7 +120,7 @@ module "ibm-access-group" {
 }
 module "ibm-activity-tracker" {
   source = "cloud-native-toolkit/activity-tracker/ibm"
-  version = "2.4.14"
+  version = "2.4.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.ibm-activity-tracker_plan
@@ -160,7 +160,7 @@ module "ibm-flow-logs" {
 module "ibm-transit-gateway" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-transit-gateway?ref=v0.2.2"
 
-  connections = [module.ibm-vpc.crn]
+  connections = module.ibm-vpc.crn
   name = var.ibm-transit-gateway_name
   name_prefix = var.cs_name_prefix
   provision = var.ibm-transit-gateway_provision
@@ -254,7 +254,7 @@ module "kms" {
 }
 module "kms_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.kms_resource_group_name
@@ -276,7 +276,7 @@ module "kms-key" {
 }
 module "resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.edge_resource_group_name

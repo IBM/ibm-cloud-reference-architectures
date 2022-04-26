@@ -15,7 +15,7 @@ spec:
   modules:
     - name: ibm-resource-group
       alias: at_resource_group
-      version: v3.2.13
+      version: v3.2.15
       variables:
         - name: resource_group_name
           alias: at_resource_group_name
@@ -25,27 +25,27 @@ spec:
           ref: kms_resource_group
     - name: ibm-resource-group
       alias: resource_group
-      version: v3.2.13
+      version: v3.2.15
       variables: &ref_0
         - name: resource_group_name
           alias: cs_resource_group_name
           scope: global
     - name: ibm-resource-group
       alias: kms_resource_group
-      version: v3.2.13
+      version: v3.2.15
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
       version: v3.1.2
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.14
+      version: v2.4.15
       variables: &ref_1
         - name: resource_location
           alias: region
     - name: ibm-activity-tracker
       alias: at-ibm-activity-tracker
-      version: v2.4.14
+      version: v2.4.15
       variables: *ref_1
     - name: ibm-cert-manager
       alias: ibm-cert-manager

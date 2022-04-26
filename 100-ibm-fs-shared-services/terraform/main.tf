@@ -1,6 +1,6 @@
 module "at_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.at_resource_group_name
@@ -8,7 +8,7 @@ module "at_resource_group" {
 }
 module "at-ibm-activity-tracker" {
   source = "cloud-native-toolkit/activity-tracker/ibm"
-  version = "2.4.14"
+  version = "2.4.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.at-ibm-activity-tracker_plan
@@ -74,7 +74,7 @@ module "ibm-access-group" {
 }
 module "ibm-activity-tracker" {
   source = "cloud-native-toolkit/activity-tracker/ibm"
-  version = "2.4.14"
+  version = "2.4.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.ibm-activity-tracker_plan
@@ -115,7 +115,7 @@ module "kms" {
 }
 module "kms_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.kms_resource_group_name
@@ -154,7 +154,7 @@ module "logdna" {
 }
 module "resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.cs_resource_group_name

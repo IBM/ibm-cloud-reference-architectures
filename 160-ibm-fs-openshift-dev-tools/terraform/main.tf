@@ -63,7 +63,7 @@ module "console-link-job" {
 }
 module "cs_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.cs_resource_group_name
@@ -117,7 +117,7 @@ module "openshift-cicd" {
   tools_namespace = module.tools.name
 }
 module "openshift-gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.openshift-gitops_create_operator_group
@@ -148,14 +148,14 @@ module "registry" {
 }
 module "resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.13"
+  version = "3.2.15"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = var.mgmt_resource_group_name
   sync = var.resource_group_sync
 }
 module "sealed-secret" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.sealed-secret_create_operator_group
@@ -207,14 +207,14 @@ module "tekton-resources" {
   support_namespace = var.tekton-resources_support_namespace
 }
 module "tools" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.tools_create_operator_group
   name = var.tools_name
 }
 module "tools_namespace" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.0"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.tools_namespace_create_operator_group

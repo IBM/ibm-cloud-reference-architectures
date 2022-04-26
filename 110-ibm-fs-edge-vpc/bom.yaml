@@ -13,27 +13,27 @@ spec:
   modules:
     - name: ibm-resource-group
       alias: kms_resource_group
-      version: v3.2.13
+      version: v3.2.15
     - name: ibm-resource-group
       alias: at_resource_group
-      version: v3.2.13
+      version: v3.2.15
     - name: ibm-resource-group
       alias: resource_group
-      version: v3.2.13
+      version: v3.2.15
       variables: &ref_0
         - name: resource_group_name
           alias: edge_resource_group_name
           scope: global
     - name: ibm-resource-group
       alias: cs_resource_group
-      version: v3.2.13
+      version: v3.2.15
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
       version: v3.1.2
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.14
+      version: v2.4.15
       dependencies:
         - name: resource_group
           ref: at_resource_group
