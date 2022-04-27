@@ -31,7 +31,7 @@ module "olm" {
   cluster_version = module.cluster.platform.version
 }
 module "openshift-cicd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.16"
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.17"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
@@ -45,14 +45,14 @@ module "openshift-cicd" {
   tools_namespace = module.tools.name
 }
 module "openshift-gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.openshift-gitops_create_operator_group
   name = var.openshift-gitops_name
 }
 module "sealed-secret" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.sealed-secret_create_operator_group
@@ -67,14 +67,14 @@ module "sealed-secret-cert" {
   private_key_file = var.sealed-secret-cert_private_key_file
 }
 module "tools" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.tools_create_operator_group
   name = var.tools_name
 }
 module "tools_namespace" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.1"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.tools_namespace_create_operator_group

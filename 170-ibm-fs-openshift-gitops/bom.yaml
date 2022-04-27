@@ -23,7 +23,7 @@ spec:
           scope: global
     - name: namespace
       alias: tools_namespace
-      version: v3.2.1
+      version: v3.2.2
       default: true
       variables:
         - name: name
@@ -38,18 +38,18 @@ spec:
           value: red
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.16
+      version: v1.7.17
     - name: olm
       version: v1.3.2
     - name: namespace
       alias: openshift-gitops
-      version: v3.2.1
+      version: v3.2.2
     - name: namespace
       alias: tools
-      version: v3.2.1
+      version: v3.2.2
     - name: namespace
       alias: sealed-secret
-      version: v3.2.1
+      version: v3.2.2
     - name: sealed-secret-cert
       version: v1.0.1
   variables:
