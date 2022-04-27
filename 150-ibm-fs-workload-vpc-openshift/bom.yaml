@@ -141,7 +141,7 @@ spec:
             - 0.0.0.0/0
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.13.2
+      version: v1.13.3
       variables:
         - name: disable_public_endpoint
           value: true
