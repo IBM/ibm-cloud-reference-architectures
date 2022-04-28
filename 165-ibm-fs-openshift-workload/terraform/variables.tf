@@ -128,6 +128,16 @@ variable "tools_namespace_create_operator_group" {
   description = "Flag indicating that an operator group should be created in the namespace"
   default = true
 }
+variable "openshift-gitops_name" {
+  type = string
+  description = "The namespace that should be created"
+  default = "openshift-gitops"
+}
+variable "openshift-gitops_create_operator_group" {
+  type = bool
+  description = "Flag indicating that an operator group should be created in the namespace"
+  default = true
+}
 variable "cluster-config_gitops_dir" {
   type = string
   description = "Directory where the gitops repo content should be written"
@@ -161,15 +171,6 @@ variable "private_endpoint" {
   type = string
   description = "Flag indicating that the registry url should be created with private endpoints"
   default = "true"
-}
-variable "openshift-gitops_name" {
-  type = string
-  description = "The namespace that should be created"
-}
-variable "openshift-gitops_create_operator_group" {
-  type = bool
-  description = "Flag indicating that an operator group should be created in the namespace"
-  default = true
 }
 variable "tools_name" {
   type = string
