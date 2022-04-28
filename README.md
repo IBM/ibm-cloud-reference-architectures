@@ -108,6 +108,13 @@ If you are planning to create multiple instances of the Management or Workload a
 
 3. At this time the most reliable way of running this automation is with Terraform in your local machine either through a bootstrapped docker image or with native tools installed. We provide a Container image that has all the common SRE tools installed. [CLI Tools Image,](https://quay.io/repository/ibmgaragecloud/cli-tools?tab=tags) [Source Code for CLI Tools](https://github.com/cloud-native-toolkit/image-cli-tools)
 
+4. (Optional) Install and start Colima to run the terraform tools in a local bootstrapped container image, without the use of Docker Desktop.
+
+    ```shell
+    brew install docker colima
+    colima start
+    ```
+
 
 ## Setup
 
@@ -128,21 +135,25 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 3. Click **On** for the Financial Services Validated option.
 4. Read the information about enabling the setting, and select **I understand and agree to these terms**. Click **On**.
 
-### Terraform IasC Automation
+### Setup
 
 1. Clone this repository to your local SRE laptop or into a secure terminal. Open a shell into the cloned directory.
-2. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
+2. Copy `credentials.template` to `credentials.properties`.
+3. Provide your IBM Cloud API key as the value for the `TF_VAR_ibmcloud_api_key` variable in `credentials.properties` (**Note:** `*.properties` has been added to `.gitignore` to ensure that the file containing the apikey cannot be checked into Git.)
+4. Run `./launch.sh`. This will start a container image with the prompt opened in the `/terraform` directory.
+5. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
    - `full`: Full IBM Cloud reference architecture deployment, including a Key Protect instance.
    - `small`: IBM reference architecture scaled down for a POC environment deployment. This includes Key Protect and the clusters have been reduced to single region.
-3. Determine which reference architecture you will be deploying. There are currently two options available:
+6. Determine which reference architecture you will be deploying. There are currently two options available:
    - `vpc`: IBM Cloud - VPC with virtual servers reference architecture
    - `ocp`: IBM Cloud - VPC with Red Hat OpenShift reference architecture
    - `all`: Will copy all the terraform bundles into your workspace bundles prefixed `000` to `170`
-4. Run the `setup-workspace.sh -t {FLAVOR} -a {ARCH}` script to create a copy of the Terraform scripts in a `workspace/` directory and generate the SSH keys needed for the various VSI instances.
+7. Run the `setup-workspace.sh -t {FLAVOR} -a {ARCH}` script to create a copy of the Terraform scripts in a `workspace/current` directory and generate the SSH keys needed for the various VSI instances.
    ```
    ./setup-workspace.sh -t small -a all
    ```
-5. Update **terraform.tfvars** in the `workspace/` directory with the appropriate values for your deployment. Note: The values are currently set up to place everything in the same resource group. To use different resource groups, provide different values for each of the `*_resource_group_name` variables and comment out the `*_resource_group_provision="false"` values.
+8. Change the directory to the subdirectory for the layer (e.g. `/workspaces/current`) and follow the instructions in the README for the layer.
+9. Update **terraform.tfvars** in the `/workspaces/current` directory with the appropriate values for your deployment. Note: The values are currently set up to separate resource resource groups for common services, edge, management, and workload resources. These can be changed to all use the same resource group, if desired.
 
 ## Terraform Apply
 

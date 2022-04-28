@@ -26,7 +26,7 @@ spec:
       variables: *ref_0
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.13.3
+      version: v1.13.4
       dependencies:
         - name: subnets
           optional: true

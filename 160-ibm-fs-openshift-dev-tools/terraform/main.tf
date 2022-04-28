@@ -16,7 +16,7 @@ module "artifactory" {
 }
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.13.3"
+  version = "1.13.4"
 
   cos_id = var.cluster_cos_id
   disable_public_endpoint = var.cluster_disable_public_endpoint
