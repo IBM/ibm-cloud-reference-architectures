@@ -56,6 +56,12 @@ spec:
       variables:
         - name: name
           value: tools
+    - name: namespace
+      alias: openshift-gitops
+      version: v3.2.2
+      variables:
+        - name: name
+          value: openshift-gitops
     - name: cluster-config
       alias: cluster-config
       version: v0.1.2
@@ -76,9 +82,6 @@ spec:
       version: v1.7.20
     - name: olm
       version: v1.3.2
-    - name: namespace
-      alias: openshift-gitops
-      version: v3.2.2
     - name: namespace
       alias: tools
       version: v3.2.2
@@ -121,9 +124,6 @@ spec:
         The namespace that will be created in the IBM Cloud image registry. If
         not provided the value will default to the resource group
       defaultValue: ''
-    - name: openshift-gitops_name
-      type: string
-      description: The namespace that should be created
     - name: tools_name
       type: string
       description: The namespace that should be created
