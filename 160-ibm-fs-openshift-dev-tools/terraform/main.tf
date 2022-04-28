@@ -103,7 +103,7 @@ module "olm" {
   cluster_version = module.cluster.platform.version
 }
 module "openshift-cicd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.18"
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.7.20"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
@@ -187,7 +187,7 @@ module "sonarqube" {
   volume_capacity = var.sonarqube_volume_capacity
 }
 module "tekton" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton?ref=v2.4.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton?ref=v2.4.1"
 
   cluster_config_file_path = module.cluster.config_file_path
   cluster_ingress_hostname = module.cluster.platform.ingress

@@ -83,7 +83,7 @@ spec:
           scope: global
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.18
+      version: v1.7.20
     - name: pactbroker
       alias: pactbroker
       version: v1.5.5
@@ -109,7 +109,7 @@ spec:
     - name: sealed-secret-cert
       version: v1.0.1
     - name: tekton
-      version: v2.4.0
+      version: v2.4.1
   variables:
     - name: ibmcloud_api_key
       type: string

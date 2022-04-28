@@ -73,7 +73,7 @@ spec:
           scope: global
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.18
+      version: v1.7.20
     - name: olm
       version: v1.3.2
     - name: namespace
