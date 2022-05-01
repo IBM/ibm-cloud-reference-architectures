@@ -32,7 +32,7 @@ jobs:
 
       - name: Terraform Apply - ${{ matrix.architecture }}
         run: |
-          RANDOM_PREFIX=$(cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-16} | head -n 1)
+          RANDOM_PREFIX=$(cat /dev/urandom | tr -dc '[:alpha:]' | fold -w ${1:-8} | head -n 1)
           sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n "test-${RANDOM_PREFIX}" -r eu-gb
           sudo chown -R devops ../workspaces/current
           cd ../workspaces/current
