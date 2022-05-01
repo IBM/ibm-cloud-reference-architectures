@@ -35,7 +35,7 @@ jobs:
           sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n ${{ matrix.architecture }}
           sudo chown -R devops ../workspaces/current
           cd ../workspaces/current
-          cat terraform.tfvars
+          ./apply-all.sh
 
       - name: Terraform Destroy - ${{ matrix.architecture }}
         if: ${{ always() }}
