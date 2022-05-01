@@ -4,21 +4,25 @@
 
 TEMPLATE_FLAVOR=""
 REF_ARCH=""
+PREFIX_NAME=""
+REGION="us-east"
 
 Usage()
 {
    echo "Creates a workspace folder and populates it with architectures."
    echo
-   echo "Usage: setup-workspace.sh -t TEMPLATE_FLAVOR -a REF_ARCH"
+   echo "Usage: setup-workspace.sh -t TEMPLATE_FLAVOR -a REF_ARCH [-n PREFIX_NAME] [-r REGION]"
    echo "  options:"
    echo "  t     the template to use for the deployment (small or full)"
-   echo "  a     the reference architecture to deploy (vpc or ocp or all)"
+   echo "  a     the reference architecture to deploy (vpc or ocp-base or ocp or all)"
+   echo "  n     (optional) prefix that should be used for all variables"
+   echo "  r     (optional) the region where the infrastructure will be provisioned"
    echo "  h     Print this help"
    echo
 }
 
 # Get the options
-while getopts ":a:t:" option; do
+while getopts ":a:t:n:r:" option; do
    case $option in
       h) # display Help
          Usage
@@ -27,6 +31,10 @@ while getopts ":a:t:" option; do
          TEMPLATE_FLAVOR=$OPTARG;;
       a) # Enter a name
          REF_ARCH=$OPTARG;;
+      n) # Enter a name
+         PREFIX_NAME=$OPTARG;;
+      r) # Enter a name
+         REGION=$OPTARG;;
      \?) # Invalid option
          echo "Error: Invalid option"
          Usage
@@ -56,8 +64,15 @@ cd "${WORKSPACE_DIR}"
 echo "Setting up workspace in '${WORKSPACE_DIR}'"
 echo "*****"
 
-cp "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" "${SCRIPT_DIR}/terraform.tfvars"
-ln -s "${SCRIPT_DIR}/terraform.tfvars" ./terraform.tfvars
+if [[ -n "${PREFIX_NAME}" ]]; then
+  PREFIX_NAME="${PREFIX_NAME}-"
+fi
+
+"${SCRIPT_DIR}/create-ssh-keys.sh"
+cat "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" | \
+  sed "s/PREFIX/${PREFIX_NAME}/g"  | \
+  sed "s/REGION/${REGION}/g" \
+  > ./terraform.tfvars
 
 # append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
 if command -v openssl &> /dev/null
