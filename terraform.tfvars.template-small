@@ -3,14 +3,14 @@
 ###
 
 ## region: The IBM Cloud region where the cluster will be/has been installed.
-region="us-east"
+region="REGION"
 
 ## ***************
 ## KMS service
 ## ***************
 
 ## kms_region: Geographic location of the KMS service (e.g. us-south, us-east)
-kms_region="us-east"
+kms_region="REGION"
 
 ## kms_service: The service that should be used for the kms instance (keyprotect or hpcs)
 kms_service="keyprotect"

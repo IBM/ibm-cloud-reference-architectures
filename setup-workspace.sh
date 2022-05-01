@@ -3,6 +3,7 @@
 TEMPLATE_FLAVOR=""
 REF_ARCH=""
 PREFIX_NAME=""
+REGION="us-east"
 
 Usage()
 {
@@ -13,12 +14,13 @@ Usage()
    echo "  t     the template to use for the deployment (small or full)"
    echo "  a     the reference architecture to deploy (vpc or ocp-base or ocp or all)"
    echo "  n     (optional) prefix that should be used for all variables"
+   echo "  r     (optional) the region where the infrastructure will be provisioned"
    echo "  h     Print this help"
    echo
 }
 
 # Get the options
-while getopts ":a:t:n:" option; do
+while getopts ":a:t:n:r:" option; do
    case $option in
       h) # display Help
          Usage
@@ -29,6 +31,8 @@ while getopts ":a:t:n:" option; do
          REF_ARCH=$OPTARG;;
       n) # Enter a name
          PREFIX_NAME=$OPTARG;;
+      r) # Enter a name
+         REGION=$OPTARG;;
      \?) # Invalid option
          echo "Error: Invalid option"
          Usage
@@ -63,7 +67,10 @@ if [[ -n "${PREFIX_NAME}" ]]; then
 fi
 
 "${SCRIPT_DIR}/create-ssh-keys.sh"
-sed "s/PREFIX/${PREFIX_NAME}/g" "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" > ./terraform.tfvars
+cat "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" | \
+  sed "s/PREFIX/${PREFIX_NAME}/g"  | \
+  sed "s/REGION/${REGION}/g" \
+  > ./terraform.tfvars
 
 # append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
 if command -v openssl &> /dev/null

@@ -32,7 +32,7 @@ jobs:
 
       - name: Terraform Apply - ${{ matrix.architecture }}
         run: |
-          sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n ${{ matrix.architecture }}
+          sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n ${{ matrix.architecture }} -r eu-gb
           sudo chown -R devops ../workspaces/current
           cd ../workspaces/current
           ./apply-all.sh
