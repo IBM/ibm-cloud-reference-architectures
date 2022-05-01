@@ -58,12 +58,12 @@ cd "${WORKSPACE_DIR}"
 echo "Setting up workspace in '${WORKSPACE_DIR}'"
 echo "*****"
 
-if [[ -n "${PREFIX}" ]]; then
-  PREFIX="${PREFIX}-"
+if [[ -n "${PREFIX_NAME}" ]]; then
+  PREFIX_NAME="${PREFIX_NAME}-"
 fi
 
 "${SCRIPT_DIR}/create-ssh-keys.sh"
-sed "s/PREFIX/${PREFIX}/g" "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" > ./terraform.tfvars
+sed "s/PREFIX/${PREFIX_NAME}/g" "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" > ./terraform.tfvars
 
 # append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
 if command -v openssl &> /dev/null
