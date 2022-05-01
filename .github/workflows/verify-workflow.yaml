@@ -1,0 +1,44 @@
+name: Verify
+
+# Controls when the action will run.
+on:
+  workflow_call:
+    secrets:
+      IBMCLOUD_API_KEY:
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    container: quay.io/cloudnativetoolkit/cli-tools:v1.1
+
+    strategy:
+      matrix:
+        architecture:
+          - ocp-base
+      fail-fast: false
+      max-parallel: 1
+
+    env:
+      HOME: /home/devops
+      IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+      TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Terraform Apply - ${{ matrix.architecture }}
+        run: |
+          sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n ${{ matrix.architecture }}
+          sudo chown -R devops ../workspaces/current
+          cd ../workspaces/current
+          ./apply-all.sh
+
+      - name: Terraform Destroy - ${{ matrix.architecture }}
+        if: ${{ always() }}
+        run: |
+          cd ../workspaces/current
+          ./destroy-all.sh
