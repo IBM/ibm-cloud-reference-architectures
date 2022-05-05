@@ -14,9 +14,6 @@ kms_region="us-east"
 
 ## kms_service: The service that should be used for the kms instance (keyprotect or hpcs)
 kms_service="keyprotect"
-#kms_provision="false"
-
-#kms_name=""
 
 ## ***************
 ## Resource groups
@@ -40,24 +37,6 @@ mgmt_resource_group_name="management"
 ## workload_resource_group_name: The name of the workload resource group
 workload_resource_group_name="workload"
 
-
-## at_resource_group_provision: Flag indicating that the activity tracker resource group should be created
-at_resource_group_provision="false"
-
-## cs_resource_group_provision: Flag indicating that the shared services resource group should be created
-#cs_resource_group_provision="false"
-
-## kms_resource_group_provision: Flag indicating that the kms resource group should be created
-#kms_resource_group_provision="false"
-
-## edge_resource_group_provision: Flag indicating that the management resource group should be created
-#edge_resource_group_provision="false"
-
-## mgmt_resource_group_provision: Flag indicating that the management resource group should be created
-#mgmt_resource_group_provision="false"
-
-## workload_resource_group_provision: Flag indicating that the workload resource group should be created
-#workload_resource_group_provision="false"
 
 ## ***************
 ## Name Prefixes

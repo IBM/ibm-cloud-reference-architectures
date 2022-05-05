@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# IBM GSI Ecosystem Lab
 
 TEMPLATE_FLAVOR=""
 REF_ARCH=""
@@ -37,34 +39,56 @@ if [[ -z "${TEMPLATE_FLAVOR}" ]] || [[ ! "${TEMPLATE_FLAVOR}" =~ small|full ]] |
   exit 1
 fi
 
-mkdir -p workspace
-cd workspace
+SCRIPT_DIR=$(cd $(dirname $0); pwd -P)
+WORKSPACES_DIR="${SCRIPT_DIR}/../workspaces"
+WORKSPACE_DIR="${WORKSPACES_DIR}/current"
 
-echo "Setting up workspace from '${TEMPLATE_FLAVOR}' template"
+echo ${SCRIPT_DIR}
+
+if [[ -d "${WORKSPACE_DIR}" ]]; then
+  DATE=$(date "+%Y%m%d%H%M")
+  mv "${WORKSPACE_DIR}" "${WORKSPACES_DIR}/workspace-${DATE}"
+fi
+
+mkdir -p "${WORKSPACE_DIR}"
+cd "${WORKSPACE_DIR}"
+
+echo "Setting up workspace in '${WORKSPACE_DIR}'"
 echo "*****"
 
-../create-ssh-keys.sh
-cp "../terraform.tfvars.template-${TEMPLATE_FLAVOR}" ./terraform.tfvars
+${SCRIPT_DIR}/create-ssh-keys.sh
+#cp "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" "${SCRIPT_DIR}/terraform.tfvars"
+ln -s "${SCRIPT_DIR}/terraform.tfvars" ./terraform.tfvars
 
 # append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
 if command -v openssl &> /dev/null
 then
-    printf "\n\nsuffix=\"$(openssl rand -hex 4)\"\n" >> ./terraform.tfvars
+    printf "\n\nsuffix=\"$(openssl rand -hex 4)\"\n" >> "${WORKSPACE_DIR}"/terraform.tfvars
 fi
 
+# Help Scripts for applying and destroying
+cp "${SCRIPT_DIR}/apply-all.sh" "${WORKSPACE_DIR}/apply-all.sh"
+cp "${SCRIPT_DIR}/destroy-all.sh" "${WORKSPACE_DIR}./destroy-all.sh"
 
-cp ../apply-all.sh ./apply-all.sh
-cp ../destroy-all.sh ./destroy-all.sh
+ALL_ARCH="000|100|110|120|130|140|150|160|165|170"
+
+echo "Setting up workspace from '${TEMPLATE_FLAVOR}' template"
+echo "*****"
+
+WORKSPACE_DIR=$(cd "${WORKSPACE_DIR}"; pwd -P)
 
 VPC_ARCH="000|100|110|120|140"
-OCP_ARCH="000|100|110|130|150|160|165"
+OCP_ARCH="000|100|110|130|150|160|165|170"
 
-find .. -type d -maxdepth 1 | grep -vE "[.][.]/[.].*" | grep -v workspace | sort | \
+echo "Setting up automation  ${WORKSPACE_DIR}"
+
+find /terraform/. -type d -maxdepth 1 | grep -vE "[.][.]/[.].*" | grep -v workspace | sort | \
   while read dir;
 do
-  name=$(echo "$dir" | sed -E "s~[.][.]/(.*)~\1~g")
 
-  if [[ ! -d "../${name}/terraform" ]]; then
+  name=$(echo "$dir" | sed -E "s/.*\///")
+
+  if [[ ! -d "${SCRIPT_DIR}/${name}/terraform" ]]; then
     continue
   fi
 
@@ -80,15 +104,17 @@ do
     continue
   fi
 
-  echo "Setting up workspace/${name} from ${name}"
+  echo "Setting up current/${name} from ${name}"
 
-  mkdir -p "${name}"
+  mkdir -p ${name}
   cd "${name}"
 
-  cp -R "../../${name}/terraform/"* .
-  ln -s ../terraform.tfvars ./terraform.tfvars
-  ln -s ../../apply.sh ./apply.sh
-  ln -s ../../destroy.sh ./destroy.sh
-  ln -s ../ssh-* .
+  cp -R "${SCRIPT_DIR}/${name}/terraform/"* .
+  ln -s "${WORKSPACE_DIR}"/terraform.tfvars ./terraform.tfvars
+  ln -s "${WORKSPACE_DIR}"/ssh-* .
+  ln -s "${SCRIPT_DIR}/apply.sh" ./apply.sh
+  ln -s "${SCRIPT_DIR}/destroy.sh" ./destroy.sh
   cd - > /dev/null
 done
+
+echo "move to ${WORKSPACE_DIR} this is where your automation is configured"
