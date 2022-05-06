@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# IBM GSI Ecosystem Lab
-
 TEMPLATE_FLAVOR=""
 REF_ARCH=""
 
@@ -56,19 +54,14 @@ cd "${WORKSPACE_DIR}"
 echo "Setting up workspace in '${WORKSPACE_DIR}'"
 echo "*****"
 
-${SCRIPT_DIR}/create-ssh-keys.sh
-#cp "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" "${SCRIPT_DIR}/terraform.tfvars"
-ln -s "${SCRIPT_DIR}/terraform.tfvars" ./terraform.tfvars
+/terraform/create-ssh-keys.sh
+cp "/terraform/terraform.tfvars.template-${TEMPLATE_FLAVOR}" ./terraform.tfvars
 
 # append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
 if command -v openssl &> /dev/null
 then
     printf "\n\nsuffix=\"$(openssl rand -hex 4)\"\n" >> "${WORKSPACE_DIR}"/terraform.tfvars
 fi
-
-# Help Scripts for applying and destroying
-cp "${SCRIPT_DIR}/apply-all.sh" "${WORKSPACE_DIR}/apply-all.sh"
-cp "${SCRIPT_DIR}/destroy-all.sh" "${WORKSPACE_DIR}./destroy-all.sh"
 
 ALL_ARCH="000|100|110|120|130|140|150|160|165|170"
 
@@ -112,8 +105,6 @@ do
   cp -R "${SCRIPT_DIR}/${name}/terraform/"* .
   ln -s "${WORKSPACE_DIR}"/terraform.tfvars ./terraform.tfvars
   ln -s "${WORKSPACE_DIR}"/ssh-* .
-  ln -s "${SCRIPT_DIR}/apply.sh" ./apply.sh
-  ln -s "${SCRIPT_DIR}/destroy.sh" ./destroy.sh
   cd - > /dev/null
 done
 
