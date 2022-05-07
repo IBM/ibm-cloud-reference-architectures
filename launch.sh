@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# IBM Ecosystem Labs
+# IBM GSI Ecosystem Lab
 
 SCRIPT_DIR="$(cd $(dirname $0); pwd -P)"
 SRC_DIR="${SCRIPT_DIR}/automation"

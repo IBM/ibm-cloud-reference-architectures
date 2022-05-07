@@ -56,7 +56,6 @@ module "olm" {
 }
 module "openshift-cicd" {
   source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.9.0"
-
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
   gitops_namespace = module.openshift-gitops.name
