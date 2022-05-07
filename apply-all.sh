@@ -10,7 +10,7 @@ do
     read throwaway
   fi
 
-  echo "*** Applying ${name} ***"
+  echo "***** Applying ${name} *****"
 
   cd "${name}" && \
     terraform init && \
