@@ -56,7 +56,7 @@ cd "${WORKSPACE_DIR}"
 echo "Setting up workspace in '${WORKSPACE_DIR}'"
 echo "*****"
 
-#cp "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" "${SCRIPT_DIR}/terraform.tfvars"
+cp "${SCRIPT_DIR}/terraform.tfvars.template-${TEMPLATE_FLAVOR}" "${SCRIPT_DIR}/terraform.tfvars"
 ln -s "${SCRIPT_DIR}/terraform.tfvars" ./terraform.tfvars
 
 # append random string into suffix variable in tfvars  to prevent name collisions in object storage buckets
