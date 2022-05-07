@@ -40,7 +40,7 @@ jobs:
           echo ""
           echo "*** Start terraform.tfvars ***"
           cat terraform.tfvars
-          echo "*** End terraform.tfvars ***
+          echo "*** End terraform.tfvars ***"
           echo ""
           
           ./apply-all.sh
