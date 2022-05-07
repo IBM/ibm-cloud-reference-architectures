@@ -96,7 +96,7 @@ OCP_ARCH="000|100|110|130|150|160|165|170"
 
 echo "Setting up automation  ${WORKSPACE_DIR}"
 
-find /terraform/. -type d -maxdepth 1 | grep -vE "[.][.]/[.].*" | grep -v workspace | sort | \
+find "${SCRIPT_DIR}/." -type d -maxdepth 1 | grep -vE "[.][.]/[.].*" | grep -v workspace | sort | \
   while read dir;
 do
 
