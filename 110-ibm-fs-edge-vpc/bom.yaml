@@ -212,7 +212,7 @@ spec:
           ref: ingress-subnets
     - name: ibm-vpn-server
       alias: ibm-vpn-server
-      version: v0.0.11
+      version: v0.1.0
       dependencies:
         - name: subnets
           ref: ingress-subnets

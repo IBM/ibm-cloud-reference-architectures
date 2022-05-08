@@ -205,7 +205,7 @@ module "ibm-vpc-vpn-gateway" {
   vpc_subnets = module.ingress-subnets.subnets
 }
 module "ibm-vpn-server" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-server?ref=v0.0.11"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-server?ref=v0.1.0"
 
   auth_method = var.ibm-vpn-server_auth_method
   certificate_manager_id = module.ibm-cert-manager.id

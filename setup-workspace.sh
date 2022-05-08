@@ -42,7 +42,7 @@ while getopts ":a:t:n:r:" option; do
    esac
 done
 
-if [[ -z "${TEMPLATE_FLAVOR}" ]] || [[ ! "${TEMPLATE_FLAVOR}" =~ small|full ]] || [[ -z "${REF_ARCH}" ]] || [[ ! "${REF_ARCH}" =~ ocp|vpc|all ]]; then
+if [[ -z "${TEMPLATE_FLAVOR}" ]] || [[ ! "${TEMPLATE_FLAVOR}" =~ small|full ]] || [[ -z "${REF_ARCH}" ]] || [[ ! "${REF_ARCH}" =~ ^ocp$|^ocp-base$|^vpc$|^all$ ]]; then
   Usage
   exit 1
 fi
@@ -93,6 +93,7 @@ WORKSPACE_DIR=$(cd "${WORKSPACE_DIR}"; pwd -P)
 
 VPC_ARCH="000|100|110|120|140"
 OCP_ARCH="000|100|110|130|150|160|165|170"
+OCP_BASE_ARCH="000|100|110|130|150"
 
 echo "Setting up automation  ${WORKSPACE_DIR}"
 
@@ -103,6 +104,10 @@ do
   name=$(echo "$dir" | sed -E "s/.*\///")
 
   if [[ ! -d "${SCRIPT_DIR}/${name}/terraform" ]]; then
+    continue
+  fi
+
+  if [[ "${REF_ARCH}" == "ocp-base" ]] && [[ ! "${name}" =~ ${OCP_BASE_ARCH} ]]; then
     continue
   fi
 
