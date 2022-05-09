@@ -35,7 +35,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"   
 
-      # Create the tar.gz file that will be uploaded to the release and catalog
+      # Create the tar.gz file that will be uploaded to the gihub release and catalog offering
       - name: Create release asset for 000-account-setup
         run: |
           ls
@@ -87,9 +87,6 @@ jobs:
           VERSION=${{ env.VERSION }}
 
           catalogName="Tech Zone FS Cloud Catalog"
-          RND=$RANDOM
-          EDGE_PREFIX="edge-"$RND
-          MGMT_PREFIX="base-"$RND
 
           echo "--------------------------------------------------------------------"
           echo "000: onboard version, validate, publish"
