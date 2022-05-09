@@ -8,7 +8,7 @@ module "at_resource_group" {
 }
 module "bastion-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.12.2"
+  version = "1.13.1"
 
   _count = var.bastion-subnets__count
   acl_rules = var.bastion-subnets_acl_rules == null ? null : jsondecode(var.bastion-subnets_acl_rules)
@@ -19,6 +19,7 @@ module "bastion-subnets" {
   provision = var.bastion-subnets_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.bastion-subnets_tags == null ? null : jsondecode(var.bastion-subnets_tags)
   vpc_name = module.ibm-vpc.name
   zone_offset = var.bastion-subnets_zone_offset
 }
@@ -57,7 +58,7 @@ module "edge_ssh_bastion" {
 }
 module "egress-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.12.2"
+  version = "1.13.1"
 
   _count = var.egress-subnets__count
   acl_rules = var.egress-subnets_acl_rules == null ? null : jsondecode(var.egress-subnets_acl_rules)
@@ -68,6 +69,7 @@ module "egress-subnets" {
   provision = var.egress-subnets_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.egress-subnets_tags == null ? null : jsondecode(var.egress-subnets_tags)
   vpc_name = module.ibm-vpc.name
   zone_offset = var.egress-subnets_zone_offset
 }
@@ -94,7 +96,7 @@ module "flow_log_bucket" {
   vpc_ip_addresses = module.ibm-vpc.addresses
 }
 module "flow-log-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.9"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.11"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   provision = var.flow-log-auth_provision
@@ -113,7 +115,7 @@ module "flow-log-auth" {
 }
 module "ibm-access-group" {
   source = "cloud-native-toolkit/access-group/ibm"
-  version = "3.1.2"
+  version = "3.1.4"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = module.resource_group.name
@@ -169,7 +171,7 @@ module "ibm-transit-gateway" {
 }
 module "ibm-vpc" {
   source = "cloud-native-toolkit/vpc/ibm"
-  version = "1.15.7"
+  version = "1.16.0"
 
   address_prefix_count = var.ibm-vpc_address_prefix_count
   address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
@@ -180,18 +182,20 @@ module "ibm-vpc" {
   provision = var.ibm-vpc_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.ibm-vpc_tags == null ? null : jsondecode(var.ibm-vpc_tags)
 }
 module "ibm-vpc-gateways" {
   source = "cloud-native-toolkit/vpc-gateways/ibm"
-  version = "1.8.2"
+  version = "1.9.0"
 
   provision = var.ibm-vpc-gateways_provision
   region = var.region
   resource_group_id = module.resource_group.id
+  tags = var.ibm-vpc-gateways_tags == null ? null : jsondecode(var.ibm-vpc-gateways_tags)
   vpc_name = module.ibm-vpc.name
 }
 module "ibm-vpc-vpn-gateway" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-gateway?ref=v1.1.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-gateway?ref=v1.1.4"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   label = var.ibm-vpc-vpn-gateway_label
@@ -205,7 +209,7 @@ module "ibm-vpc-vpn-gateway" {
   vpc_subnets = module.ingress-subnets.subnets
 }
 module "ibm-vpn-server" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-server?ref=v0.1.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-server?ref=v0.1.1"
 
   auth_method = var.ibm-vpn-server_auth_method
   certificate_manager_id = module.ibm-cert-manager.id
@@ -225,7 +229,7 @@ module "ibm-vpn-server" {
 }
 module "ingress-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.12.2"
+  version = "1.13.1"
 
   _count = var.ingress-subnets__count
   acl_rules = var.ingress-subnets_acl_rules == null ? null : jsondecode(var.ingress-subnets_acl_rules)
@@ -236,6 +240,7 @@ module "ingress-subnets" {
   provision = var.ingress-subnets_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.ingress-subnets_tags == null ? null : jsondecode(var.ingress-subnets_tags)
   vpc_name = module.ibm-vpc.name
   zone_offset = var.ingress-subnets_zone_offset
 }

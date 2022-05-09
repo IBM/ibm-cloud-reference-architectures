@@ -75,16 +75,6 @@ variable "openshift-gitops_create_operator_group" {
   description = "Flag indicating that an operator group should be created in the namespace"
   default = true
 }
-variable "tools_name" {
-  type = string
-  description = "The namespace that should be created"
-  default = "tools"
-}
-variable "tools_create_operator_group" {
-  type = bool
-  description = "Flag indicating that an operator group should be created in the namespace"
-  default = true
-}
 variable "sealed-secret_name" {
   type = string
   description = "The namespace that should be created"

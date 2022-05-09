@@ -9,6 +9,7 @@ metadata:
   annotations:
     displayName: OpenShift Workload
     description: Configures workload cluster
+    vpn/required: 'true'
 spec:
   modules:
     - name: ibm-resource-group
@@ -26,7 +27,7 @@ spec:
       variables: *ref_0
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.13.4
+      version: v1.15.3
       dependencies:
         - name: subnets
           optional: true
@@ -51,14 +52,14 @@ spec:
           value: true
     - name: namespace
       alias: tools_namespace
-      version: v3.2.2
+      version: v3.2.3
       default: true
       variables:
         - name: name
           value: tools
     - name: namespace
       alias: openshift-gitops
-      version: v3.2.2
+      version: v3.2.3
       variables:
         - name: name
           value: openshift-gitops
@@ -72,22 +73,19 @@ spec:
           value: red
     - name: ibm-image-registry
       alias: registry
-      version: v2.1.2
+      version: v2.1.3
       variables:
         - name: registry_namespace
           required: true
           scope: global
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.20
+      version: v1.11.0
     - name: olm
       version: v1.3.2
     - name: namespace
-      alias: tools
-      version: v3.2.2
-    - name: namespace
       alias: sealed-secret
-      version: v3.2.2
+      version: v3.2.3
     - name: sealed-secret-cert
       version: v1.0.1
   variables:
@@ -124,10 +122,6 @@ spec:
         The namespace that will be created in the IBM Cloud image registry. If
         not provided the value will default to the resource group
       defaultValue: ''
-    - name: tools_name
-      type: string
-      description: The namespace that should be created
-      defaultValue: tools
     - name: sealed-secret_name
       type: string
       description: The namespace that should be created

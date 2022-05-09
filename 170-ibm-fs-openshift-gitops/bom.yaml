@@ -8,11 +8,12 @@ metadata:
   annotations:
     displayName: OpenShift GitOps (ArgoCD)
     description: Provision GitOps (ArgoCD) on OpenShift
+    vpn/required: 'true'
 spec:
   modules:
     - name: ocp-login
       alias: cluster
-      version: v1.2.10
+      version: v1.2.13
       variables:
         - name: server_url
           required: true
@@ -23,7 +24,7 @@ spec:
           scope: global
     - name: namespace
       alias: tools_namespace
-      version: v3.2.2
+      version: v3.2.3
       default: true
       variables:
         - name: name
@@ -38,18 +39,15 @@ spec:
           value: red
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.7.20
+      version: v1.11.0
     - name: olm
       version: v1.3.2
     - name: namespace
       alias: openshift-gitops
-      version: v3.2.2
-    - name: namespace
-      alias: tools
-      version: v3.2.2
+      version: v3.2.3
     - name: namespace
       alias: sealed-secret
-      version: v3.2.2
+      version: v3.2.3
     - name: sealed-secret-cert
       version: v1.0.1
   variables:
@@ -67,10 +65,6 @@ spec:
     - name: openshift-gitops_name
       type: string
       description: The namespace that should be created
-    - name: tools_name
-      type: string
-      description: The namespace that should be created
-      defaultValue: tools
     - name: sealed-secret_name
       type: string
       description: The namespace that should be created

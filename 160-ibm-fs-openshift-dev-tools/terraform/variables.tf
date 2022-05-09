@@ -42,7 +42,7 @@ variable "cluster_flavor" {
 variable "ocp_version" {
   type = string
   description = "The version of the OpenShift cluster that should be provisioned (format 4.x)"
-  default = "4.8"
+  default = "4.10"
 }
 variable "cluster_exists" {
   type = bool
@@ -275,16 +275,6 @@ variable "tekton-resources_support_namespace" {
   description = "The namespace where supporting infrastructure and configuration are running (e.g. buildah-unprivileged daemon set)"
   default = ""
 }
-variable "tools_name" {
-  type = string
-  description = "The namespace that should be created"
-  default = "tools"
-}
-variable "tools_create_operator_group" {
-  type = bool
-  description = "Flag indicating that an operator group should be created in the namespace"
-  default = true
-}
 variable "sealed-secret_name" {
   type = string
   description = "The namespace that should be created"
@@ -314,9 +304,4 @@ variable "sealed-secret-cert_private_key_file" {
   type = string
   description = "The file containin the private key that will be used to encrypt the sealed secrets. If not provided a new private key will be generated"
   default = ""
-}
-variable "tekton_provision" {
-  type = bool
-  description = "Flag indicating that Tekton should be provisioned"
-  default = true
 }

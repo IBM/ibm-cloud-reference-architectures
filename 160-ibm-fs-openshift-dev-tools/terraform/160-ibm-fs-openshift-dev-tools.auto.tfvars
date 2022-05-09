@@ -28,9 +28,6 @@
 ## git_url: The url to the git host (base git host, org, or repo url)
 #git_url=""
 
-## tools_name: The namespace that should be created
-#tools_name="tools"
-
 ## sealed-secret_name: The namespace that should be created
 #sealed-secret_name="sealed-secrets"
 

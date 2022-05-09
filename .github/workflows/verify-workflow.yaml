@@ -3,6 +3,10 @@ name: Verify
 # Controls when the action will run.
 on:
   workflow_call:
+    outputs:
+      status:
+        description: The status of the job
+        value: ${{ jobs.verify.outputs.status }}
     secrets:
       IBMCLOUD_API_KEY:
         required: true
@@ -11,19 +15,24 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    container: quay.io/cloudnativetoolkit/cli-tools:v1.1
+    container:
+      image: quay.io/cloudnativetoolkit/cli-tools:v1.1
+      options: --privileged
 
     strategy:
       matrix:
         architecture:
-          - ocp-base
+          - ocp
+          - vpc
       fail-fast: false
-      max-parallel: 1
 
     env:
       HOME: /home/devops
       IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
       TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
+
+    outputs:
+      status: ${{ job.status }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

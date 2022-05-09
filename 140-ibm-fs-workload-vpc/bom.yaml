@@ -30,7 +30,7 @@ spec:
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
-      version: v3.1.2
+      version: v3.1.4
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
       version: v2.4.15
@@ -59,7 +59,7 @@ spec:
           ref: flow_log_bucket
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
-      version: v1.2.9
+      version: v1.2.11
       variables:
         - name: source_service_name
           value: is
@@ -112,7 +112,7 @@ spec:
           ref: cs_resource_group
     - name: ibm-vpc
       alias: ibm-vpc
-      version: v1.15.7
+      version: v1.16.0
       variables:
         - name: address_prefix_count
           value: 3
@@ -132,10 +132,10 @@ spec:
             - 0.0.0.0/0
     - name: ibm-vpc-gateways
       alias: ibm-vpc-gateways
-      version: v1.8.2
+      version: v1.9.0
     - name: ibm-vpc-subnets
       alias: worker-subnets
-      version: v1.12.2
+      version: v1.13.1
       variables:
         - name: _count
           value: 3
@@ -163,7 +163,7 @@ spec:
           ref: ibm-vpc-gateways
     - name: ibm-vpc-subnets
       alias: vpe-subnets
-      version: v1.12.2
+      version: v1.13.1
       variables:
         - name: _count
           value: 3
@@ -176,7 +176,7 @@ spec:
             - 10.60.20.0/24
     - name: ibm-vpc-subnets
       alias: ingress-subnets
-      version: v1.12.2
+      version: v1.13.1
       variables:
         - name: _count
           value: 3
@@ -189,7 +189,7 @@ spec:
             - 10.60.30.0/24
     - name: ibm-vpe-gateway
       alias: vpe-cos
-      version: v1.6.0
+      version: v1.6.1
       dependencies:
         - name: resource
           ref: cos

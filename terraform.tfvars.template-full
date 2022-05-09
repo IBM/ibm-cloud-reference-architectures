@@ -28,7 +28,7 @@ cs_resource_group_name="PREFIXcommon"
 ## kms_resource_group_name: The name of the kms resource group
 kms_resource_group_name="PREFIXkms"
 
-## edge_resource_group_name: The name of the management resource group:wq
+## edge_resource_group_name: The name of the management resource group
 edge_resource_group_name="PREFIXedge"
 
 ## mgmt_resource_group_name: The name of the management resource group
