@@ -10,7 +10,7 @@ do
     continue
   fi
 
-  echo "*** Destroying ${name} ***"
+  echo "***** Destroying ${name} *****"
 
   cd "${name}" && \
     terraform init && \
