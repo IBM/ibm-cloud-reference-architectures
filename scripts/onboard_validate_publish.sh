@@ -48,4 +48,5 @@ then
     ibmcloud catalog offering publish account --catalog "$CATALOG_NAME" --offering "$OFFERING_NAME"
 else
     echo "Validation failed.  Version is in draft status in the catalog."
+    exit 1
 fi

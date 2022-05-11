@@ -4,11 +4,12 @@ name: ibm-cloud-catalog-onboard
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on the push of a tag with the belief that a new tag is be associcated to a new release.  The tag is 
+  # Triggers the workflow on the publish of a release. Its assumed that the release has an associated tag.  The tag is 
   # expected to be of the form "vXX.XX.XX" but this could be adapted to any convention.
-  push:
-    tags:
-    - 'v*' 
+  release:
+    types:
+      - published
+       
   workflow_dispatch: 
 jobs:
   # This workflow contains a single job called "onbaord-release"
@@ -20,10 +21,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       # Extracts the offering version number from the tag which is assumed to be of the format "vXX.XX.XX"
       - name: Determine version 
-        run: echo "VERSION=$(echo ${{ github.ref_name }} | cut -c2-)" >> $GITHUB_ENV
+        run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | cut -c2-)" >> $GITHUB_ENV
 
       # For debugging - echo all the environment variables in sorted order
       - name: Dump environment
@@ -46,19 +49,6 @@ jobs:
           tar -czvf ../${{ github.ref_name }}-000-ibm-fs-account-setup-catalog.tar.gz .
           echo 'done creating asset for 000-ibm-fs-account-setup'          
 
-      # Create the release in the repo
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ""
-          draft: true
-          prerelease: false  
-
       # Upload a release asset to the repo on the newly created release
       - name: Upload Release Asset - 000-ibm-fs-account-setup
         id: ibm-fs-account-setup-asset 
@@ -66,7 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./000-ibm-fs-account-setup/${{ github.ref_name }}-000-ibm-fs-account-setup-catalog.tar.gz
           asset_name: ${{ github.ref_name }}-000-ibm-fs-account-setup-catalog.tar.gz
           asset_content_type: application/octet-stream
