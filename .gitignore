@@ -16,5 +16,4 @@ workspace-*/*
 credentials.properties
 
 .history/*
-
 .DS_Store

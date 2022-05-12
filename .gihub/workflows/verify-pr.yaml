@@ -1,0 +1,15 @@
+name: Verify PR
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  pull_request:
+    branches: [ main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  verify:
+    if: ${{ !contains( github.event.pull_request.labels.*.name, 'skip ci' ) }}
+    uses: ./.github/workflows/verify-workflow.yaml
+    secrets:
+      IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}

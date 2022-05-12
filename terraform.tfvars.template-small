@@ -3,14 +3,14 @@
 ###
 
 ## region: The IBM Cloud region where the cluster will be/has been installed.
-region="us-east"
+region="REGION"
 
 ## ***************
 ## KMS service
 ## ***************
 
 ## kms_region: Geographic location of the KMS service (e.g. us-south, us-east)
-kms_region="us-east"
+kms_region="REGION"
 
 ## kms_service: The service that should be used for the kms instance (keyprotect or hpcs)
 kms_service="keyprotect"
@@ -20,22 +20,22 @@ kms_service="keyprotect"
 ## ***************
 
 ## at_resource_group_name: The name of the activity tracker resource group
-at_resource_group_name="default"
+at_resource_group_name="PREFIXdefault"
 
 ## cs_resource_group_name: The name of the shared services resource group
-cs_resource_group_name="common"
+cs_resource_group_name="PREFIXcommon"
 
 ## kms_resource_group_name: The name of the kms resource group
-kms_resource_group_name="kms"
+kms_resource_group_name="PREFIXkms"
 
 ## edge_resource_group_name: The name of the management resource group
-edge_resource_group_name="edge"
+edge_resource_group_name="PREFIXedge"
 
 ## mgmt_resource_group_name: The name of the management resource group
-mgmt_resource_group_name="management"
+mgmt_resource_group_name="PREFIXmanagement"
 
 ## workload_resource_group_name: The name of the workload resource group
-workload_resource_group_name="workload"
+workload_resource_group_name="PREFIXworkload"
 
 
 ## ***************
@@ -43,19 +43,19 @@ workload_resource_group_name="workload"
 ## ***************
 
 ## kms_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
-kms_name_prefix="common"
+kms_name_prefix="PREFIXcommon"
 
 ## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
-cs_name_prefix="common"
+cs_name_prefix="PREFIXcommon"
 
 ## edge_name_prefix: The name of the vpc resource
-edge_name_prefix="edge"
+edge_name_prefix="PREFIXedge"
 
 ## mgmt_name_prefix: The name of the vpc resource
-mgmt_name_prefix="management"
+mgmt_name_prefix="PREFIXmanagement"
 
 ## workload_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
-workload_name_prefix="workload"
+workload_name_prefix="PREFIXworkload"
 
 ## ***************
 ## Cluster Variables

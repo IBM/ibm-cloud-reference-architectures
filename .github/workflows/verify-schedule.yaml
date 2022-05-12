@@ -1,0 +1,15 @@
+name: Verify Schedule
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 5 * * 1'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  verify:
+    uses: ./.github/workflows/verify-workflow.yaml
+    secrets:
+      IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
