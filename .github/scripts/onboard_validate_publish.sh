@@ -27,7 +27,7 @@ ibmcloud target -g "$RESOURCE_GROUP"
 
 # update the version in the catalog and specify a minimum version of terraform for runtime.  This is temporary.  Schematics is 
 # providing a fix that will scan and determine the minimum version based on the tf files.
-.github/scripts/set_minimum_tf_version.sh "$CATALOG_NAME" "$OFFERING_NAME" "$VERSION"
+./.github/scripts/set_minimum_tf_version.sh "$CATALOG_NAME" "$OFFERING_NAME" "$VERSION"
 
 # dump the validation values into the log
 cat valid-values.json | jq
