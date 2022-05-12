@@ -85,7 +85,7 @@ jobs:
           jq -n --arg IBMCLOUD_API_KEY "$IBMCLOUD_API_KEY" '{ "ibmcloud_api_key": $IBMCLOUD_API_KEY, "region": "us-east" }' > valid-values.json  
           # import the version into the catalog and run schematics validation 
           RESOURCE_GROUP="cm-validate"
-          ./.github/scripts/onboard_validate_publish.sh "$catalogName" "$offeringName" ${{ steps.account-setup-asset.outputs.browser_download_url }} ${{ env.VERSION }} "$RESOURCE_GROUP"
+          ./.github/scripts/onboard_validate_publish.sh "$catalogName" "$offeringName" ${{ steps.ibm-fs-account-setup-asset.outputs.browser_download_url }} ${{ env.VERSION }} "$RESOURCE_GROUP"
 
           echo "--------------------------------------------------------------------"
           echo "   Begin resource cleanup "
