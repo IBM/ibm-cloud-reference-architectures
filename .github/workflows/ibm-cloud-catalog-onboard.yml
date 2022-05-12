@@ -66,7 +66,7 @@ jobs:
       - name: Upload to cloud catalog
         id: setup-cli-and-upload
         env: 
-          IBMCLOUD_API_KEY: ${{ secrets.API_KEY }}
+          IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
         run: |
           curl -sL https://ibm.biz/idt-installer | bash
           ibmcloud plugin install catalogs-management
