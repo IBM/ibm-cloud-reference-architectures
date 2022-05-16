@@ -83,8 +83,9 @@ fi
 # Help Scripts for applying and destroying
 cp "${SCRIPT_DIR}/apply-all.sh" "${WORKSPACE_DIR}/apply-all.sh"
 cp "${SCRIPT_DIR}/destroy-all.sh" "${WORKSPACE_DIR}/destroy-all.sh"
+cp "${SCRIPT_DIR}/terragrunt.hcl" "${WORKSPACE_DIR}/terragrunt.hcl"
 
-ALL_ARCH="000|100|110|120|130|140|150|160|165|170"
+ALL_ARCH="000|100|110|120|130|140|150|160|165"
 
 echo "Setting up workspace from '${TEMPLATE_FLAVOR}' template"
 echo "*****"
@@ -92,7 +93,7 @@ echo "*****"
 WORKSPACE_DIR=$(cd "${WORKSPACE_DIR}"; pwd -P)
 
 VPC_ARCH="000|100|110|120|140"
-OCP_ARCH="000|100|110|130|150|160|165|170"
+OCP_ARCH="000|100|110|130|150|160|165"
 OCP_BASE_ARCH="000|100|110|130|150"
 
 echo "Setting up automation  ${WORKSPACE_DIR}"
@@ -128,6 +129,7 @@ do
   mkdir -p ${name}
   cd "${name}"
 
+  cp -R "${SCRIPT_DIR}/${name}/bom.yaml" .
   cp -R "${SCRIPT_DIR}/${name}/terraform/"* .
   ln -s "${WORKSPACE_DIR}"/terraform.tfvars ./terraform.tfvars
   ln -s "${WORKSPACE_DIR}"/ssh-* .

@@ -8,7 +8,7 @@ module "at_resource_group" {
 }
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.15.2"
+  version = "1.15.3"
 
   cos_id = module.cos.id
   disable_public_endpoint = var.cluster_disable_public_endpoint
@@ -77,7 +77,7 @@ module "flow_log_bucket" {
   vpc_ip_addresses = module.ibm-vpc.addresses
 }
 module "flow-log-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.9"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.11"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   provision = var.flow-log-auth_provision
@@ -96,7 +96,7 @@ module "flow-log-auth" {
 }
 module "ibm-access-group" {
   source = "cloud-native-toolkit/access-group/ibm"
-  version = "3.1.2"
+  version = "3.1.4"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = module.resource_group.name
@@ -125,7 +125,7 @@ module "ibm-flow-logs" {
 }
 module "ibm-logdna-bind" {
   source = "cloud-native-toolkit/log-analysis-bind/ibm"
-  version = "1.3.3"
+  version = "1.3.4"
 
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name
@@ -148,7 +148,7 @@ module "ibm-transit-gateway" {
 }
 module "ibm-vpc" {
   source = "cloud-native-toolkit/vpc/ibm"
-  version = "1.15.7"
+  version = "1.16.0"
 
   address_prefix_count = var.ibm-vpc_address_prefix_count
   address_prefixes = var.ibm-vpc_address_prefixes == null ? null : jsondecode(var.ibm-vpc_address_prefixes)
@@ -159,19 +159,21 @@ module "ibm-vpc" {
   provision = var.ibm-vpc_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.ibm-vpc_tags == null ? null : jsondecode(var.ibm-vpc_tags)
 }
 module "ibm-vpc-gateways" {
   source = "cloud-native-toolkit/vpc-gateways/ibm"
-  version = "1.8.2"
+  version = "1.9.0"
 
   provision = var.ibm-vpc-gateways_provision
   region = var.region
   resource_group_id = module.resource_group.id
+  tags = var.ibm-vpc-gateways_tags == null ? null : jsondecode(var.ibm-vpc-gateways_tags)
   vpc_name = module.ibm-vpc.name
 }
 module "ingress-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.12.2"
+  version = "1.13.1"
 
   _count = var.ingress-subnets__count
   acl_rules = var.ingress-subnets_acl_rules == null ? null : jsondecode(var.ingress-subnets_acl_rules)
@@ -182,6 +184,7 @@ module "ingress-subnets" {
   provision = var.ingress-subnets_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.ingress-subnets_tags == null ? null : jsondecode(var.ingress-subnets_tags)
   vpc_name = module.ibm-vpc.name
   zone_offset = var.ingress-subnets_zone_offset
 }
@@ -256,7 +259,7 @@ module "sysdig" {
 }
 module "sysdig-bind" {
   source = "cloud-native-toolkit/cloud-monitoring-bind/ibm"
-  version = "1.3.3"
+  version = "1.3.4"
 
   access_key = module.sysdig.access_key
   cluster_id = module.cluster.id
@@ -270,7 +273,7 @@ module "sysdig-bind" {
   sync = var.sysdig-bind_sync
 }
 module "vpe-cos" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpe-gateway?ref=v1.6.0"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpe-gateway?ref=v1.6.1"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   name_prefix = var.workload_name_prefix
@@ -286,7 +289,7 @@ module "vpe-cos" {
 }
 module "vpe-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.12.2"
+  version = "1.13.1"
 
   _count = var.vpe-subnets__count
   acl_rules = var.vpe-subnets_acl_rules == null ? null : jsondecode(var.vpe-subnets_acl_rules)
@@ -297,12 +300,13 @@ module "vpe-subnets" {
   provision = var.vpe-subnets_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.vpe-subnets_tags == null ? null : jsondecode(var.vpe-subnets_tags)
   vpc_name = module.ibm-vpc.name
   zone_offset = var.vpe-subnets_zone_offset
 }
 module "worker-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.12.2"
+  version = "1.13.1"
 
   _count = var.workload_worker_subnet_count
   acl_rules = var.worker-subnets_acl_rules == null ? null : jsondecode(var.worker-subnets_acl_rules)
@@ -313,6 +317,7 @@ module "worker-subnets" {
   provision = var.worker-subnets_provision
   region = var.region
   resource_group_name = module.resource_group.name
+  tags = var.worker-subnets_tags == null ? null : jsondecode(var.worker-subnets_tags)
   vpc_name = module.ibm-vpc.name
   zone_offset = var.worker-subnets_zone_offset
 }

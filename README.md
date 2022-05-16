@@ -2,6 +2,7 @@
 
 ### Change Log
 
+- **05/2022** - Automated validation of terraform & update to latest modules
 - **04/2022** - Improved usability & update to latest modules
 - **11/2021** - Updated to use Client-to-site VPN service (beta) instead of a VSI running a VPN server
 - **11/2021** - Updated to support the Edge VPC infrastructure in addition to Management and Workload VPCs.
@@ -70,25 +71,25 @@ Clone this repository to access the automation to provision this reference archi
 
 ### VPC with VSIs
 
-| BOM ID | Name                                           | Description                                                                                                           | Run Time |
-| ------ | ---------------------------------------------- |-----------------------------------------------------------------------------------------------------------------------| -------- |
-| 000    | [000 - Account Setup](./000-account-setup)     | Set up account and provision a set of account-wide services. This is intended to only be run one time in an account | 5 Mins   |
-| 100    | [100 - Shared Services](./100-shared-services) | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs | 5 Mins   |
-| 110    | [110 - Edge VPC](./110-edge-vpc)               | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                           | 10 Mins  |
-| 120    | [120 - Management VPC](./120-management-vpc)   | Provision a **Management VPC** and connect to Transit Gateway                                                         | 10 mins  |
-| 140    | [140 - Workload VPC](./140-workload-vpc)       | Provision a **Workload VPC** and connect to Transit Gateway                                                           | 10 mins  |
+| BOM ID | Name                                                  | Description                                                                                                           | Run Time |
+| ------ |-------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------| -------- |
+| 000    | [000 - Account Setup](./000-ibm-fs-account-setup)     | Set up account and provision a set of account-wide services. This is intended to only be run one time in an account | 5 Mins   |
+| 100    | [100 - Shared Services](./100-ibm-fs-shared-services) | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs | 5 Mins   |
+| 110    | [110 - Edge VPC](./110-ibm-fs-edge-vpc)               | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                           | 10 Mins  |
+| 120    | [120 - Management VPC](./120-ibm-fs-management-vpc)   | Provision a **Management VPC** and connect to Transit Gateway                                                         | 10 mins  |
+| 140    | [140 - Workload VPC](./140-ibm-fs-workload-vpc)       | Provision a **Workload VPC** and connect to Transit Gateway                                                           | 10 mins  |
 
 ### VPC with Red Hat OpenShift
 
-| BOM ID | Name                                                                       | Description                                                                                                                                                                   | Run Time |
-| ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| 000    | [000 - Account Setup](./000-account-setup)                                 | Set up account and provision a set of account-wide services. This is intended to only be run one time in an account                                           | 5 Mins   |
-| 100    | [100 - Shared Services](./100-shared-services)                             | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs                                                         | 5 Mins   |
-| 110    | [110 - Edge VPC](./110-edge-vpc)                                           | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                                                                                   | 10 Mins  |
-| 130    | [130 - Management + OpenShift Cluster](./130-management-vpc-openshift)     | Provision a **Management VPC** with and Red Hat OpenShift Cluster and connect to Transit Gateway                                                                              | 45 mins  |
-| 150    | [150 - Workload + OpenShift Cluster](./150-workload-vpc-openshift)         | Provision a **Workload VPC** with Red Hat OpenShift Cluster and connect to Transit Gateway                                                                                    | 45 mins  |
-| 160    | [160 - Developer Tools into Management Cluster](./160-openshift-dev-tools) | Provision a set of common CNCF developer tools into Red Hat OpenShift to provide a DevSecOps SDLC that support industry common best practices for CI/CD                       | 20 mins  |
-| 165    | [165 - Workload Cluster setup](./165-openshift-workload)                   | Binds the cluster to the IBM Logging and IBM Monitoring instances in shared services, sets up some basic cluster configuration, and provisions ArgoCD into the cluster for CD | 10 mins  |
+| BOM ID | Name                                                                              | Description                                                                                                                                                                   | Run Time |
+| ------ |-----------------------------------------------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| 000    | [000 - Account Setup](./000-ibm-fs-account-setup)                                 | Set up account and provision a set of account-wide services. This is intended to only be run one time in an account                                           | 5 Mins   |
+| 100    | [100 - Shared Services](./100-ibm-fs-shared-services)                             | Provision a set of common cloud managed services that can be shared with a Edge, **Management** and **Workload** VPCs                                                         | 5 Mins   |
+| 110    | [110 - Edge VPC](./110-ibm-fs-edge-vpc)                                           | Provision an **Edge VPC** with Client to Site VPN & Bastion                                                                                                                   | 10 Mins  |
+| 130    | [130 - Management + OpenShift Cluster](./130-ibm-fs-management-vpc-openshift)     | Provision a **Management VPC** with and Red Hat OpenShift Cluster and connect to Transit Gateway                                                                              | 45 mins  |
+| 150    | [150 - Workload + OpenShift Cluster](./150-ibm-fs-workload-vpc-openshift)         | Provision a **Workload VPC** with Red Hat OpenShift Cluster and connect to Transit Gateway                                                                                    | 45 mins  |
+| 160    | [160 - Developer Tools into Management Cluster](./160-ibm-fs-openshift-dev-tools) | Provision a set of common CNCF developer tools into Red Hat OpenShift to provide a DevSecOps SDLC that support industry common best practices for CI/CD                       | 20 mins  |
+| 165    | [165 - Workload Cluster setup](./165-ibm-fs-openshift-workload)                   | Binds the cluster to the IBM Logging and IBM Monitoring instances in shared services, sets up some basic cluster configuration, and provisions ArgoCD into the cluster for CD | 10 mins  |
 
 ### Configuration guidance
 
@@ -144,11 +145,12 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 5. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
    - `full`: Full IBM Cloud reference architecture deployment, including a Key Protect instance.
    - `small`: IBM reference architecture scaled down for a POC environment deployment. This includes Key Protect and the clusters have been reduced to single region.
-6. Determine which reference architecture you will be deploying. There are currently two options available:
+6. Determine which reference architecture you will be deploying. There are currently four  options available:
    - `vpc`: IBM Cloud - VPC with virtual servers reference architecture
-   - `ocp`: IBM Cloud - VPC with Red Hat OpenShift reference architecture
+   - `ocp-base`: IBM Cloud - VP with Red Hat OpenShift reference architecture (the base install without any configuration done to the management and workload clusters)
+   - `ocp`: IBM Cloud - VPC with Red Hat OpenShift reference architecture with configured management and workload clusters
    - `all`: Will copy all the terraform bundles into your workspace bundles prefixed `000` to `170`
-7. Run the `setup-workspace.sh -t {FLAVOR} -a {ARCH}` script to create a copy of the Terraform scripts in a `workspace/current` directory and generate the SSH keys needed for the various VSI instances.
+7. Run the `setup-workspace.sh -t {FLAVOR} -a {ARCH}` script to create a copy of the Terraform scripts in a `workspace/current` directory and generate the SSH keys needed for the various VSI instances. (**Note:** The command also accepts two optional arguments - `-r` fro "region" and `-n` for "name prefix". Both are used to populate the generated `terraform.tfvars` file.)
    ```
    ./setup-workspace.sh -t small -a all
    ```
@@ -157,22 +159,35 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 
 ## Terraform Apply
 
-### Set up credentials
+These instructions assume the "Setup" instructions in the previous section have already been performed.
 
-1. Copy `credentials.template` to `credentials.properties`.
-2. Provide your IBM Cloud API key as the value for the `ibmcloud.api.key` variable in `credentials.properties` (**Note:** `*.properties` has been added to `.gitignore` to ensure that the file containing the apikey cannot be checked into Git.)
+### Apply the layers automatically
 
-
-### Apply each architecture in the solution
+All the layers of the selected architecture can be applied automatically, one after the other, with a single command. Where the VPN is required for one of the layers to run, it will automatically be enabled.
 
 1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
 
-   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution.
+   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
 
 2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
-3. Change directory to the terraform directory that will be applied (e.g. `000-account-setup` and `100-common-services`)
-4. Initialize the environment with `terraform init`
-5. Apply the terraform with `terraform apply -auto-approve`. If all is configured properly you should not be prompted again and the terraform should run to completion.
+3. Assuming the `setup-workspace.sh` has already been run, change the directory to `/workspaces/current`. If not, run the `setup-workspace.sh` script again then change to the `/workspaces/current` directory.
+4. Review the contents of "terraform.tfvars" by running `less terraform.tfvars`. A soft link to this file has created in each terraform subdirectory so the one file will provide the configuration for all the terraform.
+5. Run `./apply-all.sh` from the `/workspaces/current` directory. The script will apply each of the layers in order. The entire process should take about two hours.
+
+### Apply each architecture in the solution manually
+
+1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
+
+   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+
+2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
+3. Assuming the `setup-workspace.sh` has already been run, change the directory to `/workspaces/current`. If not, run the `setup-workspace.sh` script again then change to the `/workspaces/current` directory.
+4. Review the contents of "terraform.tfvars" by running `less terraform.tfvars`. A soft link to this file has created in each terraform subdirectory so the one file will provide the configuration for all the terraform.
+5. For each terraform layer, perform the following steps:
+    
+    1. Change to the terraform directory that will be applied (e.g. `000-ibm-fs-account-setup` or `100-ibm-fs-common-services`).
+    2. Initialize the environment with `terraform init`
+    3. Apply the terraform with `terraform apply -auto-approve`. If all is configured properly you should not be prompted again and the terraform should run to completion.
 6. It is recommended to run Terraform bundles in this order:
    - `000`
    - `110`
@@ -201,6 +216,47 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 > 3. Re-run the `terraform apply` command
 
 > We are working on an air gapped install of developer tools from within the private VPC network for Management Cluster.
+
+
+## Terraform destroy
+
+By default, the state of the configured environment is stored within each of the terraform layer directories. When you are ready to remove the provisioned resources, `terraform destroy` can be used to clean up the environment.
+
+**Note**: If you run `setup-workspaces.sh` after applying the terraform, the contents of `/workspaces/current` will be moved to `/workspaces/workspace-{TIMESTAMP}` so the configuration and terraform state from a previous run is preserved.
+
+### Destroy the layers automatically
+
+All the layers of the selected architecture can be destroyed automatically, one after the other, with a single command. Where the VPN is required for one of the layers to run, it will automatically be enabled.
+
+1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
+
+   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+
+2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
+3. Change to the directory where the terraform configuration from the previous run is located, `/workspaces/current` if `setup-workspace.sh` has not been executed since the last terraform run or the appropriate `/workspaces/workspace-{TIMESTAMP}` directory.
+4. Run `./destroy-all.sh` from the current directory. The script will destroy each of the layers in order from last to first. The entire process should take about one hour.
+
+### Destroy each layer in the solution manually
+
+1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
+
+   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+
+2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
+3. Change to the directory where the terraform configuration from the previous run is located, `/workspaces/current` if `setup-workspace.sh` has not been executed since the last terraform run or the appropriate `/workspaces/workspace-{TIMESTAMP}` directory.
+4. For each terraform layer, perform the following steps:
+
+   1. Change to the terraform directory that will be applied (e.g. `000-ibm-fs-account-setup` or `100-ibm-fs-common-services`).
+   2. Initialize the environment with `terraform init`
+   3. Apply the terraform with `./destroy.sh`.
+5. It is recommended to destroy the Terraform in the reverse order that they were applied. For example:
+   - Connect to the VPN (see instructions below)
+   - `165`
+   - `160`
+   - `150`
+   - `130`
+   - `110`
+   - `000`
 
 ## Configure VPN
 

@@ -410,10 +410,20 @@ variable "ibm-vpc_internal_cidr" {
   description = "The cidr range of the internal network"
   default = "10.0.0.0/8"
 }
+variable "ibm-vpc_tags" {
+  type = string
+  description = "Tags that should be added to the instance"
+  default = "[]"
+}
 variable "ibm-vpc-gateways_provision" {
   type = bool
   description = "Flag indicating that the gateway must be provisioned"
   default = true
+}
+variable "ibm-vpc-gateways_tags" {
+  type = string
+  description = "Tags that should be added to the instance"
+  default = "[]"
 }
 variable "worker-subnets_zone_offset" {
   type = number
@@ -450,6 +460,11 @@ variable "worker-subnets_acl_rules" {
   description = "List of rules to set on the subnet access control list"
   default = "[{\"name\":\"allow-vpn-ingress\",\"action\":\"allow\",\"direction\":\"inbound\",\"source\":\"0.0.0.0/0\",\"destination\":\"10.0.0.0/8\"},{\"name\":\"allow-vpn-egress\",\"action\":\"allow\",\"direction\":\"outbound\",\"source\":\"10.0.0.0/8\",\"destination\":\"0.0.0.0/0\"}]"
 }
+variable "worker-subnets_tags" {
+  type = string
+  description = "Tags that should be added to the instance"
+  default = "[]"
+}
 variable "vpe-subnets_zone_offset" {
   type = number
   description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
@@ -485,6 +500,11 @@ variable "vpe-subnets_acl_rules" {
   description = "List of rules to set on the subnet access control list"
   default = "[]"
 }
+variable "vpe-subnets_tags" {
+  type = string
+  description = "Tags that should be added to the instance"
+  default = "[]"
+}
 variable "ingress-subnets_zone_offset" {
   type = number
   description = "The offset for the zone where the subnet should be created. The default offset is 0 which means the first subnet should be created in zone xxx-1"
@@ -518,6 +538,11 @@ variable "ingress-subnets_provision" {
 variable "ingress-subnets_acl_rules" {
   type = string
   description = "List of rules to set on the subnet access control list"
+  default = "[]"
+}
+variable "ingress-subnets_tags" {
+  type = string
+  description = "Tags that should be added to the instance"
   default = "[]"
 }
 variable "vpe-cos_sync" {

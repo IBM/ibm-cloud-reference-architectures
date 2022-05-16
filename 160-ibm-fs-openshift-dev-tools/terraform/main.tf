@@ -16,7 +16,7 @@ module "artifactory" {
 }
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.13.4"
+  version = "1.15.3"
 
   cos_id = var.cluster_cos_id
   disable_public_endpoint = var.cluster_disable_public_endpoint
@@ -103,7 +103,8 @@ module "olm" {
   cluster_version = module.cluster.platform.version
 }
 module "openshift-cicd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.9.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.11.0"
+
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
   gitops_namespace = module.openshift-gitops.name
@@ -113,10 +114,9 @@ module "openshift-cicd" {
   sealed_secret_cert = module.sealed-secret-cert.cert
   sealed_secret_namespace = module.sealed-secret.name
   sealed_secret_private_key = module.sealed-secret-cert.private_key
-  tools_namespace = module.tools.name
 }
 module "openshift-gitops" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.3"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.openshift-gitops_create_operator_group
@@ -133,7 +133,7 @@ module "pactbroker" {
   toolkit_namespace = module.console-link-job.namespace
 }
 module "registry" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-image-registry?ref=v2.1.2"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-image-registry?ref=v2.1.3"
 
   cluster_namespace = module.tools_namespace.name
   cluster_type_code = module.cluster.platform.type_code
@@ -154,7 +154,7 @@ module "resource_group" {
   sync = var.resource_group_sync
 }
 module "sealed-secret" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.3"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.sealed-secret_create_operator_group
@@ -185,35 +185,17 @@ module "sonarqube" {
   toolkit_namespace = module.console-link-job.namespace
   volume_capacity = var.sonarqube_volume_capacity
 }
-module "tekton" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton?ref=v2.4.1"
-
-  cluster_config_file_path = module.cluster.config_file_path
-  cluster_ingress_hostname = module.cluster.platform.ingress
-  gitops_dir = var.gitops_dir
-  mode = var.mode
-  olm_namespace = module.olm.olm_namespace
-  operator_namespace = module.olm.target_namespace
-  provision = var.tekton_provision
-  tools_namespace = module.tools_namespace.name
-}
 module "tekton-resources" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.3.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.3.2"
 
   cluster_config_file_path = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
   resource_namespace = module.tools_namespace.name
   support_namespace = var.tekton-resources_support_namespace
-}
-module "tools" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
-
-  cluster_config_file_path = module.cluster.config_file_path
-  create_operator_group = var.tools_create_operator_group
-  name = var.tools_name
+  tekton_namespace = module.openshift-cicd.tekton_namespace
 }
 module "tools_namespace" {
-  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.2"
+  source = "github.com/cloud-native-toolkit/terraform-k8s-namespace?ref=v3.2.3"
 
   cluster_config_file_path = module.cluster.config_file_path
   create_operator_group = var.tools_namespace_create_operator_group

@@ -53,6 +53,7 @@ echo ${IBMCLOUD_API_KEY}
 
 echo "Initializing container ${CONTAINER_NAME} from ${DOCKER_IMAGE}"
 ${DOCKER_CMD} run -itd --name ${CONTAINER_NAME} \
+   --privileged \
    -v ${SRC_DIR}:/terraform \
    -v workspace:/workspaces \
    -e "TF_VAR_ibmcloud_api_key=${IBMCLOUD_API_KEY}" \

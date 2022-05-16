@@ -36,7 +36,7 @@ spec:
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
-      version: v3.1.2
+      version: v3.1.4
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
       version: v2.4.15
@@ -60,7 +60,7 @@ spec:
       version: v4.1.2
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth
-      version: v1.2.9
+      version: v1.2.11
       variables:
         - name: source_service_name
           value: server-protect
@@ -74,7 +74,7 @@ spec:
           ref: kms
     - name: ibm-iam-service-authorization
       alias: cos-encrypt-auth
-      version: v1.2.9
+      version: v1.2.11
       variables:
         - name: roles
           value:
@@ -88,7 +88,7 @@ spec:
           ref: cos
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
-      version: v1.2.9
+      version: v1.2.11
       variables:
         - name: source_service_name
           value: is
@@ -104,10 +104,10 @@ spec:
           ref: cos
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth1
-      version: v1.2.9
+      version: v1.2.11
     - name: ibm-iam-service-authorization
       alias: kube-encrypt-auth
-      version: v1.2.9
+      version: v1.2.11
       variables:
         - name: source_service_name
           value: containers-kubernetes
@@ -123,7 +123,7 @@ spec:
           ref: kms
     - name: ibm-iam-service-authorization
       alias: vpn-cert-manager-auth
-      version: v1.2.9
+      version: v1.2.11
       variables:
         - name: source_service_name
           value: is

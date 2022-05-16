@@ -42,7 +42,7 @@ variable "cluster_flavor" {
 variable "ocp_version" {
   type = string
   description = "The version of the OpenShift cluster that should be provisioned (format 4.x)"
-  default = "4.8"
+  default = "4.10"
 }
 variable "cluster_exists" {
   type = bool
@@ -171,16 +171,6 @@ variable "private_endpoint" {
   type = string
   description = "Flag indicating that the registry url should be created with private endpoints"
   default = "true"
-}
-variable "tools_name" {
-  type = string
-  description = "The namespace that should be created"
-  default = "tools"
-}
-variable "tools_create_operator_group" {
-  type = bool
-  description = "Flag indicating that an operator group should be created in the namespace"
-  default = true
 }
 variable "sealed-secret_name" {
   type = string
