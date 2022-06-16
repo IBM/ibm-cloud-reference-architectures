@@ -12,17 +12,15 @@ find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -vE "^[.]$" | grep -v w
 do
   name=$(echo "$dir" | sed -E "s~[.]/(.*)~\1~g")
 
-  VPN_REQUIRED=$(grep "vpn/required" ./${name}/bom.yaml | sed -E "s~[^:]+: [\"'](.*)[\"']~\1~g")
+  cd "${name}"
 
-  if [[ "${VPN_REQUIRED}" == "true" ]]; then
-    "${SCRIPT_DIR}/start-vpn.sh"
+  if [[ -f "${SCRIPT_DIR}/check-vpn.sh" ]]; then
+    "${SCRIPT_DIR}/check-vpn.sh"
   fi
 
   echo "***** Applying ${name} *****"
 
-  cd "${name}" && \
-    terraform init && \
+  terraform init && \
     terraform apply -auto-approve && \
-    cd - 1> /dev/null || \
     exit 1
 done
