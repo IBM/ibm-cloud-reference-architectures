@@ -8,7 +8,7 @@ module "at_resource_group" {
 }
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.15.3"
+  version = "1.15.4"
 
   cos_id = module.cos.id
   disable_public_endpoint = var.cluster_disable_public_endpoint
@@ -96,7 +96,7 @@ module "flow-log-auth" {
 }
 module "ibm-access-group" {
   source = "cloud-native-toolkit/access-group/ibm"
-  version = "3.1.4"
+  version = "3.1.6"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = module.resource_group.name
