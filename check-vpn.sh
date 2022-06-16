@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ROOT_DIRECTORY="$1"
-BOM_DIRECTORY="$2"
+ROOT_DIRECTORY=$(cd $(dirname "$0"); pwd -P)
+BOM_DIRECTORY="${PWD}"
 
 VPN_REQUIRED=$(grep "vpn/required" "${BOM_DIRECTORY}/bom.yaml" | sed -E "s~[^:]+: [\"'](.*)[\"']~\1~g")
 
