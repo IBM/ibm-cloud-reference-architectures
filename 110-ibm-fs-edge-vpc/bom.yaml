@@ -30,7 +30,7 @@ spec:
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
-      version: v3.1.4
+      version: v3.1.6
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
       version: v2.4.15
@@ -152,7 +152,7 @@ spec:
           value: bastion
     - name: ibm-vpc-subnets
       alias: ingress-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
@@ -180,7 +180,7 @@ spec:
           ref: ibm-vpc-gateways
     - name: ibm-vpc-subnets
       alias: bastion-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
@@ -193,7 +193,7 @@ spec:
             - 10.3.20.0/24
     - name: ibm-vpc-subnets
       alias: egress-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
@@ -212,7 +212,7 @@ spec:
           ref: ingress-subnets
     - name: ibm-vpn-server
       alias: ibm-vpn-server
-      version: v0.1.1
+      version: v0.1.2
       dependencies:
         - name: subnets
           ref: ingress-subnets

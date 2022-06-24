@@ -32,7 +32,7 @@ spec:
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
-      version: v3.1.4
+      version: v3.1.6
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
       version: v2.4.15
@@ -117,7 +117,7 @@ spec:
           ref: cs_resource_group
     - name: ibm-log-analysis-bind
       alias: ibm-logdna-bind
-      version: v1.3.4
+      version: v1.3.5
     - name: ibm-object-storage
       alias: cos
       version: v4.0.3
@@ -141,7 +141,7 @@ spec:
             - 0.0.0.0/0
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.15.3
+      version: v1.15.4
       variables:
         - name: disable_public_endpoint
           value: true
@@ -172,7 +172,7 @@ spec:
       version: v1.9.0
     - name: ibm-vpc-subnets
       alias: worker-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           alias: workload_worker_subnet_count
@@ -202,7 +202,7 @@ spec:
           ref: ibm-vpc-gateways
     - name: ibm-vpc-subnets
       alias: vpe-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
@@ -215,7 +215,7 @@ spec:
             - 10.60.20.0/24
     - name: ibm-vpc-subnets
       alias: ingress-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3

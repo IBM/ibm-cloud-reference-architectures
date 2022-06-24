@@ -10,6 +10,7 @@ metadata:
     displayName: OpenShift Workload
     description: Configures workload cluster
     vpn/required: 'true'
+    deployment-type/gitops: 'true'
 spec:
   modules:
     - name: ibm-resource-group
@@ -27,7 +28,7 @@ spec:
       variables: *ref_0
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.15.3
+      version: v1.15.4
       dependencies:
         - name: subnets
           optional: true

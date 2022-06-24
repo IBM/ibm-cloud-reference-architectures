@@ -1,6 +1,8 @@
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ocp-login?ref=v1.2.13"
+  source = "github.com/cloud-native-toolkit/terraform-ocp-login?ref=v1.3.1"
 
+  ca_cert = var.cluster_ca_cert
+  ca_cert_file = var.cluster_ca_cert_file
   cluster_version = var.cluster_cluster_version
   ingress_subdomain = var.cluster_ingress_subdomain
   login_password = var.ibmcloud_api_key
