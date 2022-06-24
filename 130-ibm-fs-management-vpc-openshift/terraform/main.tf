@@ -8,7 +8,7 @@ module "at_resource_group" {
 }
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.15.3"
+  version = "1.15.4"
 
   cos_id = module.cos.id
   disable_public_endpoint = var.cluster_disable_public_endpoint
@@ -96,7 +96,7 @@ module "flow-log-auth" {
 }
 module "ibm-access-group" {
   source = "cloud-native-toolkit/access-group/ibm"
-  version = "3.1.4"
+  version = "3.1.6"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   resource_group_name = module.resource_group.name
@@ -125,7 +125,7 @@ module "ibm-flow-logs" {
 }
 module "ibm-logdna-bind" {
   source = "cloud-native-toolkit/log-analysis-bind/ibm"
-  version = "1.3.4"
+  version = "1.3.5"
 
   cluster_id = module.cluster.id
   cluster_name = module.cluster.name
@@ -187,7 +187,7 @@ module "ibm-vpc-vpn-gateway" {
 }
 module "ingress-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.13.1"
+  version = "1.13.2"
 
   _count = var.ingress-subnets__count
   acl_rules = var.ingress-subnets_acl_rules == null ? null : jsondecode(var.ingress-subnets_acl_rules)
@@ -303,7 +303,7 @@ module "vpe-cos" {
 }
 module "vpe-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.13.1"
+  version = "1.13.2"
 
   _count = var.vpe-subnets__count
   acl_rules = var.vpe-subnets_acl_rules == null ? null : jsondecode(var.vpe-subnets_acl_rules)
@@ -320,7 +320,7 @@ module "vpe-subnets" {
 }
 module "vpn-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.13.1"
+  version = "1.13.2"
 
   _count = var.vpn-subnets__count
   acl_rules = var.vpn-subnets_acl_rules == null ? null : jsondecode(var.vpn-subnets_acl_rules)
@@ -337,7 +337,7 @@ module "vpn-subnets" {
 }
 module "worker-subnets" {
   source = "cloud-native-toolkit/vpc-subnets/ibm"
-  version = "1.13.1"
+  version = "1.13.2"
 
   _count = var.mgmt_worker_subnet_count
   acl_rules = var.worker-subnets_acl_rules == null ? null : jsondecode(var.worker-subnets_acl_rules)

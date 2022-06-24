@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#if command -v terragrunt 1> /dev/null 2> /dev/null; then
+#  echo "y" | terragrunt run-all destroy || exit 1
+#  exit
+#fi
+
 CI="$1"
 
 find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -vE "^[.]$" | grep -v workspace | sort -r | \

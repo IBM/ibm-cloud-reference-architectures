@@ -30,7 +30,7 @@ spec:
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
-      version: v3.1.4
+      version: v3.1.6
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
       version: v2.4.15
@@ -135,7 +135,7 @@ spec:
       version: v1.9.0
     - name: ibm-vpc-subnets
       alias: worker-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
@@ -163,7 +163,7 @@ spec:
           ref: ibm-vpc-gateways
     - name: ibm-vpc-subnets
       alias: vpe-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
@@ -176,7 +176,7 @@ spec:
             - 10.60.20.0/24
     - name: ibm-vpc-subnets
       alias: ingress-subnets
-      version: v1.13.1
+      version: v1.13.2
       variables:
         - name: _count
           value: 3
