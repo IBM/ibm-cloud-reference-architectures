@@ -6,7 +6,7 @@
 #fi
 
 CI="$1"
-PARALLELISM=10
+PARALLELISM=6
 
 find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -vE "^[.]$" | grep -v workspace | sort | \
   while read dir;
@@ -18,7 +18,6 @@ do
   if [[ "${TYPE}" == "true" ]]; then
     PARALLELISM=3
     echo "***** Setting parallelism for gitops type deployment for step ${name} to ${PARALLELISM} *****"
-    continue
   fi
 
   OPTIONAL=$(grep "apply-all/optional" ./${name}/bom.yaml | sed -E "s~[^:]+: [\"'](.*)[\"']~\1~g")
