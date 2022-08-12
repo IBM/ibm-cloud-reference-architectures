@@ -1,5 +1,6 @@
+# Troubleshooting
 
-# Uninstalling
+## Uninstalling
 
 To uninstall this solution:
 
@@ -17,7 +18,7 @@ To uninstall this solution:
     terraform destroy --auto-approve
     ```
 
-# Troubleshooting
+
 
 ## Credentials not working
 

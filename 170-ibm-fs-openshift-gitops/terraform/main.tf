@@ -1,5 +1,5 @@
 module "cluster" {
-  source = "github.com/cloud-native-toolkit/terraform-ocp-login?ref=v1.3.1"
+  source = "github.com/cloud-native-toolkit/terraform-ocp-login?ref=v1.6.0"
 
   ca_cert = var.cluster_ca_cert
   ca_cert_file = var.cluster_ca_cert_file
@@ -33,7 +33,7 @@ module "olm" {
   cluster_version = module.cluster.platform.version
 }
 module "openshift-cicd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.11.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.11.1"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code

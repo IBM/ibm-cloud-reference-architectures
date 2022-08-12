@@ -15,7 +15,7 @@ spec:
   modules:
     - name: ibm-onboard-fs-account
       alias: ibm-onboard-fs-account
-      version: v1.1.1
+      version: v1.1.2
       variables:
         - name: action
           value: enable

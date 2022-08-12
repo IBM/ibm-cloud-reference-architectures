@@ -1,8 +1,9 @@
 module "at_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.15"
+  version = "3.3.3"
 
   ibmcloud_api_key = var.ibmcloud_api_key
+  purge_volumes = var.purge_volumes
   resource_group_name = var.at_resource_group_name
   sync = var.at_resource_group_sync
 }
@@ -25,8 +26,9 @@ module "bastion-subnets" {
 }
 module "cos" {
   source = "cloud-native-toolkit/object-storage/ibm"
-  version = "4.0.3"
+  version = "4.0.6"
 
+  ibmcloud_api_key = var.ibmcloud_api_key
   label = var.cos_label
   name_prefix = var.cs_name_prefix
   plan = var.cos_plan
@@ -37,9 +39,10 @@ module "cos" {
 }
 module "cs_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.15"
+  version = "3.3.3"
 
   ibmcloud_api_key = var.ibmcloud_api_key
+  purge_volumes = var.purge_volumes
   resource_group_name = var.cs_resource_group_name
   sync = var.cs_resource_group_sync
 }
@@ -74,7 +77,7 @@ module "egress-subnets" {
   zone_offset = var.egress-subnets_zone_offset
 }
 module "flow_log_bucket" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage-bucket?ref=v0.8.3"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-object-storage-bucket?ref=v0.8.4"
 
   activity_tracker_crn = module.ibm-activity-tracker.crn
   allowed_ip = var.flow_log_bucket_allowed_ip == null ? null : jsondecode(var.flow_log_bucket_allowed_ip)
@@ -96,7 +99,7 @@ module "flow_log_bucket" {
   vpc_ip_addresses = module.ibm-vpc.addresses
 }
 module "flow-log-auth" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.11"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-iam-service-authorization?ref=v1.2.12"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   provision = var.flow-log-auth_provision
@@ -122,7 +125,7 @@ module "ibm-access-group" {
 }
 module "ibm-activity-tracker" {
   source = "cloud-native-toolkit/activity-tracker/ibm"
-  version = "2.4.15"
+  version = "2.4.16"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   plan = var.ibm-activity-tracker_plan
@@ -149,7 +152,7 @@ module "ibm-cert-manager" {
   resource_group_name = module.cs_resource_group.name
 }
 module "ibm-flow-logs" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-flow-log?ref=v1.0.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-flow-log?ref=v1.0.2"
 
   auth_id = var.ibm-flow-logs_auth_id
   cos_bucket_name = module.flow_log_bucket.bucket_name
@@ -195,7 +198,7 @@ module "ibm-vpc-gateways" {
   vpc_name = module.ibm-vpc.name
 }
 module "ibm-vpc-vpn-gateway" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-gateway?ref=v1.1.4"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-vpn-gateway?ref=v1.1.5"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   label = var.ibm-vpc-vpn-gateway_label
@@ -245,7 +248,7 @@ module "ingress-subnets" {
   zone_offset = var.ingress-subnets_zone_offset
 }
 module "kms" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-kms?ref=v0.3.4"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-kms?ref=v0.3.5"
 
   name = var.kms_name
   name_prefix = var.kms_name_prefix
@@ -259,9 +262,10 @@ module "kms" {
 }
 module "kms_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.15"
+  version = "3.3.3"
 
   ibmcloud_api_key = var.ibmcloud_api_key
+  purge_volumes = var.purge_volumes
   resource_group_name = var.kms_resource_group_name
   sync = var.kms_resource_group_sync
 }
@@ -281,9 +285,10 @@ module "kms-key" {
 }
 module "resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.15"
+  version = "3.3.3"
 
   ibmcloud_api_key = var.ibmcloud_api_key
+  purge_volumes = var.purge_volumes
   resource_group_name = var.edge_resource_group_name
   sync = var.resource_group_sync
 }

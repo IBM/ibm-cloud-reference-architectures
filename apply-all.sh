@@ -8,7 +8,7 @@
 CI="$1"
 PARALLELISM=6
 
-find . -type d -maxdepth 1 | grep -vE "[.]/[.].*" | grep -vE "^[.]$" | grep -v workspace | sort | \
+find . -maxdepth 1 -type d | grep -vE "[.]/[.].*" | grep -vE "^[.]$" | grep -v workspace | sort | \
   while read dir;
 do
   name=$(echo "$dir" | sed -E "s~[.]/(.*)~\1~g")

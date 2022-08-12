@@ -16,7 +16,7 @@ module "artifactory" {
 }
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.15.4"
+  version = "1.15.6"
 
   cos_id = var.cluster_cos_id
   disable_public_endpoint = var.cluster_disable_public_endpoint
@@ -63,9 +63,10 @@ module "console-link-job" {
 }
 module "cs_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.15"
+  version = "3.3.3"
 
   ibmcloud_api_key = var.ibmcloud_api_key
+  purge_volumes = var.purge_volumes
   resource_group_name = var.cs_resource_group_name
   sync = var.cs_resource_group_sync
 }
@@ -103,7 +104,7 @@ module "olm" {
   cluster_version = module.cluster.platform.version
 }
 module "openshift-cicd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.11.0"
+  source = "github.com/cloud-native-toolkit/terraform-tools-openshift-cicd?ref=v1.11.1"
 
   cluster_config_file = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code
@@ -133,7 +134,7 @@ module "pactbroker" {
   toolkit_namespace = module.console-link-job.namespace
 }
 module "registry" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-image-registry?ref=v2.1.3"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-image-registry?ref=v2.1.4"
 
   cluster_namespace = module.tools_namespace.name
   cluster_type_code = module.cluster.platform.type_code
@@ -147,9 +148,10 @@ module "registry" {
 }
 module "resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.2.15"
+  version = "3.3.3"
 
   ibmcloud_api_key = var.ibmcloud_api_key
+  purge_volumes = var.purge_volumes
   resource_group_name = var.mgmt_resource_group_name
   sync = var.resource_group_sync
 }
@@ -186,7 +188,7 @@ module "sonarqube" {
   volume_capacity = var.sonarqube_volume_capacity
 }
 module "tekton-resources" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.3.2"
+  source = "github.com/cloud-native-toolkit/terraform-tools-tekton-resources?ref=v2.3.3"
 
   cluster_config_file_path = module.cluster.config_file_path
   cluster_type = module.cluster.platform.type_code

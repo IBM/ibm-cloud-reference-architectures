@@ -1,5 +1,5 @@
 module "ibm-onboard-fs-account" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-onboard-fs-account?ref=v1.1.1"
+  source = "github.com/cloud-native-toolkit/terraform-ibm-onboard-fs-account?ref=v1.1.2"
 
   action = var.ibm-onboard-fs-account_action
   ibmcloud_api_key = var.ibmcloud_api_key

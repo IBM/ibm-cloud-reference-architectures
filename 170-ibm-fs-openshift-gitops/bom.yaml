@@ -14,7 +14,7 @@ spec:
   modules:
     - name: ocp-login
       alias: cluster
-      version: v1.3.1
+      version: v1.6.0
       variables:
         - name: server_url
           required: true
@@ -40,7 +40,7 @@ spec:
           value: red
     - name: openshift-cicd
       alias: openshift-cicd
-      version: v1.11.0
+      version: v1.11.1
     - name: olm
       version: v1.3.2
     - name: namespace
