@@ -66,10 +66,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          path: main
 
       - name: Terraform Apply - ${{ matrix.architecture }}
         run: |
           RANDOM_PREFIX=$(echo $RANDOM | md5sum | head -c 5; echo)
+
+          cd main
           sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n "fs-${RANDOM_PREFIX}" -r eu-gb
           sudo chown -R devops ../workspaces/current
           cd ../workspaces/current
