@@ -10,11 +10,42 @@ on:
     secrets:
       IBMCLOUD_API_KEY:
         required: true
+      OPENSHIFT_SERVER:
+        required: true
+      OPENSHIFT_USER:
+        required: true
+      OPENSHIFT_PASSWORD:
+        required: true
+      GITHUB_PAT:
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  install_runner:
+    name: Install Runner
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_username: ${{ secrets.OPENSHIFT_USER }}
+          openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+
+      - uses: redhat-actions/openshift-actions-runner-installer@v1
+        with:
+          github_pat: ${{ secrets.GITHUB_PAT }}     # Personal access token with organization permissions
+          runner_image: quay.io/cloudnativetoolkit/github-terraform-runner
+          runner_tag: cli-tools-ibmcloud
+          runner_labels: cli-tools-ibmcloud
+          runner_replicas: 2
+          helm_extra_args: |
+            --set-string secretName=github-pat-ibm-fscloud
   verify:
-    runs-on: ubuntu-latest
+    needs: install_runner
+    runs-on: [ self-hosted, cli-tools-ibmcloud ]
+
     container:
       image: quay.io/cloudnativetoolkit/cli-tools:v1.1
       options: --privileged

@@ -12,6 +12,10 @@ jobs:
     uses: ./.github/workflows/verify-workflow.yaml
     secrets:
       IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+      OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+      OPENSHIFT_USER: apikey
+      OPENSHIFT_PASSWORD: ${{ secrets.IBMCLOUD_API_KEY }}
+      GITHUB_PAT: ${{ secrets.TOKEN }}
 
   release:
     needs: [verify]
