@@ -46,9 +46,6 @@ jobs:
     needs: install_runner
     runs-on: [ self-hosted, cli-tools-ibmcloud ]
 
-    container:
-      image: quay.io/cloudnativetoolkit/cli-tools:v1.1
-      options: --privileged
 
     strategy:
       matrix:
