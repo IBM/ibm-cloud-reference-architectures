@@ -88,5 +88,5 @@ jobs:
       - name: Terraform Destroy - ${{ matrix.architecture }}
         if: ${{ always() }}
         run: |
-          cd ../workspaces/current
+          cd workspaces/current
           ./destroy-all.sh
