@@ -136,7 +136,9 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 1. Clone this repository to your local SRE laptop or into a secure terminal. Open a shell into the cloned directory.
 2. Copy `credentials.template` to `credentials.properties`.
 3. Provide your IBM Cloud API key as the value for the `TF_VAR_ibmcloud_api_key` variable in `credentials.properties` (**Note:** `*.properties` has been added to `.gitignore` to ensure that the file containing the apikey cannot be checked into Git.)
-4. Run `./launch.sh`. This will start a container image with the prompt opened in the `/terraform` directory.
+4. Launch the automation runtime. 
+    - If using *Docker Desktop*, run `./launch.sh`. This will start a container image with the prompt opened in the `/terraform` directory.
+    - If using *Multipass*, run `mutlipass shell cli-tools` to start the interactive shell, and cd into the `/automation/{template}` directory, where  `{template}` is the folder you've cloned this repo.
 5. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
    - `full`: Full IBM Cloud reference architecture deployment, including a Key Protect instance.
    - `small`: IBM reference architecture scaled down for a POC environment deployment. This includes Key Protect and the clusters have been reduced to single region.
@@ -149,8 +151,8 @@ Enable your IBM Cloud account to use Financial Services Validated Products
    ```
    ./setup-workspace.sh -t small -a all
    ```
-8. Change the directory to the subdirectory for the layer (e.g. `/workspaces/current`) and follow the instructions in the README for the layer.
-9. Update **terraform.tfvars** in the `/workspaces/current` directory with the appropriate values for your deployment. Note: The values are currently set up to separate resource resource groups for common services, edge, management, and workload resources. These can be changed to all use the same resource group, if desired.
+8. Change the directory to the current workspace (e.g. `cd ../workspaces/current`) and follow the instructions in the README for the layer.
+9. Update **terraform.tfvars** in the `../workspaces/current` directory with the appropriate values for your deployment. Note: The values are currently set up to separate resource groups for common services, edge, management, and workload resources. These can be changed to all use the same resource group, if desired.
 
 ## Terraform Apply
 

@@ -81,7 +81,7 @@ Once the virtual machine has started, run the following command to enter an inte
 multipass shell cli-tools
 ```
 
-Once in the shell, `cd` into the `/automation/{template}` folder, where source  `{template}` is the Terraform template you configured.  Then you need to load credentials into environment variables using the following command:
+Once in the shell, `cd` into the `/automation/{template}` folder, where `{template}` is the Terraform template you configured.  Then you need to load credentials into environment variables using the following command:
 
 ```text
 source credentials.properties

@@ -55,10 +55,24 @@ if [[ -n "$1" ]]; then
     ${DOCKER_CMD} pull "${DOCKER_IMAGE}"
 fi
 
-ENV_FILE=""
+
+ENV_VARS=""
 if [[ -f "credentials.properties" ]]; then
-  ENV_FILE="--env-file credentials.properties"
+  echo "parsing credentials.properties..."
+  props=$(grep -v '^#' credentials.properties)
+  while read line ; do
+    #remove export statement prefixes
+    CLEAN="$(echo $line | sed 's/export //' )"
+
+    #parse key-value pairs
+    TOKENS=(${CLEAN//\"/ })
+    KEY="${TOKENS[0]%?}"
+    VALUE="${TOKENS[1]}"
+
+    ENV_VARS="-e $KEY=$VALUE $ENV_VARS"
+  done <<< "$props"
 fi
+
 
 echo "Initializing container ${CONTAINER_NAME} from ${DOCKER_IMAGE}"
 ${DOCKER_CMD} run -itd --name ${CONTAINER_NAME} \
@@ -66,7 +80,7 @@ ${DOCKER_CMD} run -itd --name ${CONTAINER_NAME} \
    -u "${UID}" \
    -v "${SRC_DIR}:/terraform" \
    -v "workspace-${AUTOMATION_BASE}:/workspaces" \
-   ${ENV_FILE} \
+   ${ENV_VARS} \
    -w /terraform \
    ${DOCKER_IMAGE}
 
