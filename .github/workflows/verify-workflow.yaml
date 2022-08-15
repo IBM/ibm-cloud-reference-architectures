@@ -65,7 +65,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
         with:
           path: main
 
@@ -75,7 +75,6 @@ jobs:
 
           cd main
           sudo ./setup-workspace.sh -t small -a ${{ matrix.architecture }} -n "fs-${RANDOM_PREFIX}" -r eu-gb
-          sudo chown -R devops ../workspaces/current
           cd ../workspaces/current
           
           echo ""
