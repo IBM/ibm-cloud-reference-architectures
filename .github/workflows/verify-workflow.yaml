@@ -70,7 +70,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1
+        #uses: actions/checkout@v3
         # with:
         #   path: main
 
@@ -94,5 +95,5 @@ jobs:
       - name: Terraform Destroy - ${{ matrix.architecture }}
         if: ${{ always() }}
         run: |
-          cd workspaces/current
+          cd ../workspaces/current
           ./destroy-all.sh
