@@ -11,7 +11,6 @@ The module depends on the following software components:
 ### Command-line tools
 
 - terraform - v0.15
-- kubectl
 
 ### Terraform providers
 

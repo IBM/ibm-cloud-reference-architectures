@@ -6,6 +6,11 @@ variable "at_resource_group_name" {
   type = string
   description = "The name of the resource group"
 }
+variable "purge_volumes" {
+  type = bool
+  description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
+  default = false
+}
 variable "region" {
   type = string
   description = "the value of region"

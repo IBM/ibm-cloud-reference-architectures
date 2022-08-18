@@ -15,7 +15,7 @@ spec:
   modules:
     - name: ibm-resource-group
       alias: at_resource_group
-      version: v3.2.15
+      version: v3.3.3
       variables:
         - name: resource_group_name
           alias: at_resource_group_name
@@ -25,27 +25,27 @@ spec:
           ref: kms_resource_group
     - name: ibm-resource-group
       alias: resource_group
-      version: v3.2.15
+      version: v3.3.3
       variables: &ref_0
         - name: resource_group_name
           alias: cs_resource_group_name
           scope: global
     - name: ibm-resource-group
       alias: kms_resource_group
-      version: v3.2.15
+      version: v3.3.3
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
       version: v3.1.6
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.15
+      version: v2.4.16
       variables: &ref_1
         - name: resource_location
           alias: region
     - name: ibm-activity-tracker
       alias: at-ibm-activity-tracker
-      version: v2.4.15
+      version: v2.4.16
       variables: *ref_1
     - name: ibm-cert-manager
       alias: ibm-cert-manager
@@ -60,7 +60,7 @@ spec:
       version: v4.1.2
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth
-      version: v1.2.11
+      version: v1.2.12
       variables:
         - name: source_service_name
           value: server-protect
@@ -74,7 +74,7 @@ spec:
           ref: kms
     - name: ibm-iam-service-authorization
       alias: cos-encrypt-auth
-      version: v1.2.11
+      version: v1.2.12
       variables:
         - name: roles
           value:
@@ -88,7 +88,7 @@ spec:
           ref: cos
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
-      version: v1.2.11
+      version: v1.2.12
       variables:
         - name: source_service_name
           value: is
@@ -104,10 +104,10 @@ spec:
           ref: cos
     - name: ibm-iam-service-authorization
       alias: vsi-encrypt-auth1
-      version: v1.2.11
+      version: v1.2.12
     - name: ibm-iam-service-authorization
       alias: kube-encrypt-auth
-      version: v1.2.11
+      version: v1.2.12
       variables:
         - name: source_service_name
           value: containers-kubernetes
@@ -123,7 +123,7 @@ spec:
           ref: kms
     - name: ibm-iam-service-authorization
       alias: vpn-cert-manager-auth
-      version: v1.2.11
+      version: v1.2.12
       variables:
         - name: source_service_name
           value: is
@@ -136,7 +136,7 @@ spec:
           value: cloudcerts
     - name: ibm-kms
       alias: kms
-      version: v0.3.4
+      version: v0.3.5
       variables:
         - name: region
           alias: kms_region
@@ -153,7 +153,7 @@ spec:
       version: v4.1.2
     - name: ibm-object-storage
       alias: cos
-      version: v4.0.3
+      version: v4.0.6
   variables:
     - name: ibmcloud_api_key
       type: string

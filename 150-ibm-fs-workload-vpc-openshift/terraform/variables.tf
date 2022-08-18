@@ -11,6 +11,11 @@ variable "kms_resource_group_sync" {
   description = "Value used to order the provisioning of the resource group"
   default = ""
 }
+variable "purge_volumes" {
+  type = bool
+  description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
+  default = false
+}
 variable "region" {
   type = string
   description = "the value of region"
@@ -275,16 +280,6 @@ variable "cos_label" {
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = "cos"
 }
-variable "flow_log_bucket_metrics_monitoring_crn" {
-  type = string
-  description = "The crn of the Metrics Monitoring instance"
-  default = null
-}
-variable "suffix" {
-  type = string
-  description = "Value added to the generated name to ensure it is unique"
-  default = ""
-}
 variable "flow_log_bucket_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
@@ -310,6 +305,11 @@ variable "flow_log_bucket_storage_class" {
   description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
   default = "standard"
 }
+variable "flow_log_bucket_metrics_monitoring_crn" {
+  type = string
+  description = "The crn of the Metrics Monitoring instance"
+  default = null
+}
 variable "flow_log_bucket_allowed_ip" {
   type = string
   description = "A list of IPv4 or IPv6 addresses in CIDR notation that you want to allow access to your IBM Cloud Object Storage bucket."
@@ -319,6 +319,11 @@ variable "flow_log_bucket_enable_object_versioning" {
   type = bool
   description = "Object Versioning allows the COS user to keep multiple versions of an object in a bucket to protect against accidental deletion or overwrites. (Default = false)"
   default = false
+}
+variable "suffix" {
+  type = string
+  description = "Value added to the generated name to ensure it is unique"
+  default = ""
 }
 variable "cluster_name" {
   type = string

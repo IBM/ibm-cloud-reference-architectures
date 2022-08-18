@@ -13,27 +13,27 @@ spec:
   modules:
     - name: ibm-resource-group
       alias: kms_resource_group
-      version: v3.2.15
+      version: v3.3.3
     - name: ibm-resource-group
       alias: at_resource_group
-      version: v3.2.15
+      version: v3.3.3
     - name: ibm-resource-group
       alias: resource_group
-      version: v3.2.15
+      version: v3.3.3
       variables: &ref_0
         - name: resource_group_name
           alias: mgmt_resource_group_name
           scope: global
     - name: ibm-resource-group
       alias: cs_resource_group
-      version: v3.2.15
+      version: v3.3.3
       variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
       version: v3.1.6
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.15
+      version: v2.4.16
       dependencies:
         - name: resource_group
           ref: at_resource_group
@@ -51,7 +51,7 @@ spec:
           ref: cs_resource_group
     - name: ibm-flow-logs
       alias: ibm-flow-logs
-      version: v1.0.1
+      version: v1.0.2
       dependencies:
         - name: target
           ref: ibm-vpc
@@ -59,7 +59,7 @@ spec:
           ref: flow_log_bucket
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
-      version: v1.2.11
+      version: v1.2.12
       variables:
         - name: source_service_name
           value: is
@@ -75,7 +75,7 @@ spec:
           ref: cos
     - name: ibm-kms
       alias: kms
-      version: v0.3.4
+      version: v0.3.5
       variables:
         - name: provision
           value: false
@@ -99,7 +99,7 @@ spec:
           ref: kms
     - name: ibm-object-storage
       alias: cos
-      version: v4.0.3
+      version: v4.0.6
       variables:
         - name: provision
           value: false
@@ -122,7 +122,7 @@ spec:
             - 10.30.0.0/18
     - name: ibm-object-storage-bucket
       alias: flow_log_bucket
-      version: v0.8.3
+      version: v0.8.4
       variables:
         - name: label
           value: flow-logs
@@ -188,13 +188,13 @@ spec:
             - 10.30.30.0/24
     - name: ibm-vpc-vpn-gateway
       alias: ibm-vpc-vpn-gateway
-      version: v1.1.4
+      version: v1.1.5
       dependencies:
         - name: subnets
           ref: vpn-subnets
     - name: ibm-vpe-gateway
       alias: vpe-cos
-      version: v1.6.1
+      version: v1.6.2
       dependencies:
         - name: resource
           ref: cos

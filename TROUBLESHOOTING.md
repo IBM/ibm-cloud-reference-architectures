@@ -1,5 +1,6 @@
+# Troubleshooting
 
-# Uninstalling
+## Uninstalling
 
 To uninstall this solution:
 
@@ -17,25 +18,7 @@ To uninstall this solution:
     terraform destroy --auto-approve
     ```
 
-# Troubleshooting
-
-## Credentials not working
-
-If you encounter unexpected behavior on login or see error message similar to the following, then its likely that your credentials are invalid.
-```
-The ApiKey property is invalid.  Please remove any surrounding {, }, or \" characters.
-```
-
-This normally happens if the credentials inside of the `credentials.properties` file are wrapped with quotes.   All values inside the `credentials.properties` should *not* be wrapped in quotes.
-
-To remedy this scenario:
-
-- If you are inside the container that is created using the `launch.sh` script, exit by using the `exit` command.
-- Modify the contents of the `credentials.properties` file and ensure that values are *not* wrapped in quotes.
-  - `TF_VAR_ibmcloud_api_key="ABCXYZ"` is **incorrect**
-  - `TF_VAR_ibmcloud_api_key=ABCXYZ` is **correct** 
-- Re-launch the `launch.sh` script.
-- Navigate to the `/workspaces/current` folder and continue the task where you encountered issues.
+  
 
 ## Variables may not be used here.
 
