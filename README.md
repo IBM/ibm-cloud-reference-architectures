@@ -2,6 +2,8 @@
 
 ### Change Log
 
+Within this repository you will find Terraform automation that embodies best practices for provisioning and configuring cloud resources in an IBM Cloud cloud account, and implements many requirements for regulated workloads and the [IBM Cloud for Finanical Services](https://cloud.ibm.com/docs/framework-financial-services). We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
+
 - **05/2022** - Automated validation of terraform & update to latest modules
 - **04/2022** - Improved usability & update to latest modules
 - **11/2021** - Updated to use Client-to-site VPN service (beta) instead of a VSI running a VPN server
@@ -11,8 +13,6 @@
 > This collection of IBM Cloud terraform automation bundles has been crafted from a set of [Terraform modules](https://modules.cloudnativetoolkit.dev/) created by the IBM Ecosystem Engineering team part of the [IBM Ecosystem organization](https://www.ibm.com/partnerworld/public?mhsrc=ibmsearch_a&mhq=partnerworld). Please contact **Matthew Perrins** __mjperrin@us.ibm.com__, **Sean Sundberg** __seansund@us.ibm.com__, or **Andrew Trice** __amtrice@us.ibm.com__ for more details or raise an issue on the repository for bugs or feature requests.
 
 The automation supports three reference architectures to establish a secure cloud environment that will enable the deployment and management of secure workloads.
-
-Within this repository you will find a set of Terraform template bundles that embody best practices for provisioning and configuring cloud resources in an IBM Cloud cloud account. We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
 
 This `README.md` describes the SRE steps required to provision an environment that will scan cleanly with the Security and Compliance Centers NIST based profiles.
 
