@@ -1,6 +1,6 @@
 # IBM Cloud Reference Architecture - Terraform Automation
 
-Within this repository you will find Terraform automation that embodies best practices for provisioning and configuring cloud resources in an IBM Cloud cloud account, and implements many requirements for regulated workloads and the [IBM Cloud for Finanical Services](https://cloud.ibm.com/docs/framework-financial-services). We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
+Within this repository you will find Terraform automation that embodies best practices for provisioning and configuring cloud resources in an IBM Cloud  account that implements many requirements for regulated workloads, and is inspired by the [IBM Cloud for Finanical Services](https://cloud.ibm.com/docs/framework-financial-services) reference architecture. We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
 
 
 ### Change Log
