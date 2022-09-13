@@ -2,7 +2,6 @@
 
 Within this repository you will find Terraform automation that embodies best practices for provisioning and configuring cloud resources in an IBM Cloud  account that implements many requirements for regulated workloads, and is inspired by the [IBM Cloud for Finanical Services](https://cloud.ibm.com/docs/framework-financial-services) reference architecture. We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
 
-
 ### Change Log
 
 - **05/2022** - Automated validation of terraform & update to latest modules
