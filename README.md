@@ -1,6 +1,8 @@
-# IBM Cloud Reference Architecture - Terraform Automation
+# IBM Cloud Reference Architecture - Infrastructure Automation
 
-Within this repository you will find Terraform automation that embodies best practices for provisioning and configuring cloud resources in an IBM Cloud  account that implements many requirements for regulated workloads, and is inspired by the [IBM Cloud for Finanical Services](https://cloud.ibm.com/docs/framework-financial-services) reference architecture. We recommend using this with an IBM Cloud [Enterprise sub-account](https://cloud.ibm.com/docs/account?topic=account-what-is-enterprise).
+Created with the ***TechZone Accelerator Toolkit***
+
+> This collection of AWS Cloud terraform automation bundles has been crafted from a set of [Terraform modules](https://modules.cloudnativetoolkit.dev/) created by Ecosystem Engineering
 
 ### Change Log
 
