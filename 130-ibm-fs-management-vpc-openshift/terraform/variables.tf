@@ -1,51 +1,10 @@
 variable "ibmcloud_api_key" {
   type = string
-  description = "The IBM Cloud api key"
-}
-variable "kms_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "kms_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
-}
-variable "purge_volumes" {
-  type = bool
-  description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
-  default = false
+  description = "The api key used to access IBM Cloud"
 }
 variable "region" {
   type = string
   description = "the value of region"
-}
-variable "at_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "at_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
-}
-variable "mgmt_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
-}
-variable "cs_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "cs_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
 }
 variable "ibm-activity-tracker_tags" {
   type = string
@@ -255,6 +214,92 @@ variable "logdna_label" {
   description = "The label used to build the resource name if not provided"
   default = "logging"
 }
+variable "flow_log_bucket_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "flow_log_bucket_name" {
+  type = string
+  description = "Name of the bucket"
+  default = ""
+}
+variable "flow_log_bucket_label" {
+  type = string
+  description = "Label used to build the bucket name of not provided."
+  default = "flow-logs"
+}
+variable "flow_log_bucket_cross_region_location" {
+  type = string
+  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
+  default = ""
+}
+variable "flow_log_bucket_storage_class" {
+  type = string
+  description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
+  default = "standard"
+}
+variable "flow_log_bucket_metrics_monitoring_crn" {
+  type = string
+  description = "The crn of the Metrics Monitoring instance"
+  default = null
+}
+variable "flow_log_bucket_allowed_ip" {
+  type = string
+  description = "A list of IPv4 or IPv6 addresses in CIDR notation that you want to allow access to your IBM Cloud Object Storage bucket."
+  default = "[\"0.0.0.0/0\"]"
+}
+variable "flow_log_bucket_enable_object_versioning" {
+  type = bool
+  description = "Object Versioning allows the COS user to keep multiple versions of an object in a bucket to protect against accidental deletion or overwrites. (Default = false)"
+  default = false
+}
+variable "suffix" {
+  type = string
+  description = "Value added to the generated name to ensure it is unique"
+  default = ""
+}
+variable "kms_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "kms_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "purge_volumes" {
+  type = bool
+  description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
+  default = false
+}
+variable "at_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "at_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "mgmt_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "cs_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "cs_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
 variable "cos_resource_location" {
   type = string
   description = "Geographic location of the resource (e.g. us-south, us-east)"
@@ -279,6 +324,11 @@ variable "cos_label" {
   type = string
   description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
   default = "cos"
+}
+variable "common_tags" {
+  type = string
+  description = "Common tags that should be added to the instance"
+  default = "[]"
 }
 variable "cluster_name" {
   type = string
@@ -374,51 +424,6 @@ variable "ibm-vpc_tags" {
   type = string
   description = "Tags that should be added to the instance"
   default = "[]"
-}
-variable "flow_log_bucket_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
-}
-variable "flow_log_bucket_name" {
-  type = string
-  description = "Name of the bucket"
-  default = ""
-}
-variable "flow_log_bucket_label" {
-  type = string
-  description = "Label used to build the bucket name of not provided."
-  default = "flow-logs"
-}
-variable "flow_log_bucket_cross_region_location" {
-  type = string
-  description = "The cross-region location of the bucket. This value is optional. Valid values are (us, eu, and ap). This value takes precedence over others if provided."
-  default = ""
-}
-variable "flow_log_bucket_storage_class" {
-  type = string
-  description = "Storage class of the bucket. Supported values are standard, vault, cold, flex, smart."
-  default = "standard"
-}
-variable "flow_log_bucket_metrics_monitoring_crn" {
-  type = string
-  description = "The crn of the Metrics Monitoring instance"
-  default = null
-}
-variable "flow_log_bucket_allowed_ip" {
-  type = string
-  description = "A list of IPv4 or IPv6 addresses in CIDR notation that you want to allow access to your IBM Cloud Object Storage bucket."
-  default = "[\"0.0.0.0/0\"]"
-}
-variable "flow_log_bucket_enable_object_versioning" {
-  type = bool
-  description = "Object Versioning allows the COS user to keep multiple versions of an object in a bucket to protect against accidental deletion or overwrites. (Default = false)"
-  default = false
-}
-variable "suffix" {
-  type = string
-  description = "Value added to the generated name to ensure it is unique"
-  default = ""
 }
 variable "ibm-vpc-gateways_provision" {
   type = bool

@@ -1,6 +1,44 @@
+variable "cluster-config_gitops_dir" {
+  type = string
+  description = "Directory where the gitops repo content should be written"
+  default = ""
+}
+variable "cluster-config_banner_text" {
+  type = string
+  description = "Text that should be shown in the banner on the cluster"
+  default = "Workload"
+}
+variable "cluster-config_banner_background_color" {
+  type = string
+  description = "The background color for the banner"
+  default = "red"
+}
+variable "cluster-config_banner_text_color" {
+  type = string
+  description = "The foreground color for the banner"
+  default = "white"
+}
+variable "registry_namespace" {
+  type = string
+  description = "The namespace that will be created in the IBM Cloud image registry. If not provided the value will default to the resource group"
+}
+variable "region" {
+  type = string
+  description = "The region for the image registry been installed."
+}
 variable "ibmcloud_api_key" {
   type = string
-  description = "The IBM Cloud api key"
+  description = "The IBM Cloud api token"
+}
+variable "gitops_dir" {
+  type = string
+  description = "The directory where the gitops configuration should be stored"
+  default = ""
+}
+variable "private_endpoint" {
+  type = string
+  description = "Flag indicating that the registry url should be created with private endpoints"
+  default = "true"
 }
 variable "workload_resource_group_name" {
   type = string
@@ -15,10 +53,6 @@ variable "purge_volumes" {
   type = bool
   description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
   default = false
-}
-variable "region" {
-  type = string
-  description = "the value of region"
 }
 variable "cs_resource_group_name" {
   type = string
@@ -123,6 +157,11 @@ variable "cluster_login" {
   description = "Flag indicating that after the cluster is provisioned, the module should log into the cluster"
   default = true
 }
+variable "common_tags" {
+  type = string
+  description = "Common tags that should be added to the instance"
+  default = "[]"
+}
 variable "tools_namespace_name" {
   type = string
   description = "The namespace that should be created"
@@ -142,40 +181,6 @@ variable "openshift-gitops_create_operator_group" {
   type = bool
   description = "Flag indicating that an operator group should be created in the namespace"
   default = true
-}
-variable "cluster-config_gitops_dir" {
-  type = string
-  description = "Directory where the gitops repo content should be written"
-  default = ""
-}
-variable "cluster-config_banner_text" {
-  type = string
-  description = "Text that should be shown in the banner on the cluster"
-  default = "Workload"
-}
-variable "cluster-config_banner_background_color" {
-  type = string
-  description = "The background color for the banner"
-  default = "red"
-}
-variable "cluster-config_banner_text_color" {
-  type = string
-  description = "The foreground color for the banner"
-  default = "white"
-}
-variable "registry_namespace" {
-  type = string
-  description = "The namespace that will be created in the IBM Cloud image registry. If not provided the value will default to the resource group"
-}
-variable "gitops_dir" {
-  type = string
-  description = "The directory where the gitops configuration should be stored"
-  default = ""
-}
-variable "private_endpoint" {
-  type = string
-  description = "Flag indicating that the registry url should be created with private endpoints"
-  default = "true"
 }
 variable "sealed-secret_name" {
   type = string

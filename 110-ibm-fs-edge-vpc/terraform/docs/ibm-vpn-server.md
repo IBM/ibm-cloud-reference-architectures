@@ -5,11 +5,12 @@ This is a terraform module that will provision a client-to-site VPN on IBM Cloud
 This module will: 
 
 - Download necessary CLI dependencies (`jq`)
-- Create a server and a client certificate and import them into a certificate manager instance
+- Create a group in a secrets manager instance
+- Create a server and a client certificate and import them into the secrets manager group
 - Update the ACL for the VPC subnet to allow for VPN ingress & egress
 - Create a security group and security group rules for the VPN server instance
 - Provision a VPN server
-- Download a VPNC Client profile and inject the client certificate so it is ready for use with an OpenVPN client
+- Download a VPN Client profile and inject the client certificate so it is ready for use with an OpenVPN client
 
 ## Software dependencies
 
@@ -21,7 +22,7 @@ Dependencies:
 
 ### Command-line tools
 
-- `terraform` - v0.15
+- `terraform` - v1.2.8
 - `jq`
 - `ibmcloud`
 
@@ -33,15 +34,15 @@ None
 
 ```hcl-terraform
 module "vpn_module" {
-  source = "./module"
+  source = "github.com/terraform-ibm-modules/terraform-ibm-toolkit-vpn-server"
 
-  resource_group_name = module.resource_group.name
-  region = var.region
-  ibmcloud_api_key = var.ibmcloud_api_key
-  resource_label = "client2site"
-  certificate_manager_id = module.cert-manager.id
-  vpc_id     = module.subnets.vpc_id
-  subnet_ids = module.subnets.ids
+  resource_group_name   = module.resource_group.name
+  region                = var.region
+  ibmcloud_api_key      = var.ibmcloud_api_key
+  resource_label        = "client2site"
+  secrets_manager_name  = module.secrets-manager.name
+  vpc_id                = module.subnets.vpc_id
+  subnet_ids            = module.subnets.ids
 }
 ```
 

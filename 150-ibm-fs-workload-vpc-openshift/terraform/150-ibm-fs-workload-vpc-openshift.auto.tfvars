@@ -1,20 +1,8 @@
-## ibmcloud_api_key: The IBM Cloud api key
+## ibmcloud_api_key: The api key used to access IBM Cloud
 #ibmcloud_api_key=""
-
-## kms_resource_group_name: The name of the resource group
-#kms_resource_group_name=""
 
 ## region: the value of region
 #region=""
-
-## at_resource_group_name: The name of the resource group
-#at_resource_group_name=""
-
-## workload_resource_group_name: The name of the resource group
-#workload_resource_group_name=""
-
-## cs_resource_group_name: The name of the resource group
-#cs_resource_group_name=""
 
 ## cs_name_prefix: The prefix name for the service. If not provided it will default to the resource group name
 #cs_name_prefix=""
@@ -27,6 +15,21 @@
 
 ## workload_name_prefix: The name_prefix used to build the name if one is not provided. If used the name will be `{name_prefix}-{label}`
 #workload_name_prefix="base"
+
+## kms_resource_group_name: The name of the resource group
+#kms_resource_group_name=""
+
+## at_resource_group_name: The name of the resource group
+#at_resource_group_name=""
+
+## workload_resource_group_name: The name of the resource group
+#workload_resource_group_name=""
+
+## cs_resource_group_name: The name of the resource group
+#cs_resource_group_name=""
+
+## common_tags: Common tags that should be added to the instance
+#common_tags=""
 
 ## workload_worker_count: The number of worker nodes that should be provisioned for classic infrastructure
 #workload_worker_count="3"

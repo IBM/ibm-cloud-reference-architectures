@@ -2,8 +2,6 @@
 
 Module to provision VPN Gateway instance(s) into the provided list of subnets.
 
-**Note:** This module follows the Terraform conventions regarding how provider configuration is defined within the Terraform template and passed into the module - https://www.terraform.io/docs/language/modules/develop/providers.html. The default provider configuration flows through to the module. If different configuration is required for a module, it can be explicitly passed in the `providers` block of the module - https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly.
-
 ## Software dependencies
 
 The module depends on the following software components:
@@ -24,6 +22,8 @@ This module makes use of the output from other modules:
 - VPC subnets - github.com/cloud-native-toolkit/terraform-ibm-vpc-subnets
 
 ## Example usage
+
+[Refer test case for more details](test/stages/stage2-vpn-gateways.tf)
 
 ```hcl-terraform
 terraform {

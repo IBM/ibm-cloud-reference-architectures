@@ -7,7 +7,18 @@ SRC_DIR="${SCRIPT_DIR}/automation"
 
 AUTOMATION_BASE=$(basename "${SCRIPT_DIR}")
 
-DOCKER_CMD="${1:-docker}"
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+  echo "Usage: launch.sh [{docker cmd}] [--pull]"
+  echo "  where:"
+  echo "    {docker cmd} is the docker command that should be used (e.g. docker, podman). Defaults to docker"
+  echo "    --pull is a flag indicating the latest version of the container image should be pulled"
+  exit 0
+fi
+
+DOCKER_CMD="docker"
+if [[ -n "$1" ]] && [[ "$1" != "--pull" ]]; then
+  DOCKER_CMD="${1:-docker}"
+fi
 
 if [[ ! -d "${SRC_DIR}" ]]; then
   SRC_DIR="${SCRIPT_DIR}"
@@ -38,7 +49,8 @@ then
 fi
 
 
-DOCKER_IMAGE="quay.io/cloudnativetoolkit/cli-tools-ibmcloud:v1.2-v0.3.3"
+
+DOCKER_IMAGE="quay.io/cloudnativetoolkit/cli-tools-ibmcloud:v1.2-v0.4.23"
 
 
 
@@ -50,9 +62,11 @@ echo "Cleaning up old container: ${CONTAINER_NAME}"
 ${DOCKER_CMD} kill ${CONTAINER_NAME} 1> /dev/null 2> /dev/null
 ${DOCKER_CMD} rm ${CONTAINER_NAME} 1> /dev/null 2> /dev/null
 
-if [[ -n "$1" ]]; then
-    echo "Pulling container image: ${DOCKER_IMAGE}"
-    ${DOCKER_CMD} pull "${DOCKER_IMAGE}"
+ARG_ARRAY=( "$@" )
+
+if [[ " ${ARG_ARRAY[*]} " =~ " --pull " ]]; then
+  echo "Pulling container image: ${DOCKER_IMAGE}"
+  ${DOCKER_CMD} pull "${DOCKER_IMAGE}"
 fi
 
 
@@ -65,11 +79,12 @@ if [[ -f "credentials.properties" ]]; then
     CLEAN="$(echo $line | sed 's/export //' )"
 
     #parse key-value pairs
-    TOKENS=(${CLEAN//\"/ })
-    KEY="${TOKENS[0]%?}"
-    VALUE="${TOKENS[1]}"
+    IFS=' =' read -r KEY VALUE <<< ${CLEAN//\"/ }
 
-    ENV_VARS="-e $KEY=$VALUE $ENV_VARS"
+    # don't add an empty key
+    if [[ -n "${KEY}" ]]; then
+      ENV_VARS="-e $KEY=$VALUE $ENV_VARS"
+    fi
   done <<< "$props"
 fi
 
@@ -77,9 +92,8 @@ fi
 echo "Initializing container ${CONTAINER_NAME} from ${DOCKER_IMAGE}"
 ${DOCKER_CMD} run -itd --name ${CONTAINER_NAME} \
    --device /dev/net/tun --cap-add=NET_ADMIN \
-   -u "${UID}" \
    -v "${SRC_DIR}:/terraform" \
-   -v "workspace-${AUTOMATION_BASE}:/workspaces" \
+   -v "workspace-${AUTOMATION_BASE}-${UID}:/workspaces" \
    ${ENV_VARS} \
    -w /terraform \
    ${DOCKER_IMAGE}

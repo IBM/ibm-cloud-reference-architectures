@@ -24,6 +24,8 @@ This module makes use of the output from other modules:
 
 ## Example usage
 
+[Refer test cases for more details](test/stages/stage-logdna-bind.tf)
+
 ```hcl-terraform
 module "log-bind" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-log-analysis-bind.git"
@@ -36,4 +38,6 @@ module "log-bind" {
   logdna_id                = module.logdna.guid
   logdna_crn               = module.logdna.id
 }
+
+
 ```

@@ -41,7 +41,15 @@ For example:
 - `cluster_login_token=ABCXYZ` is **incorrect**
 - `cluster_login_token="ABCXYZ"` is **correct**
 
+## IBM Cloud resource delay issues
 
+Occasionally, IBM Cloud will experience delays between when a resource is provisioned and when it is available for use. Most often this delay is short-lived (< 5 minutes) but at times the delays can be quite long. In the automation this issue is most often seen when clusters are provisioned using a COS instance that was newly provisioned. The resulting error is shown below:
+
+```
+Cluster was not created. Could not find the specified cloud object storage instance because it does not exist or the API key that is set for this resource group and region has inadequate permissions.
+```
+
+The best approach to fixing this issue is to re-run apply after the error.
 
 ## Intermittent network failures when using Colima
 

@@ -11,35 +11,18 @@ metadata:
     description: Management VPC and Red Hat OpenShift servers
 spec:
   modules:
-    - name: ibm-resource-group
-      alias: kms_resource_group
-      version: v3.3.3
-    - name: ibm-resource-group
-      alias: at_resource_group
-      version: v3.3.3
-    - name: ibm-resource-group
-      alias: resource_group
-      version: v3.3.3
-      variables: &ref_0
-        - name: resource_group_name
-          alias: mgmt_resource_group_name
-          scope: global
-    - name: ibm-resource-group
-      alias: cs_resource_group
-      version: v3.3.3
-      variables: *ref_0
     - name: ibm-access-group
       alias: ibm-access-group
-      version: v3.1.6
+      version: v3.1.7
     - name: ibm-activity-tracker
       alias: ibm-activity-tracker
-      version: v2.4.16
+      version: v2.4.17
       dependencies:
         - name: resource_group
           ref: at_resource_group
     - name: ibm-cloud-monitoring
       alias: sysdig
-      version: v4.1.2
+      version: v4.1.3
       variables:
         - name: provision
           value: false
@@ -51,10 +34,10 @@ spec:
           ref: cs_resource_group
     - name: ibm-cloud-monitoring-bind
       alias: sysdig-bind
-      version: v1.3.4
+      version: v1.3.5
     - name: ibm-flow-logs
       alias: ibm-flow-logs
-      version: v1.0.2
+      version: v1.0.3
       dependencies:
         - name: target
           ref: ibm-vpc
@@ -62,7 +45,7 @@ spec:
           ref: flow_log_bucket
     - name: ibm-iam-service-authorization
       alias: flow-log-auth
-      version: v1.2.12
+      version: v1.2.14
       variables:
         - name: source_service_name
           value: is
@@ -78,7 +61,7 @@ spec:
           ref: cos
     - name: ibm-kms
       alias: kms
-      version: v0.3.5
+      version: v0.3.6
       variables:
         - name: provision
           value: false
@@ -93,7 +76,7 @@ spec:
           ref: kms_resource_group
     - name: ibm-kms-key
       alias: kms-key
-      version: v1.5.2
+      version: v1.5.3
       variables:
         - name: provision
           value: true
@@ -102,7 +85,7 @@ spec:
           ref: kms
     - name: ibm-log-analysis
       alias: logdna
-      version: v4.1.2
+      version: v4.1.3
       variables:
         - name: provision
           value: false
@@ -115,9 +98,35 @@ spec:
     - name: ibm-log-analysis-bind
       alias: ibm-logdna-bind
       version: v1.3.6
+    - name: ibm-object-storage-bucket
+      alias: flow_log_bucket
+      version: v0.8.4
+      variables:
+        - name: label
+          value: flow-logs
+        - name: allowed_ip
+          value:
+            - 0.0.0.0/0
+    - name: ibm-resource-group
+      alias: kms_resource_group
+      version: v3.3.4
+    - name: ibm-resource-group
+      alias: at_resource_group
+      version: v3.3.4
+    - name: ibm-resource-group
+      alias: resource_group
+      version: v3.3.4
+      variables: &ref_0
+        - name: resource_group_name
+          alias: mgmt_resource_group_name
+          scope: global
+    - name: ibm-resource-group
+      alias: cs_resource_group
+      version: v3.3.4
+      variables: *ref_0
     - name: ibm-object-storage
       alias: cos
-      version: v4.0.6
+      version: v4.1.0
       variables:
         - name: provision
           value: false
@@ -129,7 +138,7 @@ spec:
           ref: cs_resource_group
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.15.6
+      version: v1.16.0
       variables:
         - name: disable_public_endpoint
           value: true
@@ -146,7 +155,7 @@ spec:
           ref: kms-key
     - name: ibm-vpc
       alias: ibm-vpc
-      version: v1.16.0
+      version: v1.17.0
       variables:
         - name: address_prefix_count
           value: 3
@@ -155,21 +164,12 @@ spec:
             - 10.10.0.0/18
             - 10.20.0.0/18
             - 10.30.0.0/18
-    - name: ibm-object-storage-bucket
-      alias: flow_log_bucket
-      version: v0.8.4
-      variables:
-        - name: label
-          value: flow-logs
-        - name: allowed_ip
-          value:
-            - 0.0.0.0/0
     - name: ibm-vpc-gateways
       alias: ibm-vpc-gateways
-      version: v1.9.0
+      version: v1.10.0
     - name: ibm-vpc-subnets
       alias: worker-subnets
-      version: v1.13.2
+      version: v1.14.0
       variables:
         - name: _count
           alias: mgmt_worker_subnet_count
@@ -199,7 +199,7 @@ spec:
           ref: ibm-vpc-gateways
     - name: ibm-vpc-subnets
       alias: vpe-subnets
-      version: v1.13.2
+      version: v1.14.0
       variables:
         - name: _count
           value: 3
@@ -212,7 +212,7 @@ spec:
             - 10.30.20.0/24
     - name: ibm-vpc-subnets
       alias: ingress-subnets
-      version: v1.13.2
+      version: v1.14.0
       variables:
         - name: _count
           value: 3
@@ -225,7 +225,7 @@ spec:
             - 10.30.30.0/24
     - name: ibm-vpc-vpn-gateway
       alias: ibm-vpc-vpn-gateway
-      version: v1.1.5
+      version: v1.1.6
       dependencies:
         - name: subnets
           ref: vpn-subnets
@@ -241,7 +241,7 @@ spec:
           ref: cluster
     - name: ibm-transit-gateway
       alias: ibm-transit-gateway
-      version: v0.2.2
+      version: v0.2.3
       variables:
         - name: provision
           value: false
@@ -253,25 +253,13 @@ spec:
           ref: cs_resource_group
     - name: ibm-vpc-subnets
       alias: vpn-subnets
-      version: v1.13.2
+      version: v1.14.0
   variables:
     - name: ibmcloud_api_key
       type: string
-      description: The IBM Cloud api key
-    - name: kms_resource_group_name
-      type: string
-      description: The name of the resource group
+      description: The api key used to access IBM Cloud
     - name: region
       type: string
-    - name: at_resource_group_name
-      type: string
-      description: The name of the resource group
-    - name: mgmt_resource_group_name
-      type: string
-      description: The name of the resource group
-    - name: cs_resource_group_name
-      type: string
-      description: The name of the resource group
     - name: cs_name_prefix
       type: string
       description: >-
@@ -291,6 +279,22 @@ spec:
         The name_prefix used to build the name if one is not provided. If used
         the name will be `{name_prefix}-{label}`
       defaultValue: base
+    - name: kms_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: at_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: mgmt_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: cs_resource_group_name
+      type: string
+      description: The name of the resource group
+    - name: common_tags
+      type: list(string)
+      description: Common tags that should be added to the instance
+      defaultValue: []
     - name: mgmt_worker_count
       type: number
       description: >-

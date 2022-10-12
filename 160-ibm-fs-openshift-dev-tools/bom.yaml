@@ -13,9 +13,28 @@ metadata:
     deployment-type/gitops: 'true'
 spec:
   modules:
+    - name: artifactory
+      alias: artifactory
+      version: v1.12.2
+    - name: cluster-config
+      alias: cluster-config
+      version: v0.1.2
+      variables:
+        - name: banner_text
+          value: Management
+    - name: dashboard
+      alias: dashboard
+      version: v1.10.14
+    - name: ibm-image-registry
+      alias: registry
+      version: v2.1.4
+      variables:
+        - name: registry_namespace
+          required: true
+          scope: global
     - name: ibm-resource-group
       alias: resource_group
-      version: v3.3.3
+      version: v3.3.4
       variables: &ref_0
         - name: provision
           value: false
@@ -24,11 +43,11 @@ spec:
           scope: global
     - name: ibm-resource-group
       alias: cs_resource_group
-      version: v3.3.3
+      version: v3.3.4
       variables: *ref_0
     - name: ibm-ocp-vpc
       alias: cluster
-      version: v1.15.6
+      version: v1.16.0
       dependencies:
         - name: subnets
           optional: true
@@ -64,25 +83,6 @@ spec:
       variables:
         - name: name
           value: openshift-gitops
-    - name: artifactory
-      alias: artifactory
-      version: v1.12.2
-    - name: cluster-config
-      alias: cluster-config
-      version: v0.1.2
-      variables:
-        - name: banner_text
-          value: Management
-    - name: dashboard
-      alias: dashboard
-      version: v1.10.14
-    - name: ibm-image-registry
-      alias: registry
-      version: v2.1.4
-      variables:
-        - name: registry_namespace
-          required: true
-          scope: global
     - name: openshift-cicd
       alias: openshift-cicd
       version: v1.11.1
@@ -108,14 +108,21 @@ spec:
     - name: sealed-secret-cert
       version: v1.0.1
   variables:
+    - name: registry_namespace
+      type: string
+      description: >-
+        The namespace that will be created in the IBM Cloud image registry. If
+        not provided the value will default to the resource group
+      defaultValue: ''
+    - name: region
+      type: string
+      description: The region for the image registry been installed.
     - name: ibmcloud_api_key
       type: string
-      description: The IBM Cloud api key
+      description: The IBM Cloud api token
     - name: mgmt_resource_group_name
       type: string
       description: The name of the resource group
-    - name: region
-      type: string
     - name: cs_resource_group_name
       type: string
       description: The name of the resource group
@@ -135,12 +142,10 @@ spec:
         The prefix name for the service. If not provided it will default to the
         resource group name
       defaultValue: ''
-    - name: registry_namespace
-      type: string
-      description: >-
-        The namespace that will be created in the IBM Cloud image registry. If
-        not provided the value will default to the resource group
-      defaultValue: ''
+    - name: common_tags
+      type: list(string)
+      description: Common tags that should be added to the instance
+      defaultValue: []
     - name: git_type
       type: string
       description: The type of source control system (github or gitlab) currently

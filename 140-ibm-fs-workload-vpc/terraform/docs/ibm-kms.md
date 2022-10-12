@@ -6,8 +6,6 @@ Within IBM Cloud there are two options for Key Management Services: bring-your-o
 
 Fortunately, the APIs used to access Key Protect and HPCS are the same making them easily interchangeable. This module makes use of the Key Protect and HPCS modules as submodules and conditionally provisions one or the other based on the value of the `service` variable. If `keyprotect` is provided for the value then an instance of Key Protect is provisioned. If `hpcs` is provided then an HPCS instance is used. If an instance of Key Protect or HPCS already exists then you can provide `false` in the value for the `provision` flag and the module will look for an existing instance with the name provided.
 
-**Note:** This module follows the Terraform conventions regarding how provider configuration is defined within the Terraform template and passed into the module - https://www.terraform.io/docs/language/modules/develop/providers.html. The default provider configuration flows through to the module. If different configuration is required for a module, it can be explicitly passed in the `providers` block of the module - https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly.
-
 ## Software dependencies
 
 The module depends on the following software components:
@@ -27,6 +25,8 @@ This module makes use of the output from other modules:
 - Resource group - github.com/cloud-native-toolkit/terraform-ibm-resource-group
 
 ## Example usage
+
+[Refer test cases for more details](test/stages/stage2-kms.tf)
 
 ```hcl-terraform
 terraform {

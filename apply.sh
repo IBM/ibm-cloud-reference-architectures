@@ -10,5 +10,5 @@ if [[ "${TYPE}" == "true" ]]; then
   echo "***** Setting parallelism for gitops type deployment for step ${name} to ${PARALLELISM} *****"
 fi
 
-terraform init
-terraform apply -parallelism=$PARALLELISM -auto-approve
+terragrunt init
+terragrunt apply -parallelism=$PARALLELISM -auto-approve

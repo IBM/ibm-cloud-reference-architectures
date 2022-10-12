@@ -17,15 +17,15 @@ The module depends on the following software components:
 ### Terraform providers
 
 - IBM Cloud provider >= 1.18
-- Helm provider >= 1.1.1 (provided by Terraform)
 
 ## Module dependencies
 
 This module makes use of the output from other modules:
 
-- Object Storage - github.com/cloud-native-toolkit/terraform-ibm-object-storage.git
-- VPC - github.com/cloud-native-toolkit/terraform-ibm-vpc.git
-- Subnet - github.com/cloud-native-toolkit/terraform-ibm-vpc.git
+- Resource Group - github.com/terraform-ibm-modules/terraform-ibm-toolkit-resource-group
+- Subnet - github.com/terraform-ibm-modules/terraform-ibm-toolkit-vpc-subnets
+- Object Storage - github.com/terraform-ibm-modules/terraform-ibm-toolkit-object-storage
+- KMS Key - github.com/terraform-ibm-modules/terraform-ibm-toolkit-kms-key
 
 ## Example usage
 

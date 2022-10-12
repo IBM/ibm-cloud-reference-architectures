@@ -18,7 +18,7 @@ The module depends on the following software components:
 
 ## Module dependencies
 
-None
+- Resource group - github.com/terraform-ibm-modules/terraform-ibm-toolkit-resource-group
 
 ## Example usage
 
@@ -44,5 +44,7 @@ module "cos" {
   name_prefix         = var.name_prefix
   provision           = var.cos_provision
   resource_location   = var.cos_resource_location
+  common_tags         = ["common", "test"]
+  tags                = ["test"]
 }
 ```

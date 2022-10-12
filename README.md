@@ -1,4 +1,4 @@
-# IBM Cloud Reference Architecture - Terraform Automation
+# TechZone Automation - IBM Cloud Reference Architecture
 
 ### Change Log
 
@@ -138,7 +138,7 @@ Enable your IBM Cloud account to use Financial Services Validated Products
 3. Provide your IBM Cloud API key as the value for the `TF_VAR_ibmcloud_api_key` variable in `credentials.properties` (**Note:** `*.properties` has been added to `.gitignore` to ensure that the file containing the apikey cannot be checked into Git.)
 4. Launch the automation runtime. 
     - If using *Docker Desktop*, run `./launch.sh`. This will start a container image with the prompt opened in the `/terraform` directory.
-    - If using *Multipass*, run `mutlipass shell cli-tools` to start the interactive shell, and cd into the `/automation/{template}` directory, where  `{template}` is the folder you've cloned this repo.
+    - If using *Multipass*, run `mutlipass shell cli-tools` to start the interactive shell, and cd into the `/automation/{template}` directory, where  `{template}` is the folder you've cloned this repo. Be sure to run `source credentials.properties` once in the shell.
 5. Determine what type of deployment you will be doing. There are currently two template FLAVORS available:
    - `full`: Full IBM Cloud reference architecture deployment, including a Key Protect instance.
    - `small`: IBM reference architecture scaled down for a POC environment deployment. This includes Key Protect and the clusters have been reduced to single region.
@@ -162,9 +162,7 @@ These instructions assume the "Setup" instructions in the previous section have 
 
 All the layers of the selected architecture can be applied automatically, one after the other, with a single command. Where the VPN is required for one of the layers to run, it will automatically be enabled.
 
-1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
-
-   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+1. Launch either Multipass or the container in Docker Desktop using the instructions in the setup section above.
 
 2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
 3. Assuming the `setup-workspace.sh` has already been run, change the directory to `/workspaces/current`. If not, run the `setup-workspace.sh` script again then change to the `/workspaces/current` directory.
@@ -173,9 +171,7 @@ All the layers of the selected architecture can be applied automatically, one af
 
 ### Apply each architecture in the solution manually
 
-1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
-
-   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+1. Launch either Multipass or the container in Docker Desktop using the instructions in the setup section above.
 
 2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
 3. Assuming the `setup-workspace.sh` has already been run, change the directory to `/workspaces/current`. If not, run the `setup-workspace.sh` script again then change to the `/workspaces/current` directory.
@@ -225,9 +221,7 @@ By default, the state of the configured environment is stored within each of the
 
 All the layers of the selected architecture can be destroyed automatically, one after the other, with a single command. Where the VPN is required for one of the layers to run, it will automatically be enabled.
 
-1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
-
-   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+1. Launch either Multipass or the container in Docker Desktop using the instructions in the setup section above.
 
 2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
 3. Change to the directory where the terraform configuration from the previous run is located, `/workspaces/current` if `setup-workspace.sh` has not been executed since the last terraform run or the appropriate `/workspaces/workspace-{TIMESTAMP}` directory.
@@ -235,9 +229,7 @@ All the layers of the selected architecture can be destroyed automatically, one 
 
 ### Destroy each layer in the solution manually
 
-1. From the root of the cloned repository directory, run `./launch.sh`. This will start a docker container that contains the required libraries to run the terraform scripts.
-
-   > This `launch.sh` currently has a dependency on Docker Desktop we are working on alternative solution. We are currently testing with Colima with mixed success.
+1. Launch either Multipass or the container in Docker Desktop using the instructions in the setup section above.
 
 2. The container should have opened in the `/terraform/workspace` as the working directory which should be mounted from repository directory on the host.
 3. Change to the directory where the terraform configuration from the previous run is located, `/workspaces/current` if `setup-workspace.sh` has not been executed since the last terraform run or the appropriate `/workspaces/workspace-{TIMESTAMP}` directory.
