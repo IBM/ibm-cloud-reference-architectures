@@ -27,11 +27,11 @@ fi
 if [[ -n "$RESOURCE_LIST" ]]; then
   echo ""
   echo "Planning destroy"
-  terragrunt plan -destroy ${RESOURCE_LIST} -out=destroy.plan
+  terraform plan -destroy ${RESOURCE_LIST} -out=destroy.plan
 
   echo ""
   echo "Destroying resources"
-  terrgrunt apply -auto-approve destroy.plan
+  terraform apply -auto-approve destroy.plan
 else
   echo ""
   echo "Nothing to destroy!!"
