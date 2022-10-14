@@ -40,6 +40,8 @@ This module makes use of the output from other modules:
 
 ## Example usage
 
+[Refer test cases for more details](test/stages/stage2-flow-log.tf)
+
 ```hcl-terraform
 module "flow_log" {
   module = "github.com/cloud-native-toolkit/terraform-ibm-flow-log.git"

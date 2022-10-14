@@ -9,7 +9,6 @@ Provisions a VPC instance and related resources. The full list of resources prov
   - *public dns* - `161.26.0.10` and `161.26.0.11`
   - *private dns* - `161.26.0.7` and `161.26.0.8`
 
-**Note:** This module follows the Terraform conventions regarding how provider configuration is defined within the Terraform template and passed into the module - https://www.terraform.io/docs/language/modules/develop/providers.html. The default provider configuration flows through to the module. If different configuration is required for a module, it can be explicitly passed in the `providers` block of the module - https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly.
 
 ## Software dependencies
 
@@ -28,6 +27,8 @@ The module depends on the following software components:
 - Resource group - github.com/cloud-native-toolkit/terraform-ibm-resource-group.git
 
 ## Example usage
+
+[Refer test cases for more details](test/stages/stage2-vpc.tf)
 
 ```hcl-terraform
 terraform {

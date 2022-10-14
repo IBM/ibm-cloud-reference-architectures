@@ -34,7 +34,7 @@ cat "${SCRIPT_DIR}/bom.yaml" | ${YQ} e '.spec.variables[] | .name' - | while rea
 
   variable_name="TF_VAR_${name}"
 
-  environment_variable=$(env | grep "${variable_name}" | sed -E 's/.*="(.*)".*/\1/g')
+  environment_variable=$(env | grep "${variable_name}" | sed -E 's/.*=(.*).*/\1/g')
   value="${environment_variable}"
   if [[ -f "${VARIABLES_FILE}" ]]; then
     value=$(cat "${VARIABLES_FILE}" | NAME="${name}" ${YQ} e '.variables[] | select(.name == env(NAME)) | .value // ""' -)

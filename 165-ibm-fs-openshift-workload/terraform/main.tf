@@ -1,7 +1,8 @@
 module "cluster" {
   source = "cloud-native-toolkit/ocp-vpc/ibm"
-  version = "1.15.6"
+  version = "1.16.0"
 
+  common_tags = var.common_tags == null ? null : jsondecode(var.common_tags)
   cos_id = var.cluster_cos_id
   disable_public_endpoint = var.cluster_disable_public_endpoint
   exists = var.cluster_exists
@@ -41,7 +42,7 @@ module "cluster-config" {
 }
 module "cs_resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.3.3"
+  version = "3.3.4"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   purge_volumes = var.purge_volumes
@@ -76,7 +77,7 @@ module "openshift-gitops" {
   name = var.openshift-gitops_name
 }
 module "registry" {
-  source = "github.com/cloud-native-toolkit/terraform-ibm-image-registry?ref=v2.1.4"
+  source = "github.com/terraform-ibm-modules/terraform-ibm-toolkit-image-registry?ref=v2.1.4"
 
   cluster_namespace = module.tools_namespace.name
   cluster_type_code = module.cluster.platform.type_code
@@ -90,7 +91,7 @@ module "registry" {
 }
 module "resource_group" {
   source = "cloud-native-toolkit/resource-group/ibm"
-  version = "3.3.3"
+  version = "3.3.4"
 
   ibmcloud_api_key = var.ibmcloud_api_key
   purge_volumes = var.purge_volumes

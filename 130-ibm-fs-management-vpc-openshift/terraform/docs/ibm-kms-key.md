@@ -2,8 +2,6 @@
 
 Module to manage the Key Management System key. A new key can either be provisioned or an existing key can be looked up.
 
-**Note:** This module follows the Terraform conventions regarding how provider configuration is defined within the Terraform template and passed into the module - https://www.terraform.io/docs/language/modules/develop/providers.html. The default provider configuration flows through to the module. If different configuration is required for a module, it can be explicitly passed in the `providers` block of the module - https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly.
-
 ## Software dependencies
 
 The module depends on the following software components:
@@ -25,6 +23,8 @@ This module makes use of the output from other modules:
     - github.com/ibm-garage-cloud/terraform-ibm-hpcs.git
 
 ## Example usage
+
+[Refer test cases for more details](test/stages/stage2-kms-key.tf)
 
 ```hcl-terraform
 terraform {

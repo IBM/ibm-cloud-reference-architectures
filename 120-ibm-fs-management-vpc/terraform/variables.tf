@@ -1,51 +1,10 @@
 variable "ibmcloud_api_key" {
   type = string
-  description = "The IBM Cloud api key"
-}
-variable "kms_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "kms_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
-}
-variable "purge_volumes" {
-  type = bool
-  description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
-  default = false
+  description = "The api key used to access IBM Cloud"
 }
 variable "region" {
   type = string
   description = "the value of region"
-}
-variable "at_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "at_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
-}
-variable "mgmt_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
-}
-variable "cs_resource_group_name" {
-  type = string
-  description = "The name of the resource group"
-}
-variable "cs_resource_group_sync" {
-  type = string
-  description = "Value used to order the provisioning of the resource group"
-  default = ""
 }
 variable "ibm-activity-tracker_tags" {
   type = string
@@ -220,66 +179,6 @@ variable "kms-key_force_delete" {
   description = "Flag indicating that 'force' should be applied to key on delete"
   default = true
 }
-variable "cos_resource_location" {
-  type = string
-  description = "Geographic location of the resource (e.g. us-south, us-east)"
-  default = "global"
-}
-variable "cos_tags" {
-  type = string
-  description = "Tags that should be applied to the service"
-  default = "[]"
-}
-variable "cos_plan" {
-  type = string
-  description = "The type of plan the service instance should run under (lite or standard)"
-  default = "standard"
-}
-variable "cos_provision" {
-  type = bool
-  description = "Flag indicating that cos instance should be provisioned"
-  default = false
-}
-variable "cos_label" {
-  type = string
-  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
-  default = "cos"
-}
-variable "ibm-vpc_name" {
-  type = string
-  description = "The name of the vpc instance"
-  default = ""
-}
-variable "ibm-vpc_provision" {
-  type = bool
-  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default = true
-}
-variable "ibm-vpc_address_prefix_count" {
-  type = number
-  description = "The number of ipv4_cidr_blocks"
-  default = 3
-}
-variable "ibm-vpc_address_prefixes" {
-  type = string
-  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
-  default = "[\"10.10.0.0/18\",\"10.20.0.0/18\",\"10.30.0.0/18\"]"
-}
-variable "ibm-vpc_base_security_group_name" {
-  type = string
-  description = "The name of the base security group. If not provided the name will be based on the vpc name"
-  default = ""
-}
-variable "ibm-vpc_internal_cidr" {
-  type = string
-  description = "The cidr range of the internal network"
-  default = "10.0.0.0/8"
-}
-variable "ibm-vpc_tags" {
-  type = string
-  description = "Tags that should be added to the instance"
-  default = "[]"
-}
 variable "flow_log_bucket_provision" {
   type = bool
   description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
@@ -324,6 +223,112 @@ variable "suffix" {
   type = string
   description = "Value added to the generated name to ensure it is unique"
   default = ""
+}
+variable "kms_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "kms_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "purge_volumes" {
+  type = bool
+  description = "Flag indicating that any volumes in the resource group should be automatically destroyed before destroying the resource group. If volumes exist and the flag is false then the destroy will fail."
+  default = false
+}
+variable "at_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "at_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "mgmt_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "cs_resource_group_name" {
+  type = string
+  description = "The name of the resource group"
+}
+variable "cs_resource_group_sync" {
+  type = string
+  description = "Value used to order the provisioning of the resource group"
+  default = ""
+}
+variable "cos_resource_location" {
+  type = string
+  description = "Geographic location of the resource (e.g. us-south, us-east)"
+  default = "global"
+}
+variable "cos_tags" {
+  type = string
+  description = "Tags that should be applied to the service"
+  default = "[]"
+}
+variable "cos_plan" {
+  type = string
+  description = "The type of plan the service instance should run under (lite or standard)"
+  default = "standard"
+}
+variable "cos_provision" {
+  type = bool
+  description = "Flag indicating that cos instance should be provisioned"
+  default = false
+}
+variable "cos_label" {
+  type = string
+  description = "The name that should be used for the service, particularly when connecting to an existing service. If not provided then the name will be defaulted to {name prefix}-{service}"
+  default = "cos"
+}
+variable "common_tags" {
+  type = string
+  description = "Common tags that should be added to the instance"
+  default = "[]"
+}
+variable "ibm-vpc_name" {
+  type = string
+  description = "The name of the vpc instance"
+  default = ""
+}
+variable "ibm-vpc_provision" {
+  type = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default = true
+}
+variable "ibm-vpc_address_prefix_count" {
+  type = number
+  description = "The number of ipv4_cidr_blocks"
+  default = 3
+}
+variable "ibm-vpc_address_prefixes" {
+  type = string
+  description = "List of ipv4 cidr blocks for the address prefixes (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
+  default = "[\"10.10.0.0/18\",\"10.20.0.0/18\",\"10.30.0.0/18\"]"
+}
+variable "ibm-vpc_base_security_group_name" {
+  type = string
+  description = "The name of the base security group. If not provided the name will be based on the vpc name"
+  default = ""
+}
+variable "ibm-vpc_internal_cidr" {
+  type = string
+  description = "The cidr range of the internal network"
+  default = "10.0.0.0/8"
+}
+variable "ibm-vpc_tags" {
+  type = string
+  description = "Tags that should be added to the instance"
+  default = "[]"
 }
 variable "ibm-vpc-gateways_provision" {
   type = bool

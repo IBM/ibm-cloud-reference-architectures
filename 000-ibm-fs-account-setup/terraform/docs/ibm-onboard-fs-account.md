@@ -2,7 +2,7 @@
 
 Module to automate the configuration of an IBM Cloud account with required FS settings. There are a number of settings required. There are a number of settings that need to be made on the account for FS compliance but currently only a subset of the settings can be automated. The list of settings and manual setup steps are provided below:
 
-**Note:** This module follows the Terraform conventions regarding how provider configuration is defined within the Terraform template and passed into the module - https://www.terraform.io/docs/language/modules/develop/providers.html. The default provider configuration flows through to the module. If different configuration is required for a module, it can be explicitly passed in the `providers` block of the module - https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly.
+
 
 ## Settings
 
@@ -67,6 +67,8 @@ The module depends on the following software components:
 - None
 
 ## Example usage
+
+[Refer test cases for more details](test/stages/stage-onboard-fs-cloud.tf)
 
 ```hcl-terraform
 terraform {

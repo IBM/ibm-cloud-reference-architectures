@@ -20,6 +20,8 @@ The module depends on the following software components:
 
 ## Example usage
 
+[Refer the testcase for more details](test/stages/stage1-resource-groups.tf)
+
 ```hcl-terraform
 terraform {
   required_providers {

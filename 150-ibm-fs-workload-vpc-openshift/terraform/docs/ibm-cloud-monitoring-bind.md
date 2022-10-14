@@ -24,6 +24,8 @@ This module makes use of the output from other modules:
 
 ## Example usage
 
+[Refer test case more details](test/stages/stage2-cloud-monitoring-bind.tf)
+
 ```hcl-terraform
 module "cloud_monitoring_bind" {
   source = "github.com/cloud-native-toolkit/terraform-ibm-cloud-monitoring-bind.git"
