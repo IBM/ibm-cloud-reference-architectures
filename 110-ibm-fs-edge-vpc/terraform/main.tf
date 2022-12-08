@@ -220,7 +220,7 @@ module "ibm-vpc-vpn-gateway" {
   vpc_subnets = module.ingress-subnets.subnets
 }
 module "ibm-vpn-server" {
-  source = "github.com/terraform-ibm-modules/terraform-ibm-toolkit-vpn-server?ref=v0.2.1"
+  source = "github.com/terraform-ibm-modules/terraform-ibm-toolkit-vpn-server?ref=v0.2.2"
 
   auth_method = var.ibm-vpn-server_auth_method
   client_dns = var.ibm-vpn-server_client_dns == null ? null : jsondecode(var.ibm-vpn-server_client_dns)
