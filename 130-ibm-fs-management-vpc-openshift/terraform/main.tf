@@ -234,7 +234,7 @@ module "kms_resource_group" {
   sync = var.kms_resource_group_sync
 }
 module "kms-key" {
-  source = "github.com/terraform-ibm-modules/terraform-ibm-kms-key?ref=v1.5.4"
+  source = "github.com/terraform-ibm-modules/terraform-ibm-toolkit-kms-key?ref=v1.5.4"
 
   dual_auth_delete = var.kms-key_dual_auth_delete
   force_delete = var.kms-key_force_delete
