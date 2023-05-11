@@ -348,7 +348,7 @@ variable "cluster_flavor" {
 variable "ocp_version" {
   type = string
   description = "The version of the OpenShift cluster that should be provisioned (format 4.x)"
-  default = "4.8"
+  default = "4.10"
 }
 variable "cluster_exists" {
   type = bool

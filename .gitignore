@@ -17,3 +17,5 @@ credentials.properties
 
 .history/*
 .DS_Store
+
+.vscode
