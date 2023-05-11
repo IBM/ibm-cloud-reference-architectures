@@ -147,7 +147,7 @@ spec:
         - name: worker_count
           alias: mgmt_worker_count
         - name: ocp_version
-          value: 4.8
+          value: 4.10
       dependencies:
         - name: subnets
           ref: worker-subnets
