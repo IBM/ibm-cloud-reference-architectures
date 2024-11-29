@@ -1,5 +1,11 @@
 #! /bin/bash
 
+if [ -z "$1" ]
+then
+    echo "unable to determine workspace id to perform destroy.  exiting with error."
+    exit 1;
+fi    
+
 echo "refreshing token and netrc"
 ibmcloud catalog utility netrc
 echo "workspace id: $1"
